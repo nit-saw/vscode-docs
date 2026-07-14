@@ -646,6 +646,96 @@
   .era-2026 .folio{ color:rgba(229,231,235,.35); }
 
   /* ============================================================
+     VIEW MODES — book (default) · site · cards · slides
+     ============================================================ */
+  .view-switch{
+    position:fixed; top:20px; left:26px; z-index:14;
+    display:flex; gap:3px; padding:4px; border-radius:999px;
+    background:var(--chrome-btn); border:1px solid var(--nav-faint);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    font-family:ui-sans-serif, system-ui, sans-serif;
+  }
+  .view-switch button{
+    border:none; background:transparent; color:var(--nav-ink);
+    font-size:.64rem; letter-spacing:.1em; text-transform:uppercase;
+    padding:6px 12px; border-radius:999px; cursor:pointer;
+    transition:all .25s ease;
+  }
+  .view-switch button:hover{ color:var(--accent); }
+  .view-switch button.active{ background:var(--accent); color:#fff; }
+
+  /* anything that only makes sense inside the book */
+  body:not([data-view="book"]) .book::before,
+  body:not([data-view="book"]) .book::after{ display:none; }
+  body:not([data-view="book"]) .foldback,
+  body:not([data-view="book"]) .fold-shadow,
+  body:not([data-view="book"]) .tap-zone{ display:none !important; }
+  body:not([data-view="book"]) .page{ visibility:visible; }
+
+  /* ── SITE · a normal scrolling website ── */
+  body[data-view="site"]{ overflow-y:auto; }
+  body[data-view="site"] .stage{
+    position:static; inset:auto; height:auto; display:block;
+    padding:76px 0 50px; perspective:none;
+  }
+  body[data-view="site"] .book{ width:min(1000px, 92vw); height:auto; margin:0 auto; }
+  body[data-view="site"] .page{ position:static; margin-bottom:36px; }
+  body[data-view="site"] .page-face.front{ position:relative; inset:auto; min-height:72vh; display:flex; }
+  body[data-view="site"] .sheet{ overflow:visible; height:auto; width:100%; }
+  body[data-view="site"] .arrow, body[data-view="site"] .chrome{ display:none; }
+
+  /* ── CARDS · an iMessage-style photo stack ── */
+  body[data-view="cards"] .book{ width:min(720px, 88vw); height:min(76vh, 660px); }
+  body[data-view="cards"] .page{
+    transition: transform .55s cubic-bezier(.2,.8,.25,1), opacity .55s ease;
+    will-change: transform;
+  }
+  body[data-view="cards"] .page-face.front{
+    border-radius:18px;
+    box-shadow:0 18px 50px rgba(40,30,10,.22);
+    cursor:grab;
+  }
+
+  /* ── SLIDES · one page at a time, cinematic hand-off ── */
+  body[data-view="slides"] .page{ visibility:hidden; }
+  body[data-view="slides"] .page.s-active{ visibility:visible; }
+  body[data-view="slides"] .page.s-in,
+  body[data-view="slides"] .page.s-out{ visibility:visible; }
+  body[data-view="slides"] .page.s-in   { animation:slideIn   .65s cubic-bezier(.2,.8,.25,1) both; z-index:5; }
+  body[data-view="slides"] .page.s-out  { animation:slideOut  .65s cubic-bezier(.4,0,.6,1)  both; z-index:4; }
+  body[data-view="slides"] .page.s-in-r { animation:slideInR  .65s cubic-bezier(.2,.8,.25,1) both; z-index:5; }
+  body[data-view="slides"] .page.s-out-r{ animation:slideOutR .65s cubic-bezier(.4,0,.6,1)  both; z-index:4; }
+  @keyframes slideIn  { from{ opacity:0; transform:translateX(7%)  scale(.985); filter:blur(7px);} to{ opacity:1; transform:none; filter:blur(0);} }
+  @keyframes slideOut { from{ opacity:1; transform:none; }  to{ opacity:0; transform:translateX(-6%) scale(.985); filter:blur(7px);} }
+  @keyframes slideInR { from{ opacity:0; transform:translateX(-7%) scale(.985); filter:blur(7px);} to{ opacity:1; transform:none; filter:blur(0);} }
+  @keyframes slideOutR{ from{ opacity:1; transform:none; }  to{ opacity:0; transform:translateX(6%)  scale(.985); filter:blur(7px);} }
+
+  /* ============================================================
+     LIVING PORTRAITS — photos that move, wizarding-newspaper style
+     ============================================================ */
+  .living{ transform-box:fill-box; transform-origin:50% 100%; }
+  .sway { animation: sway  5.2s ease-in-out infinite; }
+  .sway2{ animation: sway  6.6s ease-in-out infinite reverse; }
+  @keyframes sway{ 0%,100%{ transform:rotate(-.8deg);} 50%{ transform:rotate(1.6deg);} }
+  .nodding{ transform-box:fill-box; transform-origin:50% 90%; animation:nod 4.4s ease-in-out infinite; }
+  @keyframes nod{ 0%,100%{ transform:rotate(0) translateY(0);} 50%{ transform:rotate(2deg) translateY(1.6px);} }
+  .waving{ transform-box:fill-box; transform-origin:15% 95%; animation:wave 3s ease-in-out infinite; }
+  @keyframes wave{
+    0%,100%{ transform:rotate(0); }
+    40%{ transform:rotate(-22deg); }
+    55%{ transform:rotate(-8deg); }
+    70%{ transform:rotate(-20deg); }
+  }
+  .floaty{ animation: floaty 4.2s ease-in-out infinite; }
+  @keyframes floaty{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-4px);} }
+  /* old film flicker on the newspaper photograph */
+  .np-photo svg{ animation: flicker 2.6s steps(3, end) infinite; }
+  @keyframes flicker{ 0%,100%{ opacity:1; } 42%{ opacity:.965; } 71%{ opacity:.985; } }
+  @media (prefers-reduced-motion: reduce){
+    .sway,.sway2,.nodding,.waving,.floaty,.np-photo svg{ animation:none; }
+  }
+
+  /* ============================================================
      RESPONSIVE
      ============================================================ */
   @media (max-width: 1024px){          /* iPad & small laptops */
@@ -681,6 +771,8 @@
     .facts{ grid-template-columns:1fr 1fr; }
     .mag-wrap{ flex-direction:column-reverse; }
     .polaroid{ align-self:center; }
+    .view-switch{ top:auto; bottom:12px; left:12px; padding:3px; }
+    .view-switch button{ font-size:.56rem; padding:5px 8px; }
   }
 </style>
 </head>
@@ -735,17 +827,22 @@
             <!-- ✏️ EDIT ME: replace this <svg> with your real photo:
                  <img src="your-photo-1992.jpg" alt="Me as a baby, 1992"> -->
             <figure class="np-photo">
-              <svg viewBox="0 0 200 150" role="img" aria-label="Vintage placeholder portrait, halftone print">
+              <svg viewBox="0 0 200 150" role="img" aria-label="Vintage placeholder portrait — the figures move, wizarding-newspaper style">
                 <defs>
                   <pattern id="ht92" width="4.2" height="4.2" patternUnits="userSpaceOnUse">
                     <circle cx="2.1" cy="2.1" r="1.15" fill="#1c1c1c"/>
                   </pattern>
                 </defs>
                 <rect width="200" height="150" fill="#cfcabc"/>
-                <circle cx="70" cy="60" r="30" fill="url(#ht92)"/>
-                <path d="M22 150 C22 106 48 96 70 96 C92 96 118 106 118 150 Z" fill="url(#ht92)"/>
-                <circle cx="146" cy="74" r="22" fill="url(#ht92)" opacity=".8"/>
-                <path d="M112 150 C112 118 130 110 146 110 C162 110 180 118 180 150 Z" fill="url(#ht92)" opacity=".8"/>
+                <g class="living sway">
+                  <circle class="nodding" cx="70" cy="60" r="30" fill="url(#ht92)"/>
+                  <path d="M22 150 C22 106 48 96 70 96 C92 96 118 106 118 150 Z" fill="url(#ht92)"/>
+                </g>
+                <g class="living sway2" opacity=".85">
+                  <path class="waving" d="M158 112 L180 82 L187 88 L166 116 Z" fill="url(#ht92)"/>
+                  <circle class="nodding" cx="146" cy="74" r="22" fill="url(#ht92)"/>
+                  <path d="M112 150 C112 118 130 110 146 110 C162 110 180 118 180 150 Z" fill="url(#ht92)"/>
+                </g>
                 <rect x="1.5" y="1.5" width="197" height="147" fill="none" stroke="#1c1c1c" stroke-width="3"/>
               </svg>
               <figcaption>The author (left), pictured with an early collaborator.
@@ -809,11 +906,13 @@
             <!-- ✏️ EDIT ME: replace this <svg> with a real photo:
                  <img src="your-photo-2000s.jpg" alt="Me in the 2000s"> -->
             <figure class="polaroid">
-              <svg viewBox="0 0 200 200" role="img" aria-label="Sepia placeholder photo">
+              <svg viewBox="0 0 200 200" role="img" aria-label="Sepia placeholder photo — the figure sways gently">
                 <rect width="200" height="200" fill="#c9b68a"/>
                 <rect width="200" height="200" fill="#7a6a45" opacity=".18"/>
-                <circle cx="100" cy="84" r="36" fill="#4a3b22"/>
-                <path d="M38 200 C38 148 70 132 100 132 C130 132 162 148 162 200 Z" fill="#4a3b22"/>
+                <g class="living sway">
+                  <circle class="nodding" cx="100" cy="84" r="36" fill="#4a3b22"/>
+                  <path d="M38 200 C38 148 70 132 100 132 C130 132 162 148 162 200 Z" fill="#4a3b22"/>
+                </g>
                 <rect y="184" width="200" height="16" fill="rgba(255,255,255,.14)"/>
               </svg>
               <figcaption>Summer, sometime in the 2000s.<br>(placeholder photo)</figcaption>
@@ -906,9 +1005,11 @@
             <!-- ✏️ EDIT ME: swap this <svg> for your latest photo:
                  <img src="your-photo-2026.jpg" alt="Me, today" style="width:100%;height:100%;object-fit:cover"> -->
             <div class="avatar-ring"><div class="inner">
-              <svg viewBox="0 0 100 100" role="img" aria-label="Placeholder avatar">
-                <circle cx="50" cy="38" r="18" fill="#94a3b8"/>
-                <path d="M18 100 C18 72 34 62 50 62 C66 62 82 72 82 100 Z" fill="#94a3b8"/>
+              <svg viewBox="0 0 100 100" role="img" aria-label="Placeholder avatar — floats softly">
+                <g class="floaty">
+                  <circle cx="50" cy="38" r="18" fill="#94a3b8"/>
+                  <path d="M18 100 C18 72 34 62 50 62 C66 62 82 72 82 100 Z" fill="#94a3b8"/>
+                </g>
               </svg>
             </div></div>
             <blockquote>"The best stories are the ones we <span>build together</span>.
@@ -950,6 +1051,14 @@
 </div>
 
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle day / night reading mode">☾</button>
+
+<!-- ═══════════ VIEW SWITCHER: read it your way ═══════════ -->
+<div class="view-switch" id="viewSwitch" role="tablist" aria-label="View mode">
+  <button data-mode="book"   class="active" role="tab">Book</button>
+  <button data-mode="site"   role="tab">Site</button>
+  <button data-mode="cards"  role="tab">Cards</button>
+  <button data-mode="slides" role="tab">Slides</button>
+</div>
 
 <script>
 (function(){
@@ -1033,6 +1142,7 @@
   var busy    = false;
   var bookEl  = document.getElementById("book");
   var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var mode    = "book";               // book | site | cards | slides
 
   // give every page its fold apparatus, and lift the tap-zones out of the
   // clipped front face so they stay clickable while the page is curled
@@ -1231,6 +1341,120 @@
     }
   }
 
+  /* ══════════ VIEW MODES: book · site · cards · slides ══════════ */
+
+  // iMessage-style stack: current card front & centre, the rest fanned behind
+  function applyCards(){
+    pages.forEach(function(pg, i){
+      var d = i - current;
+      pg.classList.remove("flipped");
+      pg.style.transition = ""; pg.style.opacity = "";
+      if (d < 0){
+        pg.style.transform = "translateX(-135%) rotate(-9deg)";
+        pg.style.opacity = "0";
+        pg.style.zIndex = i + 1;
+      } else if (d === 0){
+        pg.style.transform = "";
+        pg.style.zIndex = 100;
+      } else {
+        var k = Math.min(d, 4);
+        pg.style.transform = "translateX(" + (k * 22) + "px) translateY(" + (k * 12) + "px) scale(" + (1 - k * 0.05) + ")";
+        pg.style.opacity = d > 4 ? "0" : String(1 - k * 0.13);
+        pg.style.zIndex = 100 - d;
+      }
+    });
+  }
+
+  function applySlides(){
+    pages.forEach(function(pg, i){
+      pg.classList.remove("flipped", "s-in", "s-out", "s-in-r", "s-out-r");
+      pg.classList.toggle("s-active", i === current);
+      pg.style.zIndex = "";
+    });
+  }
+
+  function slideTo(target){
+    if (target === current || busy) return;
+    busy = true;
+    var back = target < current;
+    var out = pages[current], inn = pages[target];
+    out.classList.remove("s-active");
+    out.classList.add(back ? "s-out-r" : "s-out");
+    inn.classList.add(back ? "s-in-r" : "s-in");
+    playPageSound();
+    current = target; updateChrome();
+    setTimeout(function(){ applySlides(); busy = false; }, 680);
+  }
+
+  // one navigation entry point; each mode moves its own way
+  function navTo(target){
+    target = Math.max(0, Math.min(total - 1, target));
+    if (mode === "book"){ go(target); return; }
+    if (target === current) return;
+    if (mode === "site"){
+      current = target; updateChrome();
+      pages[target].scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
+    } else if (mode === "cards"){
+      if (busy) return;
+      current = target; updateChrome();
+      playPageSound();
+      applyCards();
+    } else if (mode === "slides"){
+      slideTo(target);
+    }
+  }
+
+  function setMode(m){
+    if (["book","site","cards","slides"].indexOf(m) < 0) m = "book";
+    mode = m;
+    document.body.setAttribute("data-view", m);
+    try { localStorage.setItem("book-viewmode", m); } catch(e){}
+    document.querySelectorAll("#viewSwitch button").forEach(function(b){
+      b.classList.toggle("active", b.dataset.mode === m);
+    });
+    // clean the slate: no folds, no leftover inline state
+    busy = false;
+    pages.forEach(function(pg){
+      if (pg._anim){ cancelAnimationFrame(pg._anim); pg._anim = null; }
+      setFold(pg, 0);
+      pg.classList.remove("flipped", "s-active", "s-in", "s-out", "s-in-r", "s-out-r");
+      pg.style.transform = ""; pg.style.opacity = ""; pg.style.zIndex = ""; pg.style.transition = "";
+    });
+    if (m === "book"){
+      pages.forEach(function(pg, i){ pg.classList.toggle("flipped", i < current); });
+      restack();
+      window.scrollTo(0, 0);
+    } else if (m === "cards"){
+      applyCards();
+      window.scrollTo(0, 0);
+    } else if (m === "slides"){
+      applySlides();
+      window.scrollTo(0, 0);
+    } else if (m === "site"){
+      var pg = pages[current];
+      requestAnimationFrame(function(){ pg.scrollIntoView({ block:"start" }); });
+    }
+    updateChrome();
+  }
+
+  document.querySelectorAll("#viewSwitch button").forEach(function(b){
+    b.addEventListener("click", function(){ setMode(b.dataset.mode); });
+  });
+
+  // scroll-spy: in site mode the right-hand nav follows the reader
+  if (window.IntersectionObserver){
+    var io = new IntersectionObserver(function(entries){
+      if (mode !== "site") return;
+      entries.forEach(function(en){
+        if (en.isIntersecting){
+          var i = pages.indexOf(en.target);
+          if (i >= 0 && i !== current){ current = i; updateChrome(); }
+        }
+      });
+    }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
+    pages.forEach(function(p){ io.observe(p); });
+  }
+
   /* ══════════ SIDE NAV ══════════ */
   var sideNav  = document.getElementById("sideNav");
   var railFill = document.getElementById("railFill");
@@ -1241,7 +1465,7 @@
     btn.className = "nav-item";
     btn.setAttribute("aria-label", "Go to " + p.dataset.title);
     btn.innerHTML = '<span class="label">' + p.dataset.title + '</span><span class="dot"></span>';
-    btn.addEventListener("click", function(){ go(i); });
+    btn.addEventListener("click", function(){ navTo(i); });
     sideNav.appendChild(btn);
     navItems.push(btn);
   });
@@ -1265,29 +1489,35 @@
   }
 
   /* ══════════ INPUT: arrows, keys, wheel, swipe, tap-zones ══════════ */
-  prevBtn.addEventListener("click", function(){ go(current - 1); });
-  nextBtn.addEventListener("click", function(){ go(current + 1); });
+  prevBtn.addEventListener("click", function(){ navTo(current - 1); });
+  nextBtn.addEventListener("click", function(){ navTo(current + 1); });
 
   document.querySelectorAll(".tap-zone").forEach(function(z){
-    z.addEventListener("click", function(){ go(current + parseInt(z.dataset.dir, 10)); });
+    z.addEventListener("click", function(){ navTo(current + parseInt(z.dataset.dir, 10)); });
   });
 
   document.addEventListener("keydown", function(e){
-    if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); go(current + 1); }
-    if (e.key === "ArrowLeft"  || e.key === "PageUp")                    { e.preventDefault(); go(current - 1); }
-    if (e.key === "Home") go(0);
-    if (e.key === "End")  go(total - 1);
+    if (mode === "site"){                                  // native scroll owns space/pgup/pgdn
+      if (e.key === "ArrowRight"){ e.preventDefault(); navTo(current + 1); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); navTo(current - 1); }
+      return;
+    }
+    if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); navTo(current + 1); }
+    if (e.key === "ArrowLeft"  || e.key === "PageUp")                    { e.preventDefault(); navTo(current - 1); }
+    if (e.key === "Home") navTo(0);
+    if (e.key === "End")  navTo(total - 1);
   });
 
   var wheelLock = 0;
   document.addEventListener("wheel", function(e){
+    if (mode === "site") return;                           // the browser scrolls
     var now = Date.now();
 
     // trackpad: a two-finger horizontal swipe turns the page
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)){
       if (Math.abs(e.deltaX) < 16 || now - wheelLock < 1100) return;
       wheelLock = now;
-      go(current + (e.deltaX > 0 ? 1 : -1));
+      navTo(current + (e.deltaX > 0 ? 1 : -1));
       return;
     }
 
@@ -1301,7 +1531,7 @@
     if (now - wheelLock < 1200) return;
     if (Math.abs(e.deltaY) < 24) return;
     wheelLock = now;
-    go(current + (e.deltaY > 0 ? 1 : -1));
+    navTo(current + (e.deltaY > 0 ? 1 : -1));
   }, { passive:true });
 
   /* ── slide to turn: drag left and the sheet folds over under your finger ── */
@@ -1312,8 +1542,9 @@
 
   stage.addEventListener("pointerdown", function(e){
     if (busy || e.button > 0) return;
+    if (mode === "site" || mode === "slides") return;
     if (e.target.closest("button")) return;
-    drag.on = true; drag.dir = 0; drag.pg = null;
+    drag.on = true; drag.dir = 0; drag.pg = null; drag.cards = false;
     drag.startX = e.clientX; drag.startY = e.clientY;
     drag.lastX = e.clientX; drag.lastT = performance.now(); drag.vx = 0;
     drag.id = e.pointerId;
@@ -1327,16 +1558,23 @@
     if (!drag.dir){
       if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
       var dir = dx < 0 ? 1 : -1;                      // 1 = forward (slide left)
-      var pg = dir === 1
-        ? (current < total - 1 ? pages[current] : null)
-        : (current > 0 ? pages[current - 1] : null);
-      if (!pg){ drag.on = false; return; }
+      var pg;
+      if (mode === "cards"){
+        pg = pages[current];                          // the top card follows the finger
+        drag.cards = true;
+        pg.style.transition = "none";
+      } else {
+        pg = dir === 1
+          ? (current < total - 1 ? pages[current] : null)
+          : (current > 0 ? pages[current - 1] : null);
+        if (!pg){ drag.on = false; return; }
+        if (pg._anim){ cancelAnimationFrame(pg._anim); pg._anim = null; }
+        pg.classList.remove("flipped");
+        if (dir === -1 && pg._p < 0.01) setFold(pg, 1); // it was resting fully turned
+        drag.startP = pg._p;
+        pg.style.zIndex = 2 * total + 5;
+      }
       drag.dir = dir; drag.pg = pg;
-      if (pg._anim){ cancelAnimationFrame(pg._anim); pg._anim = null; }
-      pg.classList.remove("flipped");
-      if (dir === -1 && pg._p < 0.01) setFold(pg, 1); // it was resting fully turned
-      drag.startP = pg._p;
-      pg.style.zIndex = 2 * total + 5;
       stage.classList.add("dragging");
       suppressClick = true;
       try { stage.setPointerCapture(e.pointerId); } catch(err){}
@@ -1347,6 +1585,12 @@
     var dt = Math.max(1, now - drag.lastT);
     drag.vx = 0.7 * drag.vx + 0.3 * ((e.clientX - drag.lastX) / dt);
     drag.lastX = e.clientX; drag.lastT = now;
+
+    if (drag.cards){
+      drag.pg.style.transform =
+        "translateX(" + dx + "px) translateY(" + (dy * 0.15) + "px) rotate(" + (dx * 0.035) + "deg)";
+      return;
+    }
 
     var w = bookEl.clientWidth;
     var p = Math.min(1, Math.max(0, drag.startP + (-dx) / (w * 1.25)));
@@ -1360,11 +1604,22 @@
     if (!pg) return;
     stage.classList.remove("dragging");
 
-    var p = pg._p;
     // a flick only counts if the pointer was still moving at release
     var stale = performance.now() - drag.lastT > 120;
     var flickL = !stale && drag.vx < -0.45, flickR = !stale && drag.vx > 0.45;
 
+    if (drag.cards){
+      var dx = drag.lastX - drag.startX;
+      var moved = 0;
+      if ((dx < -90 || flickL) && current < total - 1) moved = 1;
+      else if ((dx > 90 || flickR) && current > 0)     moved = -1;
+      if (moved){ current += moved; playPageSound(); updateChrome(); }
+      applyCards();                                    // restores transitions & positions
+      drag.pg = null;
+      return;
+    }
+
+    var p = pg._p;
     // where does the sheet settle? finish the turn, or fall back open
     var to;
     if (drag.dir === 1) to = (flickR ? 0 : (flickL || p > 0.12) ? 1 : 0);
@@ -1400,13 +1655,13 @@
   /* ── iBooks-style invitation: the page edge lifts as you hover it ── */
   document.querySelectorAll(".tap-zone.next").forEach(function(z){
     z.addEventListener("mouseenter", function(){
-      if (busy || drag.on || current >= total - 1) return;
+      if (mode !== "book" || busy || drag.on || current >= total - 1) return;
       var pg = pages[current];
       pg.style.zIndex = 2 * total + 5;
       animateFold(pg, 0.022, 240);
     });
     z.addEventListener("mouseleave", function(){
-      if (busy || drag.on) return;
+      if (mode !== "book" || busy || drag.on) return;
       var pg = pages[current];
       if (pg._p > 0 && pg._p < 0.1){
         animateFold(pg, 0, 300, function(){ pg.style.zIndex = ""; restack(); });
@@ -1496,8 +1751,9 @@
   }
 
   /* ══════════ INIT ══════════ */
-  restack();
-  updateChrome();
+  var savedMode = null;
+  try { savedMode = localStorage.getItem("book-viewmode"); } catch(e){}
+  setMode(savedMode || "book");
   loadRepos();
   window.addEventListener("resize", updateChrome);
 })();
