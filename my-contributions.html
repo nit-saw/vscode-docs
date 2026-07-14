@@ -151,29 +151,18 @@
     background-size: 5px 5px;
   }
 
-  /* the white underside of the sheet, folded over at the crease.
-     Its right edge IS the crease: bright at the curl's crown,
-     darkening into the crease like curved paper catching light. */
+  /* the underside of the sheet folded over the (diagonal) crease.
+     Shape and shading are computed per frame in JS — the flap is the
+     exact mirror of the removed region across the crease line. */
   .foldback{
-    display:none; position:absolute; top:0; bottom:0; z-index:7;
+    display:none; position:absolute; inset:0; z-index:7;
     pointer-events:none;
-    background:
-      linear-gradient(to right,
-        rgba(0,0,0,.05)          0%,
-        var(--paper)             10%,
-        var(--paper)             45%,
-        var(--paper-deep)        72%,
-        rgba(0,0,0,.075)         94%,
-        rgba(0,0,0,.16)          100%);
     background-color: var(--paper);
-    border-radius: 4px 0 0 4px;
-    box-shadow: -16px 6px 26px rgba(0,0,0,.16);
   }
   /* shadow the lifted sheet casts on the page being revealed */
   .fold-shadow{
-    display:none; position:absolute; top:-1%; bottom:-1%; z-index:6;
+    display:none; position:absolute; inset:0; z-index:6;
     pointer-events:none;
-    background: linear-gradient(to right, rgba(0,0,0,.26), rgba(0,0,0,0));
   }
 
   /* ------- page inner layout ------- */
@@ -828,13 +817,48 @@
     });
   }
 
-  /* The heart of the turn. Progress p folds the sheet over a vertical
-     crease at m = W(1-p): the part right of the crease flips over and
-     lies mirrored to its left as the white underside, exactly like
-     folding real paper. p=0 flat, p=0.5 crease at the spine, p=1 gone. */
+  /* ── geometry helpers for the diagonal fold ── */
+
+  // clip a convex polygon by the crease line; keep>=0 keeps the front side
+  function clipPoly(poly, sideFn, keepPositive){
+    var out = [];
+    for (var i = 0; i < poly.length; i++){
+      var A = poly[i], B = poly[(i + 1) % poly.length];
+      var sa = sideFn(A), sb = sideFn(B);
+      var inA = keepPositive ? sa >= 0 : sa <= 0;
+      var inB = keepPositive ? sb >= 0 : sb <= 0;
+      if (inA) out.push(A);
+      if (inA !== inB){
+        var t = sa / (sa - sb);
+        out.push({ x: A.x + (B.x - A.x) * t, y: A.y + (B.y - A.y) * t });
+      }
+    }
+    return out;
+  }
+  function toPolygon(pts){
+    return "polygon(" + pts.map(function(P){
+      return P.x.toFixed(1) + "px " + P.y.toFixed(1) + "px";
+    }).join(",") + ")";
+  }
+  // css linear-gradient angle whose direction matches unit vector v
+  // (screen coords: x right, y down)
+  function gradAngle(v){ return Math.atan2(v.x, -v.y) * 180 / Math.PI; }
+  // length of the gradient line for that angle across a W×H box,
+  // and the position of point P along it (px from the gradient start)
+  function gradPos(v, P, W, H){
+    var Lg = Math.abs(W * v.x) + Math.abs(H * v.y);
+    return { at: (P.x - W/2) * v.x + (P.y - H/2) * v.y + Lg / 2, len: Lg };
+  }
+
+  /* The heart of the turn. The crease is DIAGONAL, like grabbing the
+     top-right corner of a real page: it runs from the top edge down-left
+     to the bottom edge, and sweeps across the page as p goes 0→1.
+     The folded flap is the true mirror of the removed region. */
+  var TILT = 0.20;   // crease slope: top intercept leads the bottom one
+
   function setFold(pg, p){
     pg._p = p;
-    var W = bookEl.clientWidth;
+    var W = bookEl.clientWidth, H = bookEl.clientHeight;
     var front = pg._front, fb = pg._fb, sh = pg._sh;
     if (p <= 0.001){
       front.style.clipPath = ""; front.style.webkitClipPath = "";
@@ -842,24 +866,65 @@
       pg.style.opacity = "";
       return;
     }
-    var m = W * (1 - p);          // crease position
-    var foldW = W - m;            // width of the folded-over part
-    var clip = "inset(0 " + foldW.toFixed(2) + "px 0 0)";
-    front.style.clipPath = clip; front.style.webkitClipPath = clip;
 
+    var k = H * TILT;                        // horizontal lead of the crease top
+    var m = (W + k) * (1 - p) - k;           // crease midline, sweeps past the spine
+    var T = { x: m - k, y: 0 };              // crease meets top edge here…
+    var Bp = { x: m + k, y: H };             // …and bottom edge here (further right)
+    var d = { x: Bp.x - T.x, y: Bp.y - T.y };
+    var dl = Math.hypot(d.x, d.y);
+
+    function side(P){ return d.x * (P.y - T.y) - d.y * (P.x - T.x); }  // >0 = front side
+    var rect = [{x:0,y:0},{x:W,y:0},{x:W,y:H},{x:0,y:H}];
+    var frontPoly = clipPoly(rect, side, true);
+    var flapPoly  = clipPoly(rect, side, false);
+    if (!flapPoly.length || frontPoly.length < 3 && p < 0.5){ return; }
+
+    front.style.clipPath = front.style.webkitClipPath =
+      frontPoly.length ? toPolygon(frontPoly) : "inset(0 0 0 100%)";
+
+    // mirror the flap across the crease line
+    var len2 = d.x*d.x + d.y*d.y;
+    function reflect(P){
+      var t = ((P.x - T.x) * d.x + (P.y - T.y) * d.y) / len2;
+      var fx = T.x + d.x * t, fy = T.y + d.y * t;
+      return { x: 2*fx - P.x, y: 2*fy - P.y };
+    }
+    var mir = flapPoly.map(reflect);
+
+    var lift = Math.sin(Math.PI * Math.min(p, 1));   // how tall the sheet stands
+
+    // flap: paper shaded perpendicular to the crease — dark in the crease,
+    // bright across the curl's crown, a whisper of tone at the free edge
+    var vL = { x: -d.y/dl, y: d.x/dl };              // normal pointing into the flap
+    var gp = gradPos(vL, T, W, H);
+    var depth = 1;
+    mir.forEach(function(P){
+      depth = Math.max(depth, (P.x - W/2)*vL.x + (P.y - H/2)*vL.y + gp.len/2 - gp.at);
+    });
     fb.style.display = "block";
-    fb.style.width = Math.max(foldW, 1).toFixed(2) + "px";
-    fb.style.left = (m - foldW).toFixed(2) + "px";
+    fb.style.clipPath = fb.style.webkitClipPath = toPolygon(mir);
+    fb.style.backgroundImage =
+      "linear-gradient(" + gradAngle(vL).toFixed(2) + "deg," +
+      "rgba(0,0,0," + (0.16*lift + 0.04).toFixed(3) + ") " + gp.at.toFixed(1) + "px," +
+      "var(--paper) " + (gp.at + Math.min(30, depth*0.22)).toFixed(1) + "px," +
+      "var(--paper) " + (gp.at + depth*0.55).toFixed(1) + "px," +
+      "var(--paper-deep) " + (gp.at + depth*0.85).toFixed(1) + "px," +
+      "rgba(0,0,0,.06) " + (gp.at + depth).toFixed(1) + "px)";
 
-    // shadow ahead of the crease, strongest when the sheet stands tallest
-    var lift = Math.sin(Math.PI * Math.min(p, 1));
+    // shadow the standing sheet casts past the crease onto the next page
+    var vR = { x: d.y/dl, y: -d.x/dl };
+    var gr = gradPos(vR, T, W, H);
+    var shW = Math.max(26, depth * 0.4);
     sh.style.display = "block";
-    sh.style.left = m.toFixed(2) + "px";
-    sh.style.width = Math.max(26, foldW * 0.55).toFixed(2) + "px";
-    sh.style.opacity = (0.85 * lift).toFixed(3);
-    fb.style.boxShadow = "-16px 6px 26px rgba(0,0,0," + (0.20 * lift).toFixed(3) + ")";
+    sh.style.clipPath = sh.style.webkitClipPath = toPolygon(flapPoly);
+    sh.style.backgroundImage =
+      "linear-gradient(" + gradAngle(vR).toFixed(2) + "deg," +
+      "rgba(0,0,0,.30) " + gr.at.toFixed(1) + "px," +
+      "rgba(0,0,0,0) " + (gr.at + shW).toFixed(1) + "px)";
+    sh.style.opacity = (0.9 * lift).toFixed(3);
 
-    // the sheet drifts out over the left margin at the end — fade it away
+    // the sheet drifts past the spine at the end — fade it away
     pg.style.opacity = p > 0.82 ? String(Math.max(0, 1 - (p - 0.82) / 0.18)) : "";
   }
 
