@@ -3,81 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Contributions — The Story of Nitesh</title>
-<meta name="description" content="A CV you can read like a book — my story, my journey, and the things I've built.">
+<title>The Story of Nitesh — My Contributions</title>
+<meta name="description" content="A monochrome paper you can read like a book — the life, work, and repositories of Nitesh, in fifteen pages.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..800;1,6..72,400..700&family=Archivo:wght@400..900&display=swap" rel="stylesheet">
 <style>
   /* ============================================================
-     MY CONTRIBUTIONS — a CV you read like a Kindle book
-     Edit the content inside <main class="book"> to tell YOUR story.
+     THE STORY OF NITESH — a monochrome paper, read like a book.
+     No colour anywhere: ivory, ink, and every grey in between.
+     Edit the articles inside <main class="book"> to tell YOUR story.
      ============================================================ */
 
   :root{
-    /* inner pages: paper of the ancient world, set with modern restraint */
-    --paper:        #f4ead3;
-    --paper-deep:   #ecdfc0;
-    --paper-edge:   #dccba4;
-    --ink:          #33291c;
-    --ink-soft:     #5f5340;
-    --ink-faint:    #94886e;
-    --accent:       #a34a1f;
-    --accent-soft:  #c67c46;
-    --gold:         #a5761f;
-    --shadow:       rgba(80, 60, 30, .14);
-    --bg1:          #d6cdb8;
-    --bg2:          #eee8d9;
-    --card:         rgba(60,40,10,.035);
-    --card-border:  rgba(51,41,28,.16);
-    --nav-ink:      #4a3f2d;
-    --nav-faint:    rgba(74,63,45,.42);
-    --chrome-btn:   rgba(255,255,255,.5);
-    --page-shadow:  rgba(80,60,30,.06);   /* kindle-flat: barely-there page shadow */
-    /* the cover: curry powder & espresso ink */
-    --curry-1:      #d9a233;
-    --curry-2:      #c4881a;
-    --curry-3:      #a86f10;
-    --cov-ink:      #3a2508;
-    --cov-cream:    #f9efd4;
+    --paper:      #f3f0e9;
+    --paper-deep: #eae6dc;
+    --paper-edge: #dcd7ca;
+    --ink:        #171512;
+    --ink-soft:   #4c4842;
+    --ink-faint:  #8d887d;
+    --rule:       rgba(23,21,18,.8);
+    --hair:       rgba(23,21,18,.16);
+    --plate:      rgba(243,240,233,.94);
+    --shadow:     rgba(30,28,24,.14);
+    --page-shadow:rgba(30,28,24,.07);
+    --bg1:        #d3d0c8;
+    --bg2:        #e9e6df;
+    --chrome-btn: rgba(255,255,255,.55);
+    --nav-ink:    #35322c;
+    --nav-faint:  rgba(53,50,44,.42);
+    --serif: "Newsreader","Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:  "Archivo",ui-sans-serif,system-ui,sans-serif;
   }
-
   html[data-theme="night"]{
-    --paper:        #1e2126;
-    --paper-deep:   #191c20;
-    --paper-edge:   #2b3038;
-    --ink:          #e8e3d8;
-    --ink-soft:     #b5ad9e;
-    --ink-faint:    #7d766a;
-    --accent:       #e08a54;
-    --accent-soft:  #b3592c;
-    --gold:         #d4b26a;
-    --shadow:       rgba(0,0,0,.6);
-    --bg1:          #0b0d10;
-    --bg2:          #16191f;
-    --card:         rgba(255,255,255,.04);
-    --card-border:  rgba(232,227,216,.12);
-    --nav-ink:      #e8e3d8;
-    --nav-faint:    rgba(232,227,216,.4);
-    --chrome-btn:   rgba(0,0,0,.25);
-    --page-shadow:  rgba(0,0,0,.25);
+    --paper:      #191816;
+    --paper-deep: #141311;
+    --paper-edge: #24221f;
+    --ink:        #e8e4da;
+    --ink-soft:   #b3ada0;
+    --ink-faint:  #746f64;
+    --rule:       rgba(232,228,218,.8);
+    --hair:       rgba(232,228,218,.18);
+    --plate:      rgba(25,24,22,.93);
+    --shadow:     rgba(0,0,0,.5);
+    --page-shadow:rgba(0,0,0,.3);
+    --bg1:        #0c0b0a;
+    --bg2:        #171614;
+    --chrome-btn: rgba(0,0,0,.3);
+    --nav-ink:    #d8d3c8;
+    --nav-faint:  rgba(216,211,200,.4);
   }
 
   *{ margin:0; padding:0; box-sizing:border-box; }
   html,body{ height:100%; }
-
   body{
-    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    font-family: var(--serif);
     background: radial-gradient(1200px 800px at 70% 20%, var(--bg2), var(--bg1) 70%);
     color: var(--ink);
-    overflow: hidden;
+    overflow:hidden;
   }
+  ::selection{ background:var(--ink); color:var(--paper); }
+  img{ max-width:100%; }
 
-  ::selection{ background: var(--accent); color:#fff; }
+  /* every photograph in the paper is printed in black & white */
+  .book img{ filter:grayscale(1) contrast(1.06); }
 
-  /* ------- ambient dust / light ------- */
   .ambience{
     position:fixed; inset:0; pointer-events:none; z-index:0;
     background:
-      radial-gradient(600px 400px at 15% 85%, rgba(212,178,106,.07), transparent 70%),
-      radial-gradient(500px 350px at 85% 10%, rgba(224,138,84,.06), transparent 70%);
+      radial-gradient(600px 400px at 15% 85%, rgba(0,0,0,.05), transparent 70%),
+      radial-gradient(500px 350px at 85% 10%, rgba(255,255,255,.16), transparent 70%);
   }
 
   /* ============================================================
@@ -86,365 +81,469 @@
   .stage{
     position:fixed; inset:0;
     display:flex; align-items:center; justify-content:center;
-    perspective: 2400px;
     z-index:1;
-    touch-action: pan-y;   /* horizontal drags turn the page */
+    touch-action: pan-y;
   }
-  .page-face.front{ cursor: grab; }
-  .stage.dragging .page-face.front{ cursor: grabbing; }
-  .stage.dragging{ user-select: none; -webkit-user-select: none; }
+  .page-face.front{ cursor:grab; }
+  .stage.dragging .page-face.front{ cursor:grabbing; }
+  .stage.dragging{ user-select:none; -webkit-user-select:none; }
 
   .book{
     position:relative;
-    /* the book IS the page: 10% gutters at the sides, slim top/bottom */
     width:80vw;
     height:calc(100vh - 48px);
   }
-
-  /* stacked page edges on the right — the "rest of the book" */
   .book::after{
-    content:"";
-    position:absolute; top:6px; bottom:6px; right:-14px; width:14px;
-    background:
-      repeating-linear-gradient(to right,
-        var(--paper-edge) 0px, var(--paper) 1px, var(--paper-edge) 2.5px);
-    border-radius: 0 4px 4px 0;
-    box-shadow: 3px 5px 12px var(--shadow);
-    transform: translateZ(-8px);
+    content:""; position:absolute; top:6px; bottom:6px; right:-14px; width:14px;
+    background: repeating-linear-gradient(to right, var(--paper-edge) 0px, var(--paper) 1px, var(--paper-edge) 2.5px);
+    border-radius:0 4px 4px 0;
+    box-shadow:3px 5px 12px var(--shadow);
+    transform:translateZ(-8px);
   }
   .book::before{
-    content:"";
-    position:absolute; top:10px; bottom:10px; left:-10px; width:10px;
-    background: linear-gradient(to right, #cfccc6, #e4e2dd);
-    border-radius: 4px 0 0 4px;
-    box-shadow: -3px 5px 12px var(--shadow);
-    transform: translateZ(-10px);
+    content:""; position:absolute; top:10px; bottom:10px; left:-10px; width:10px;
+    background: linear-gradient(to right, #b9b5aa, #d5d1c6);
+    border-radius:4px 0 0 4px;
+    box-shadow:-3px 5px 12px var(--shadow);
+    transform:translateZ(-10px);
   }
-  html[data-theme="night"] .book::before{
-    background: linear-gradient(to right, #23272e, #33383f);
-  }
+  html[data-theme="night"] .book::before{ background:linear-gradient(to right,#23221f,#33312d); }
 
-  /* ------- pages (fold model: a page turns by folding over a moving
-     crease, like iBooks / Kindle — no rigid 3D rotation) ------- */
-  .page{
-    position:absolute; inset:0;
-  }
+  /* ------- pages (fold model: the sheet folds over a moving diagonal
+     crease, like grabbing the top-right corner of a real page) ------- */
+  .page{ position:absolute; inset:0; }
   .page.flipped{ visibility:hidden; }
 
   .page-face{
     position:absolute; inset:0;
-    border-radius: 3px 6px 6px 3px;
-    background:
-      linear-gradient(105deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 4%),
-      linear-gradient(to bottom right, var(--paper), var(--paper-deep));
-    box-shadow:
-      inset 0 0 44px rgba(120,90,40,.06),   /* gentle age toward the edges */
-      0 5px 16px var(--page-shadow);
+    border-radius:3px 6px 6px 3px;
+    background: linear-gradient(105deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,0) 4%),
+                linear-gradient(to bottom right, var(--paper), var(--paper-deep));
+    box-shadow: inset 0 0 44px rgba(0,0,0,.045), 0 5px 16px var(--page-shadow);
     overflow:hidden;
   }
-  .page-face.back{ display:none; }
-  .page .curl{ display:none; }
-
-  /* subtle paper grain */
   .page-face::before{
-    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
-    background-image: radial-gradient(rgba(0,0,0,.028) 1px, transparent 1.4px);
-    background-size: 5px 5px;
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5; z-index:1;
+    background-image: radial-gradient(rgba(0,0,0,.03) 1px, transparent 1.4px);
+    background-size:5px 5px;
   }
 
-  /* the underside of the sheet folded over the (diagonal) crease.
-     Shape and shading are computed per frame in JS — the flap is the
-     exact mirror of the removed region across the crease line. */
   .foldback{
     display:none; position:absolute; inset:0; z-index:7;
     pointer-events:none;
     background-color: var(--paper);
   }
-  /* shadow the lifted sheet casts on the page being revealed */
   .fold-shadow{
     display:none; position:absolute; inset:0; z-index:6;
     pointer-events:none;
   }
 
-  /* ------- page inner layout ------- */
+  /* ------- the sheet ------- */
   .sheet{
     position:relative; height:100%;
-    padding: clamp(26px, 5vh, 52px) clamp(28px, 5vw, 62px);
+    padding: clamp(26px,4.5vh,48px) clamp(26px,4.5vw,58px);
     display:flex; flex-direction:column;
     overflow-y:auto;
-    scrollbar-width: thin;
+    scrollbar-width:thin;
     scrollbar-color: var(--ink-faint) transparent;
+    z-index:2;
   }
   .sheet::-webkit-scrollbar{ width:5px; }
   .sheet::-webkit-scrollbar-thumb{ background:var(--ink-faint); border-radius:3px; }
 
-  .chapter-eyebrow{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.68rem; letter-spacing:.28em; text-transform:uppercase;
-    color: var(--accent);
-    display:flex; align-items:center; gap:12px;
-    margin-bottom: 14px;
-  }
-  .chapter-eyebrow::after{ content:""; flex:1; height:1px; background: linear-gradient(to right, var(--card-border), transparent); }
-
-  h1,h2{ font-weight:600; letter-spacing:-.01em; }
-  h2{ font-size: clamp(1.6rem, 3.4vw, 2.3rem); margin-bottom: 18px; color:var(--ink); }
-  h2 em{ font-style:italic; color:var(--accent); }
-
-  p.lede{ font-size: clamp(1rem, 1.6vw, 1.12rem); line-height:1.75; color:var(--ink-soft); margin-bottom:14px; }
-  p.lede:first-letter{ }
-  .drop:first-letter{
-    float:left; font-size:3.4em; line-height:.82; padding:6px 10px 0 0;
-    color:var(--accent); font-weight:600;
-  }
-
   .folio{
-    margin-top:auto; padding-top:18px;
+    margin-top:auto; padding-top:16px;
     display:flex; justify-content:space-between; align-items:center;
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint);
+    font-family:var(--sans);
+    font-size:.64rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-faint);
+    border-top:1px solid var(--hair);
+  }
+
+  .kicker{
+    font-family:var(--sans);
+    font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; color:var(--ink-soft);
+    display:flex; align-items:center; gap:14px; margin-bottom:14px;
+  }
+  .kicker::after{ content:""; flex:1; height:1px; background:var(--hair); }
+
+  .headline{
+    font-family:var(--serif); font-weight:700; letter-spacing:-.015em;
+    font-size: clamp(1.9rem, 4.2vw, 3.1rem); line-height:1.03;
+    margin-bottom:12px;
+  }
+  .headline em{ font-style:italic; font-weight:500; }
+  .standfirst{
+    font-style:italic; font-size:clamp(.95rem,1.6vw,1.1rem); line-height:1.6;
+    color:var(--ink-soft); max-width:58ch;
+    padding-bottom:14px; margin-bottom:18px;
+    border-bottom:1px solid var(--hair);
+  }
+
+  .body-copy{ max-width:76ch; }
+  .body-copy p{
+    font-size:.95rem; line-height:1.75; color:var(--ink-soft);
+    margin-bottom:13px;
+  }
+  .body-copy p b{ color:var(--ink); }
+  .drop:first-letter{
+    float:left; font-size:3.6em; line-height:.8; padding:6px 10px 0 0;
+    color:var(--ink); font-weight:700;
+  }
+  .footnote{
+    font-family:var(--sans); font-size:.7rem; color:var(--ink-faint);
+    font-style:normal; line-height:1.6; max-width:60ch;
+    padding-top:10px; margin-top:6px; border-top:1px solid var(--hair);
+  }
+
+  /* pull quote that body text runs into */
+  .pull{
+    float:right; width:min(44%,340px);
+    margin:6px 0 14px 30px; padding:16px 0 14px;
+    border-top:3px solid var(--rule); border-bottom:1px solid var(--rule);
+    font-style:italic; font-size:clamp(1.1rem,2vw,1.45rem); line-height:1.4;
+    color:var(--ink);
+  }
+  .pull small{
+    display:block; margin-top:10px;
+    font-family:var(--sans); font-style:normal;
+    font-size:.62rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ink-faint);
   }
 
   /* ============================================================
-     COVER PAGE — a classic letterpress title page, set in curry
-     (after the cover of "The Design of Books", Univ. of Chicago)
+     PHOTOGRAPHS — printed grey, and they move (slow ken burns)
+     ============================================================ */
+  .kb{ overflow:hidden; position:relative; background:#222; }
+  .kb img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    animation: kb-a 24s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .kb.kb-b img{ animation-name: kb-b; animation-duration:28s; }
+  .kb.kb-c img{ animation-name: kb-c; animation-duration:32s; }
+  @keyframes kb-a{ from{ transform:scale(1.03);} to{ transform:scale(1.14) translate(-2.2%,1.8%);} }
+  @keyframes kb-b{ from{ transform:scale(1.06) translate(1.8%,0);} to{ transform:scale(1.15) translate(-1.2%,-2%);} }
+  @keyframes kb-c{ from{ transform:scale(1.04) translate(-1.5%,1%);} to{ transform:scale(1.13) translate(1.8%,-1.4%);} }
+  @media (prefers-reduced-motion: reduce){ .kb img{ animation:none; } }
+
+  /* a photograph dropped onto the article, over the text */
+  .art-fig{
+    float:right; width:min(42%,350px);
+    margin:-58px -14% 16px 28px;   /* leans out of the text column, over the margin */
+    transform:rotate(1.3deg);
+    background:var(--paper);
+    padding:8px 8px 10px;
+    box-shadow:0 16px 34px rgba(0,0,0,.28);
+    border:1px solid var(--hair);
+    position:relative; z-index:3;
+  }
+  .art-fig.left{ float:left; width:min(38%,300px); margin:-10px 28px 14px -6%; transform:rotate(-1.4deg); }
+  .art-fig .kb{ aspect-ratio:4/3.4; }
+  .art-fig.tall .kb{ aspect-ratio:3/3.6; }
+  .art-fig figcaption{
+    font-family:var(--sans); font-size:.66rem; line-height:1.55;
+    color:var(--ink-faint); padding:8px 4px 0;
+  }
+
+  /* full-bleed photograph pages with type set over the picture */
+  .sheet.plate-page{ padding:0; overflow:hidden; }
+  .plate-page .kb{ position:absolute; inset:0; z-index:1; }
+  .plate-page .display{
+    position:absolute; z-index:3; left:6%; top:7%;
+    font-family:var(--serif); font-weight:800; letter-spacing:-.01em;
+    font-size:clamp(2.6rem,6.5vw,5.2rem); line-height:.95;
+    color:#f3f0e9; text-shadow:0 2px 30px rgba(0,0,0,.55);
+    max-width:8ch;
+  }
+  .plate-page .display i{ font-weight:400; }
+  .plate{
+    position:absolute; z-index:3; left:6%; bottom:9%;
+    max-width:min(46ch, 70%);
+    background:var(--plate); color:var(--ink);
+    padding:22px 26px 18px;
+    box-shadow:0 18px 44px rgba(0,0,0,.35);
+    border-top:3px solid var(--rule);
+  }
+  .plate.right{ left:auto; right:6%; }
+  .plate h3{ font-size:1.25rem; font-weight:700; margin-bottom:8px; }
+  .plate p{ font-size:.88rem; line-height:1.65; color:var(--ink-soft); }
+  .plate .credit{
+    display:block; margin-top:12px;
+    font-family:var(--sans); font-size:.6rem; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--ink-faint);
+  }
+  .plate-page .folio{
+    position:absolute; z-index:3; left:6%; right:6%; bottom:2.5%;
+    border-top:none; color:rgba(243,240,233,.75); mix-blend-mode:normal;
+  }
+
+  /* ============================================================
+     COVER — black cloth, blind-embossed ivory
      ============================================================ */
   .page.cover-pg .page-face.front{
     background:
-      radial-gradient(130% 100% at 50% 0%, var(--curry-1) 0%, var(--curry-2) 52%, var(--curry-3) 100%);
+      radial-gradient(130% 100% at 50% 0%, #21201d 0%, #161412 60%, #0e0d0b 100%);
   }
-  .page.cover-pg .page-face.front::before{ opacity:.35; }  /* keep a hint of grain */
-
-  .cover{
-    align-items:center; justify-content:center; text-align:center;
-    padding: clamp(16px, 3vh, 30px) clamp(16px, 3vw, 34px);
-  }
+  .page.cover-pg .page-face.front::before{ opacity:.35; }
+  .cover{ align-items:center; justify-content:center; text-align:center; color:#efe9db; }
   .tp-frame{
     position:relative; flex:1; align-self:stretch;
     display:flex; flex-direction:column; align-items:center; justify-content:space-evenly;
-    border:1.5px solid var(--cov-ink);
-    padding: clamp(10px, 2.5vh, 26px) clamp(12px, 4vw, 40px);
-    color: var(--cov-ink);
+    border:1.5px solid rgba(239,233,219,.9);
+    padding:clamp(10px,2.5vh,26px) clamp(12px,4vw,40px);
   }
   .tp-frame::before{
     content:""; position:absolute; inset:4px;
-    border:1px solid rgba(58,37,8,.55); pointer-events:none;
+    border:1px solid rgba(239,233,219,.4); pointer-events:none;
   }
   .tp-sm{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size: clamp(.55rem, 1.2vw, .68rem);
-    letter-spacing:.32em; text-transform:uppercase;
-    line-height:1.9;
+    font-family:var(--sans);
+    font-size:clamp(.55rem,1.2vw,.66rem); letter-spacing:.34em; text-transform:uppercase;
+    line-height:2; color:rgba(239,233,219,.85);
   }
-  .tp-the{
-    font-style:italic;
-    font-size: clamp(1rem, 2.2vw, 1.35rem);
-    line-height:1;
-  }
+  .tp-the{ font-style:italic; font-size:clamp(1rem,2.2vw,1.35rem); line-height:1; color:rgba(239,233,219,.75); }
   .tp-big{
-    font-size: clamp(2.1rem, 6.2vw, 3.7rem);
-    font-weight:700; text-transform:uppercase; letter-spacing:.05em;
-    line-height:1.02; color: var(--cov-cream);
-    text-shadow: 0 1px 0 rgba(58,37,8,.35);
+    font-size:clamp(2.1rem,6.2vw,3.8rem); font-weight:800;
+    text-transform:uppercase; letter-spacing:.06em; line-height:1;
+    color:#f3f0e9;
   }
   .tp-sub{
-    font-style:italic;
-    font-size: clamp(.82rem, 1.7vw, 1.02rem);
-    line-height:1.65; max-width:46ch;
+    font-style:italic; font-size:clamp(.85rem,1.7vw,1.05rem); line-height:1.65;
+    max-width:46ch; color:rgba(239,233,219,.75);
   }
-  .tp-rule{ width:62%; height:1px; background: var(--cov-ink); opacity:.8; }
-  .tp-rule.double{ height:5px; background:none; border-top:1px solid var(--cov-ink); border-bottom:1px solid var(--cov-ink); }
-  .tp-orn{ font-size: clamp(1rem, 2.4vw, 1.45rem); line-height:1; }
+  .tp-rule{ width:62%; height:1px; background:rgba(239,233,219,.8); }
+  .tp-rule.double{ height:5px; background:none; border-top:1px solid rgba(239,233,219,.8); border-bottom:1px solid rgba(239,233,219,.8); }
+  .tp-orn{ font-size:clamp(1rem,2.4vw,1.4rem); line-height:1; color:rgba(239,233,219,.8); }
   .cover .hint{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size: clamp(.55rem, 1.2vw, .66rem);
-    letter-spacing:.3em; text-transform:uppercase; color: var(--cov-ink);
-    animation: breathe 2.6s ease-in-out infinite;
+    font-family:var(--sans);
+    font-size:clamp(.55rem,1.2vw,.64rem); letter-spacing:.3em; text-transform:uppercase;
+    color:rgba(239,233,219,.6);
+    animation:breathe 2.6s ease-in-out infinite;
   }
   @keyframes breathe{ 0%,100%{opacity:.5; transform:translateX(0)} 50%{opacity:1; transform:translateX(6px)} }
 
   /* ============================================================
-     ABOUT / STORY
+     THE 1992 FRONT PAGE
      ============================================================ */
-  .facts{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;
-    margin-top:20px;
+  .np{ color:var(--ink); }
+  .np-head{ text-align:center; border-bottom:3px double var(--rule); padding-bottom:8px; margin-bottom:12px; }
+  .np-topline,.np-dateline{
+    display:flex; justify-content:space-between; gap:8px;
+    font-family:var(--sans);
+    font-size:.56rem; letter-spacing:.14em; text-transform:uppercase;
+    border-bottom:1px solid var(--rule); padding:3px 2px; color:var(--ink-soft);
   }
-  .fact{
-    background:var(--card); border:1px solid var(--card-border); border-radius:10px;
-    padding:14px 16px;
-    transition: transform .35s ease, box-shadow .35s ease;
+  .np-dateline{ border-bottom:none; border-top:1px solid var(--rule); margin-top:6px; padding-top:5px; }
+  .np-mast{
+    font-weight:800; font-size:clamp(1.9rem,5vw,3.1rem); line-height:1.1; padding:6px 0 2px;
+    letter-spacing:.01em;
   }
-  .fact:hover{ transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.12); }
-  .fact b{ display:block; font-size:1.15rem; color:var(--accent); margin-bottom:2px; }
-  .fact span{ font-family: ui-sans-serif, system-ui, sans-serif; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); }
-
-  /* ------- timeline ------- */
-  .timeline{ position:relative; margin-top:8px; padding-left:26px; }
-  .timeline::before{
-    content:""; position:absolute; left:7px; top:6px; bottom:6px; width:1.5px;
-    background: linear-gradient(to bottom, var(--gold), var(--accent), transparent);
+  .np-headline{
+    text-align:center; font-weight:800; letter-spacing:.01em;
+    font-size:clamp(1.5rem,4.2vw,2.5rem); line-height:1.03; margin:4px 0 8px;
   }
-  .milestone{ position:relative; padding: 0 0 22px 12px; }
-  .milestone::before{
-    content:""; position:absolute; left:-25px; top:7px;
-    width:11px; height:11px; border-radius:50%;
-    background:var(--paper); border:2.5px solid var(--accent);
-    box-shadow: 0 0 0 4px var(--paper);
+  .np-deck{
+    text-align:center; font-style:italic; font-size:.92rem; color:var(--ink-soft);
+    border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    padding:6px 8%; margin-bottom:14px;
   }
-  .milestone .when{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--accent);
+  .np-cols{
+    columns:2 240px; column-gap:26px; column-rule:1px solid var(--hair);
+    text-align:justify; font-size:.87rem; line-height:1.66; color:var(--ink-soft); flex:1;
   }
-  .milestone h3{ font-size:1.06rem; margin:4px 0 4px; }
-  .milestone p{ font-size:.92rem; line-height:1.65; color:var(--ink-soft); }
+  .np-cols p{ margin-bottom:10px; }
+  .np-lead{ font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--ink); }
+  .np-photo{ break-inside:avoid; margin:0 0 10px; border:1px solid var(--rule); position:relative; }
+  .np-photo .kb{ aspect-ratio:4/3.4; }
+  /* halftone screen over the front-page photograph, like real newsprint */
+  .np-photo::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background-image: radial-gradient(rgba(0,0,0,.16) .7px, transparent 1px);
+    background-size:3px 3px;
+    mix-blend-mode:multiply;
+  }
+  .np-photo figcaption{
+    font-family:var(--sans); font-size:.64rem; font-style:italic; color:var(--ink-faint);
+    padding:6px 6px 7px; border-top:1px solid var(--hair); background:var(--paper);
+    position:relative; z-index:2;
+  }
+  .era-1992 .folio{ border-top:3px double var(--rule); }
 
   /* ============================================================
-     REPOSITORIES
+     REPOSITORIES & TOOLBOX — monochrome, set in sans
      ============================================================ */
   .repo-status{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.72rem; letter-spacing:.1em; color:var(--ink-faint); margin-bottom:14px;
+    font-family:var(--sans);
+    font-size:.7rem; letter-spacing:.1em; color:var(--ink-faint); margin-bottom:14px;
   }
-  .repo-grid{
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:14px;
-  }
+  .repo-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:14px; }
   .repo-card{
     position:relative; display:block; text-decoration:none; color:inherit;
-    background:var(--card); border:1px solid var(--card-border); border-radius:12px;
+    background:var(--paper); border:1px solid var(--hair); border-radius:4px;
     padding:16px 16px 14px;
-    transition: transform .4s cubic-bezier(.2,.8,.25,1), box-shadow .4s ease, border-color .4s ease;
+    transition:transform .4s cubic-bezier(.2,.8,.25,1), box-shadow .4s ease, border-color .4s ease;
     overflow:hidden;
   }
   .repo-card::before{
     content:""; position:absolute; top:0; left:0; right:0; height:2px;
-    background: linear-gradient(to right, var(--accent), var(--gold));
-    transform: scaleX(0); transform-origin:left;
-    transition: transform .45s cubic-bezier(.2,.8,.25,1);
+    background:var(--ink);
+    transform:scaleX(0); transform-origin:left;
+    transition:transform .45s cubic-bezier(.2,.8,.25,1);
   }
-  .repo-card:hover{ transform: translateY(-5px); box-shadow: 0 16px 34px rgba(0,0,0,.16); border-color: var(--accent-soft); }
-  .repo-card:hover::before{ transform: scaleX(1); }
+  .repo-card:hover{ transform:translateY(-4px); box-shadow:0 14px 30px rgba(0,0,0,.14); border-color:var(--ink-soft); }
+  .repo-card:hover::before{ transform:scaleX(1); }
   .repo-card h3{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.95rem; font-weight:650; margin-bottom:6px; color:var(--ink);
+    font-family:var(--sans);
+    font-size:.92rem; font-weight:700; margin-bottom:6px; color:var(--ink);
     display:flex; align-items:center; gap:8px;
   }
-  .repo-card h3 svg{ flex-shrink:0; opacity:.55; }
+  .repo-card h3 svg{ flex-shrink:0; opacity:.5; }
   .repo-card p{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.8rem; line-height:1.55; color:var(--ink-soft);
+    font-family:var(--sans);
+    font-size:.78rem; line-height:1.55; color:var(--ink-soft);
     min-height:2.4em;
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
   }
   .repo-meta{
     display:flex; gap:14px; margin-top:12px; align-items:center;
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.72rem; color:var(--ink-faint);
+    font-family:var(--sans); font-size:.7rem; color:var(--ink-faint);
   }
-  .lang-dot{ width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:5px; vertical-align:-1px; }
+  .lang-dot{ width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; vertical-align:-1px; background:var(--ink-soft); }
 
-  /* ============================================================
-     SKILLS
-     ============================================================ */
   .skill-groups{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px; margin-top:6px; }
   .skill-group h3{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--accent);
-    margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--card-border);
+    font-family:var(--sans);
+    font-size:.66rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ink);
+    margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid var(--rule);
   }
   .chips{ display:flex; flex-wrap:wrap; gap:8px; }
   .chip{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.78rem; padding:6px 12px; border-radius:999px;
-    background:var(--card); border:1px solid var(--card-border); color:var(--ink-soft);
-    transition: all .3s ease; cursor:default;
+    font-family:var(--sans);
+    font-size:.76rem; padding:6px 13px; border-radius:2px;
+    background:transparent; border:1px solid var(--ink-soft); color:var(--ink-soft);
+    transition:all .3s ease; cursor:default;
   }
-  .chip:hover{ background:var(--accent); border-color:var(--accent); color:#fff; transform:translateY(-2px); }
+  .chip:hover{ background:var(--ink); border-color:var(--ink); color:var(--paper); transform:translateY(-2px); }
 
   /* ============================================================
-     EPILOGUE
+     THE METHOD — a numbered manifesto
      ============================================================ */
-  .epilogue{ align-items:center; justify-content:center; text-align:center; }
-  .epilogue blockquote{
-    font-size: clamp(1.15rem, 2.4vw, 1.5rem); font-style:italic; line-height:1.65;
-    max-width:42ch; color:var(--ink); margin-bottom:8px;
+  .creed{ counter-reset:creed; margin-top:8px; }
+  .creed li{
+    list-style:none; counter-increment:creed;
+    display:flex; gap:22px; align-items:baseline;
+    padding:16px 2px; border-bottom:1px solid var(--hair);
   }
-  .epilogue blockquote span{ color:var(--accent); }
-  .contact-row{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:26px; }
-  .contact-btn{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    display:inline-flex; align-items:center; gap:9px;
-    padding:11px 22px; border-radius:999px; text-decoration:none;
-    font-size:.85rem; font-weight:600; letter-spacing:.02em;
-    transition: transform .3s ease, box-shadow .3s ease;
+  .creed li::before{
+    content:counter(creed, decimal-leading-zero);
+    font-family:var(--serif); font-size:1.9rem; font-weight:300; font-style:italic;
+    color:var(--ink-faint); min-width:52px;
   }
-  .contact-btn.primary{ background:var(--accent); color:#fff; box-shadow:0 8px 22px rgba(179,89,44,.35); }
-  .contact-btn.ghost{ border:1px solid var(--card-border); color:var(--ink-soft); background:var(--card); }
-  .contact-btn:hover{ transform:translateY(-3px) scale(1.02); }
+  .creed b{ display:block; font-size:1.02rem; margin-bottom:3px; color:var(--ink); font-weight:700; }
+  .creed p{ font-size:.88rem; line-height:1.6; color:var(--ink-soft); max-width:60ch; }
 
   /* ============================================================
-     RIGHT-SIDE NAVIGATION  (where am I in the book?)
+     EPILOGUE — black page, ivory type
+     ============================================================ */
+  .page.end-pg .page-face.front{
+    background: radial-gradient(130% 100% at 50% 100%, #21201d 0%, #131210 60%, #0d0c0a 100%);
+  }
+  .page.end-pg .page-face.front::before{ opacity:.3; }
+  .epilogue{ align-items:center; justify-content:center; text-align:center; color:#efe9db; }
+  .epi-portrait{
+    width:110px; height:110px; border-radius:50%; overflow:hidden;
+    border:1px solid rgba(239,233,219,.5);
+    box-shadow:0 0 0 7px rgba(239,233,219,.08);
+    margin-bottom:24px;
+  }
+  .epi-portrait img{ width:100%; height:100%; object-fit:cover; object-position:50% 20%; }
+  .epilogue blockquote{
+    font-size:clamp(1.2rem,2.6vw,1.7rem); font-style:italic; line-height:1.55;
+    max-width:40ch; color:#efe9db;
+  }
+  .epilogue .sig{
+    font-family:var(--sans); font-size:.62rem; letter-spacing:.34em; text-transform:uppercase;
+    color:rgba(239,233,219,.55); margin-top:18px;
+  }
+  .contact-row{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:30px; }
+  .contact-btn{
+    font-family:var(--sans);
+    display:inline-flex; align-items:center; gap:9px;
+    padding:12px 24px; border-radius:2px; text-decoration:none;
+    font-size:.8rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+    transition:transform .3s ease, box-shadow .3s ease, background .3s ease, color .3s ease;
+  }
+  .contact-btn.primary{ background:#f3f0e9; color:#141210; }
+  .contact-btn.primary:hover{ transform:translateY(-3px); box-shadow:0 12px 26px rgba(0,0,0,.5); }
+  .contact-btn.ghost{ border:1px solid rgba(239,233,219,.45); color:#efe9db; }
+  .contact-btn.ghost:hover{ background:rgba(239,233,219,.12); transform:translateY(-3px); }
+  .end-hint{
+    font-family:var(--sans); font-size:.62rem; letter-spacing:.3em; text-transform:uppercase;
+    color:rgba(239,233,219,.4); margin-top:30px;
+  }
+  .epilogue .folio{ color:rgba(239,233,219,.4); border-color:rgba(239,233,219,.2); align-self:stretch; }
+
+  /* ============================================================
+     RIGHT-SIDE NAVIGATION
      ============================================================ */
   .side-nav{
     position:fixed; right:26px; top:50%; transform:translateY(-50%);
-    z-index:10; display:flex; flex-direction:column; align-items:flex-end; gap:4px;
-    font-family: ui-sans-serif, system-ui, sans-serif;
+    z-index:10; display:flex; flex-direction:column; align-items:flex-end; gap:0;
+    font-family:var(--sans);
   }
   .side-nav .rail{
     position:absolute; right:5px; top:10px; bottom:10px; width:1.5px;
-    background: var(--nav-faint); opacity:.35; border-radius:2px;
+    background:var(--nav-faint); opacity:.35; border-radius:2px;
   }
   .side-nav .rail-fill{
     position:absolute; right:5px; top:10px; width:1.5px; border-radius:2px;
-    background: linear-gradient(to bottom, var(--gold), var(--accent));
-    transition: height .8s cubic-bezier(.2,.8,.25,1);
+    background:var(--nav-ink);
+    transition:height .8s cubic-bezier(.2,.8,.25,1);
   }
   .nav-item{
     position:relative; display:flex; align-items:center; gap:12px;
-    background:none; border:none; cursor:pointer; padding:9px 0;
-    color: var(--nav-faint);
+    background:none; border:none; cursor:pointer; padding:6px 0;
+    color:var(--nav-faint);
   }
   .nav-item .label{
-    font-size:.7rem; letter-spacing:.18em; text-transform:uppercase;
+    font-size:.62rem; letter-spacing:.16em; text-transform:uppercase;
     opacity:0; transform:translateX(8px);
-    transition: opacity .35s ease, transform .35s ease, color .3s ease;
+    transition:opacity .35s ease, transform .35s ease, color .3s ease;
     white-space:nowrap;
   }
   .nav-item .dot{
-    width:8px; height:8px; border-radius:50%;
-    background: var(--nav-faint);
-    transition: transform .35s cubic-bezier(.2,.8,.25,1), background .3s ease, box-shadow .3s ease;
-    flex-shrink:0; margin-right:1.5px;
+    width:7px; height:7px; border-radius:50%;
+    background:var(--nav-faint);
+    transition:transform .35s cubic-bezier(.2,.8,.25,1), background .3s ease, box-shadow .3s ease;
+    flex-shrink:0; margin-right:2px;
   }
   .side-nav:hover .label{ opacity:.75; transform:translateX(0); }
   .nav-item:hover .label{ opacity:1; color:var(--nav-ink); }
   .nav-item:hover .dot{ transform:scale(1.5); background:var(--nav-ink); }
   .nav-item.active .label{ opacity:1; transform:translateX(0); color:var(--nav-ink); font-weight:700; }
   .nav-item.active .dot{
-    transform:scale(1.7); background:var(--accent);
-    box-shadow:0 0 0 5px rgba(224,138,84,.18), 0 0 14px rgba(224,138,84,.5);
+    transform:scale(1.65); background:var(--nav-ink);
+    box-shadow:0 0 0 4px rgba(120,115,105,.2);
   }
 
-  /* ------- chrome: page arrows float over the book's edges, kindle-style ------- */
+  /* ------- chrome: page arrows over the book's edges ------- */
   .chrome{
     position:fixed; left:50%; bottom:5px; transform:translateX(-50%);
     z-index:10; display:flex; align-items:center;
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    color:var(--nav-faint);
+    font-family:var(--sans); color:var(--nav-faint);
   }
-  .chrome .pageno{ font-size:.66rem; letter-spacing:.28em; min-width:70px; text-align:center; }
+  .chrome .pageno{ font-size:.64rem; letter-spacing:.28em; min-width:70px; text-align:center; }
   .arrow{
     position:fixed; z-index:12; top:50%; margin-top:-21px;
     width:42px; height:42px; border-radius:50%;
     border:1px solid var(--nav-faint); background:var(--chrome-btn);
     color:var(--nav-ink); cursor:pointer; font-size:1.05rem;
     display:grid; place-items:center;
-    transition: all .3s ease; backdrop-filter: blur(4px);
+    transition:all .3s ease; backdrop-filter:blur(4px);
     opacity:.7;
   }
-  .arrow.prev{ left: calc(10vw + 14px); }
-  .arrow.next{ right: calc(10vw + 14px); }
-  .arrow:hover{ background:var(--accent); border-color:var(--accent); color:#fff; transform:scale(1.1); opacity:1; }
+  .arrow.prev{ left:calc(10vw + 14px); }
+  .arrow.next{ right:calc(10vw + 14px); }
+  .arrow:hover{ background:var(--ink); border-color:var(--ink); color:var(--paper); transform:scale(1.1); opacity:1; }
   .arrow:disabled{ opacity:.18; cursor:default; transform:none; }
   .arrow:disabled:hover{ background:var(--chrome-btn); border-color:var(--nav-faint); color:var(--nav-ink); }
 
@@ -454,196 +553,19 @@
     border:1px solid var(--nav-faint); background:var(--chrome-btn);
     color:var(--nav-ink); cursor:pointer; font-size:1.05rem;
     display:grid; place-items:center; transition:all .3s ease;
-    backdrop-filter: blur(4px);
+    backdrop-filter:blur(4px);
   }
-  .theme-toggle:hover{ transform:rotate(20deg) scale(1.08); border-color:var(--gold); }
+  .theme-toggle:hover{ transform:rotate(20deg) scale(1.08); border-color:var(--nav-ink); }
 
-  /* tap zones on the page edges, like a kindle */
   .tap-zone{
-    position:absolute; top:0; bottom:0; width:16%; z-index:5; cursor:pointer;
+    position:absolute; top:0; bottom:0; width:14%; z-index:5; cursor:pointer;
     opacity:0; transition:opacity .25s ease;
     display:flex; align-items:center;
   }
-  .tap-zone.next{ right:0; justify-content:flex-end;
-    background:linear-gradient(to left, rgba(0,0,0,.06), transparent); }
-  .tap-zone.prev{ left:0;
-    background:linear-gradient(to right, rgba(0,0,0,.06), transparent); }
+  .tap-zone.next{ right:0; justify-content:flex-end; background:linear-gradient(to left, rgba(0,0,0,.05), transparent); }
+  .tap-zone.prev{ left:0; background:linear-gradient(to right, rgba(0,0,0,.05), transparent); }
   .tap-zone:hover{ opacity:1; }
-  .tap-zone i{
-    font-style:normal; font-size:1.3rem; color:var(--ink-faint); padding:0 10px;
-    font-family: ui-sans-serif, system-ui, sans-serif;
-  }
-
-  /* ============================================================
-     ERAS — the book ages forward as you read:
-     1992 newsprint → 2000s sepia → 2010s flat → 2020s vibrant → 2026 glass
-     ============================================================ */
-
-  /* — 1992 · black & white newspaper — */
-  .era-1992 .page-face.front{
-    background:
-      repeating-linear-gradient(0deg, rgba(0,0,0,.016) 0 2px, transparent 2px 4px),
-      linear-gradient(to bottom right, #edebe0, #dedbce);
-  }
-  .np{ font-family: Georgia, "Times New Roman", serif; color:#1c1c1c; }
-  .np-head{ text-align:center; border-bottom:3px double #1c1c1c; padding-bottom:8px; margin-bottom:12px; }
-  .np-topline, .np-dateline{
-    display:flex; justify-content:space-between; gap:8px;
-    font-size:.58rem; letter-spacing:.14em; text-transform:uppercase;
-    border-bottom:1px solid #1c1c1c; padding:3px 2px;
-  }
-  .np-dateline{ border-bottom:none; border-top:1px solid #1c1c1c; margin-top:6px; padding-top:5px; }
-  .np-mast{
-    font-family:"Old English Text MT","UnifrakturCothic",Georgia,serif;
-    font-weight:700; font-size:clamp(1.9rem, 5vw, 3.1rem); line-height:1.15; padding:6px 0 2px;
-  }
-  .np-headline{
-    text-align:center; font-weight:900; letter-spacing:.01em;
-    font-size:clamp(1.5rem, 4.4vw, 2.5rem); line-height:1.05; margin:4px 0 8px;
-  }
-  .np-deck{
-    text-align:center; font-style:italic; font-size:.92rem; color:#333;
-    border-top:1px solid #1c1c1c; border-bottom:1px solid #1c1c1c;
-    padding:6px 8%; margin-bottom:14px;
-  }
-  .np-cols{
-    columns:2 240px; column-gap:26px; column-rule:1px solid #9a9585;
-    text-align:justify; font-size:.86rem; line-height:1.66; color:#222; flex:1;
-  }
-  .np-cols p{ margin-bottom:10px; }
-  .np-lead{ font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
-  .np-photo{ break-inside:avoid; margin:0 0 10px; }
-  .np-photo svg, .np-photo img{ width:100%; display:block; filter:grayscale(1) contrast(1.05); border:1px solid #1c1c1c; }
-  .np-photo figcaption{
-    font-size:.68rem; font-style:italic; color:#444; text-align:left;
-    padding:4px 0 6px; border-bottom:1px solid #9a9585;
-  }
-  .era-1992 .folio{ color:#555; border-top:3px double #1c1c1c; }
-
-  /* — 2000s · sepia scrapbook — */
-  .era-2000s .page-face.front{
-    background: radial-gradient(120% 100% at 50% 0%, #f4e7c8, #e9d6ab 75%, #ddc48e 100%);
-  }
-  .era-2000s h2{ font-style:italic; }
-  .mag-wrap{ display:flex; gap:24px; align-items:flex-start; }
-  .mag-wrap .timeline{ flex:1; }
-  .polaroid{
-    flex:0 0 clamp(120px, 20vw, 190px);
-    background:#fdfbf4; padding:9px 9px 8px; margin:10px 4px 0 0;
-    box-shadow:0 6px 18px rgba(80,60,20,.28);
-    transform:rotate(2.5deg); position:relative;
-  }
-  .polaroid::before{                    /* a strip of old tape */
-    content:""; position:absolute; top:-9px; left:50%; width:64px; height:18px;
-    transform:translateX(-50%) rotate(-2deg);
-    background:rgba(222,203,152,.6); border:1px solid rgba(160,130,70,.25);
-  }
-  .polaroid svg, .polaroid img{ width:100%; display:block; filter:sepia(.45); }
-  .polaroid figcaption{
-    font-size:.68rem; font-style:italic; text-align:center;
-    color:#6b5a35; padding-top:7px; line-height:1.5;
-  }
-
-  /* — 2010s · flat & clean — */
-  .era-2010s .page-face.front{ background:#fbfcfd; }
-  .era-2010s .page-face.front::before{ opacity:.15; }
-  .era-2010s .sheet{ font-family: ui-sans-serif, system-ui, sans-serif; }
-  .era-2010s h2{ font-weight:800; letter-spacing:-.02em; color:#111827; }
-  .era-2010s h2 em{ font-style:normal; color:#2563eb; }
-  .era-2010s .chapter-eyebrow{ color:#2563eb; }
-  .era-2010s .repo-status{ color:#6b7280; }
-  .era-2010s .repo-card{ background:#fff; border:1px solid #e5e7eb; }
-  .era-2010s .repo-card h3{ color:#111827; }
-  .era-2010s .repo-card p{ color:#6b7280; }
-  .era-2010s .repo-meta{ color:#9ca3af; }
-  .era-2010s .repo-card::before{ background:linear-gradient(to right,#2563eb,#06b6d4); }
-  .era-2010s .repo-card:hover{ border-color:#bfdbfe; box-shadow:0 12px 28px rgba(37,99,235,.10); }
-  .era-2010s .folio{ color:#9ca3af; }
-
-  /* — 2020s · soft & vibrant — */
-  .era-2020s .page-face.front{
-    background: linear-gradient(135deg,#f8fafc 0%,#eef2ff 55%,#fdf2f8 100%);
-  }
-  .era-2020s .page-face.front::before{ opacity:0; }
-  .era-2020s .sheet{ font-family: ui-sans-serif, system-ui, sans-serif; }
-  .era-2020s h2{ font-weight:800; letter-spacing:-.02em; color:#111827; }
-  .era-2020s h2 em{
-    font-style:normal;
-    background:linear-gradient(90deg,#7c3aed,#db2777);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  .era-2020s .chapter-eyebrow{ color:#7c3aed; }
-  .era-2020s p.lede{ color:#4b5563; }
-  .era-2020s .skill-group h3{ color:#7c3aed; border-color:#e9d5ff; }
-  .era-2020s .chip{
-    background:#fff; border:1px solid #e5e7eb; color:#374151; border-radius:12px;
-    box-shadow:0 2px 8px rgba(17,24,39,.05);
-  }
-  .era-2020s .chip:hover{
-    background:linear-gradient(90deg,#7c3aed,#db2777); border-color:transparent; color:#fff;
-    box-shadow:0 8px 20px rgba(124,58,237,.35); transform:translateY(-2px) scale(1.03);
-  }
-  .era-2020s .folio{ color:#9ca3af; }
-
-  /* — 2026 · super fancy: dark glass under an aurora — */
-  .era-2026 .page-face.front{ background:#0b0e16; }
-  .era-2026 .page-face.front::before{ opacity:0; }
-  .aurora{ position:absolute; inset:0; overflow:hidden; pointer-events:none; border-radius:inherit; }
-  .aurora i{
-    position:absolute; width:55%; height:55%; border-radius:50%;
-    filter:blur(70px); opacity:.5;
-  }
-  .aurora i:nth-child(1){ background:#6d28d9; top:-15%; left:-10%;
-    animation:drift1 11s ease-in-out infinite alternate; }
-  .aurora i:nth-child(2){ background:#0ea5e9; bottom:-20%; right:-10%;
-    animation:drift2 13s ease-in-out infinite alternate; }
-  .aurora i:nth-child(3){ background:#db2777; bottom:8%; left:28%; width:36%; height:36%; opacity:.3;
-    animation:drift1 17s ease-in-out infinite alternate-reverse; }
-  @keyframes drift1{ from{ transform:translate(0,0) scale(1);} to{ transform:translate(9%,7%) scale(1.15);} }
-  @keyframes drift2{ from{ transform:translate(0,0) scale(1.1);} to{ transform:translate(-8%,-6%) scale(.95);} }
-  @media (prefers-reduced-motion: reduce){ .aurora i{ animation:none; } }
-  .era-2026 .sheet{ font-family: ui-sans-serif, system-ui, sans-serif; }
-  .era-2026 .chapter-eyebrow{ color:#a5b4fc; align-self:stretch; }
-  .era-2026 .chapter-eyebrow::after{ background:linear-gradient(to right, rgba(165,180,252,.35), transparent); }
-  .glass{
-    display:flex; flex-direction:column; align-items:center;
-    max-width:600px; width:100%;
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:22px;
-    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-    box-shadow:0 20px 60px rgba(0,0,0,.4);
-    padding:clamp(20px,4.5vh,38px) clamp(18px,4vw,40px);
-  }
-  .era-2026 blockquote{ color:#e5e7eb; margin-bottom:0; }
-  .era-2026 blockquote span{
-    background:linear-gradient(90deg,#a78bfa,#22d3ee);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  .avatar-ring{
-    width:92px; height:92px; border-radius:50%; padding:3px; margin-bottom:22px;
-    background:conic-gradient(from 40deg,#7c3aed,#06b6d4,#db2777,#7c3aed);
-    box-shadow:0 0 30px rgba(124,58,237,.45);
-  }
-  .avatar-ring .inner{
-    width:100%; height:100%; border-radius:50%; background:#0b0e16;
-    display:grid; place-items:center; overflow:hidden;
-  }
-  .avatar-ring svg{ width:72%; margin-top:12%; }
-  .avatar-ring img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
-  .era-2026 .contact-btn.primary{
-    background:linear-gradient(90deg,#7c3aed,#06b6d4); color:#fff;
-    box-shadow:0 10px 30px rgba(124,58,237,.45);
-  }
-  .era-2026 .contact-btn.ghost{
-    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); color:#d1d5db;
-  }
-  .end-hint{
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.66rem; letter-spacing:.28em; text-transform:uppercase;
-    color:rgba(229,231,235,.4); margin-top:26px;
-  }
-  .era-2026 .folio{ color:rgba(229,231,235,.35); }
+  .tap-zone i{ font-style:normal; font-size:1.3rem; color:var(--ink-faint); padding:0 10px; font-family:var(--sans); }
 
   /* ============================================================
      VIEW MODES — book (default) · site · cards · slides
@@ -653,18 +575,17 @@
     display:flex; gap:3px; padding:4px; border-radius:999px;
     background:var(--chrome-btn); border:1px solid var(--nav-faint);
     backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
-    font-family:ui-sans-serif, system-ui, sans-serif;
+    font-family:var(--sans);
   }
   .view-switch button{
     border:none; background:transparent; color:var(--nav-ink);
-    font-size:.64rem; letter-spacing:.1em; text-transform:uppercase;
+    font-size:.62rem; letter-spacing:.1em; text-transform:uppercase;
     padding:6px 12px; border-radius:999px; cursor:pointer;
     transition:all .25s ease;
   }
-  .view-switch button:hover{ color:var(--accent); }
-  .view-switch button.active{ background:var(--accent); color:#fff; }
+  .view-switch button:hover{ opacity:.7; }
+  .view-switch button.active{ background:var(--ink); color:var(--paper); }
 
-  /* anything that only makes sense inside the book */
   body:not([data-view="book"]) .book::before,
   body:not([data-view="book"]) .book::after{ display:none; }
   body:not([data-view="book"]) .foldback,
@@ -676,85 +597,81 @@
   body[data-view="site"]{ overflow-y:auto; }
   body[data-view="site"] .stage{
     position:static; inset:auto; height:auto; display:block;
-    padding:76px 0 50px; perspective:none;
+    padding:76px 0 50px;
   }
-  body[data-view="site"] .book{ width:min(1000px, 92vw); height:auto; margin:0 auto; }
+  body[data-view="site"] .book{ width:min(1000px,92vw); height:auto; margin:0 auto; }
   body[data-view="site"] .page{ position:static; margin-bottom:36px; }
-  body[data-view="site"] .page-face.front{ position:relative; inset:auto; min-height:72vh; display:flex; }
+  body[data-view="site"] .page-face.front{ position:relative; inset:auto; min-height:74vh; display:flex; }
   body[data-view="site"] .sheet{ overflow:visible; height:auto; width:100%; }
+  body[data-view="site"] .sheet.plate-page{ min-height:74vh; }
   body[data-view="site"] .arrow, body[data-view="site"] .chrome{ display:none; }
 
   /* ── CARDS · an iMessage-style photo stack ── */
-  body[data-view="cards"] .book{ width:min(720px, 88vw); height:min(76vh, 660px); }
+  body[data-view="cards"] .book{ width:min(720px,88vw); height:min(76vh,660px); }
   body[data-view="cards"] .page{
-    transition: transform .55s cubic-bezier(.2,.8,.25,1), opacity .55s ease;
-    will-change: transform;
+    transition:transform .55s cubic-bezier(.2,.8,.25,1), opacity .55s ease;
+    will-change:transform;
   }
   body[data-view="cards"] .page-face.front{
-    border-radius:18px;
-    box-shadow:0 18px 50px rgba(40,30,10,.22);
+    border-radius:14px;
+    box-shadow:0 18px 50px rgba(0,0,0,.25);
     cursor:grab;
   }
 
-  /* ── SLIDES · one page at a time, cinematic hand-off ── */
+  /* ── SLIDES · the apple hand-off: zoom-through with staggered type ── */
   body[data-view="slides"] .page{ visibility:hidden; }
   body[data-view="slides"] .page.s-active{ visibility:visible; }
   body[data-view="slides"] .page.s-in,
-  body[data-view="slides"] .page.s-out{ visibility:visible; }
-  body[data-view="slides"] .page.s-in   { animation:slideIn   .65s cubic-bezier(.2,.8,.25,1) both; z-index:5; }
-  body[data-view="slides"] .page.s-out  { animation:slideOut  .65s cubic-bezier(.4,0,.6,1)  both; z-index:4; }
-  body[data-view="slides"] .page.s-in-r { animation:slideInR  .65s cubic-bezier(.2,.8,.25,1) both; z-index:5; }
-  body[data-view="slides"] .page.s-out-r{ animation:slideOutR .65s cubic-bezier(.4,0,.6,1)  both; z-index:4; }
-  @keyframes slideIn  { from{ opacity:0; transform:translateX(7%)  scale(.985); filter:blur(7px);} to{ opacity:1; transform:none; filter:blur(0);} }
-  @keyframes slideOut { from{ opacity:1; transform:none; }  to{ opacity:0; transform:translateX(-6%) scale(.985); filter:blur(7px);} }
-  @keyframes slideInR { from{ opacity:0; transform:translateX(-7%) scale(.985); filter:blur(7px);} to{ opacity:1; transform:none; filter:blur(0);} }
-  @keyframes slideOutR{ from{ opacity:1; transform:none; }  to{ opacity:0; transform:translateX(6%)  scale(.985); filter:blur(7px);} }
-
-  /* ============================================================
-     LIVING PORTRAITS — photos that move, wizarding-newspaper style
-     ============================================================ */
-  .living{ transform-box:fill-box; transform-origin:50% 100%; }
-  .sway { animation: sway  5.2s ease-in-out infinite; }
-  .sway2{ animation: sway  6.6s ease-in-out infinite reverse; }
-  @keyframes sway{ 0%,100%{ transform:rotate(-.8deg);} 50%{ transform:rotate(1.6deg);} }
-  .nodding{ transform-box:fill-box; transform-origin:50% 90%; animation:nod 4.4s ease-in-out infinite; }
-  @keyframes nod{ 0%,100%{ transform:rotate(0) translateY(0);} 50%{ transform:rotate(2deg) translateY(1.6px);} }
-  .waving{ transform-box:fill-box; transform-origin:15% 95%; animation:wave 3s ease-in-out infinite; }
-  @keyframes wave{
-    0%,100%{ transform:rotate(0); }
-    40%{ transform:rotate(-22deg); }
-    55%{ transform:rotate(-8deg); }
-    70%{ transform:rotate(-20deg); }
+  body[data-view="slides"] .page.s-out{ visibility:visible; will-change:transform,opacity,filter; }
+  body[data-view="slides"] .page.s-in   { animation:zoomThruIn   .95s cubic-bezier(.32,.72,0,1) both; z-index:5; }
+  body[data-view="slides"] .page.s-out  { animation:zoomThruOut  .95s cubic-bezier(.32,.72,0,1) both; z-index:4; }
+  body[data-view="slides"] .page.s-in-r { animation:zoomThruInR  .95s cubic-bezier(.32,.72,0,1) both; z-index:5; }
+  body[data-view="slides"] .page.s-out-r{ animation:zoomThruOutR .95s cubic-bezier(.32,.72,0,1) both; z-index:4; }
+  /* forward: the camera pushes through the old page into the new one */
+  @keyframes zoomThruIn  { from{ opacity:0; transform:scale(.94) translateY(10px); } 35%{ opacity:1; } to{ opacity:1; transform:none; } }
+  @keyframes zoomThruOut { from{ opacity:1; transform:none; } to{ opacity:0; transform:scale(1.08); filter:blur(14px); } }
+  /* backward: the camera pulls back out */
+  @keyframes zoomThruInR { from{ opacity:0; transform:scale(1.08); filter:blur(14px); } 35%{ opacity:1; filter:blur(0); } to{ opacity:1; transform:none; } }
+  @keyframes zoomThruOutR{ from{ opacity:1; transform:none; } to{ opacity:0; transform:scale(.94) translateY(10px); } }
+  /* the incoming page's type rises in, line after line */
+  body[data-view="slides"] .page.s-in .sheet > *:not(.kb),
+  body[data-view="slides"] .page.s-in-r .sheet > *:not(.kb){
+    opacity:0;
+    animation:riseUp .8s cubic-bezier(.32,.72,0,1) forwards;
   }
-  .floaty{ animation: floaty 4.2s ease-in-out infinite; }
-  @keyframes floaty{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-4px);} }
-  /* old film flicker on the newspaper photograph */
-  .np-photo svg{ animation: flicker 2.6s steps(3, end) infinite; }
-  @keyframes flicker{ 0%,100%{ opacity:1; } 42%{ opacity:.965; } 71%{ opacity:.985; } }
+  body[data-view="slides"] .s-in .sheet > *:nth-child(1), body[data-view="slides"] .s-in-r .sheet > *:nth-child(1){ animation-delay:.12s; }
+  body[data-view="slides"] .s-in .sheet > *:nth-child(2), body[data-view="slides"] .s-in-r .sheet > *:nth-child(2){ animation-delay:.19s; }
+  body[data-view="slides"] .s-in .sheet > *:nth-child(3), body[data-view="slides"] .s-in-r .sheet > *:nth-child(3){ animation-delay:.26s; }
+  body[data-view="slides"] .s-in .sheet > *:nth-child(4), body[data-view="slides"] .s-in-r .sheet > *:nth-child(4){ animation-delay:.33s; }
+  body[data-view="slides"] .s-in .sheet > *:nth-child(5), body[data-view="slides"] .s-in-r .sheet > *:nth-child(5){ animation-delay:.40s; }
+  body[data-view="slides"] .s-in .sheet > *:nth-child(n+6), body[data-view="slides"] .s-in-r .sheet > *:nth-child(n+6){ animation-delay:.47s; }
+  @keyframes riseUp{ from{ opacity:0; transform:translateY(26px); } to{ opacity:1; transform:none; } }
   @media (prefers-reduced-motion: reduce){
-    .sway,.sway2,.nodding,.waving,.floaty,.np-photo svg{ animation:none; }
+    body[data-view="slides"] .page.s-in, body[data-view="slides"] .page.s-out,
+    body[data-view="slides"] .page.s-in-r, body[data-view="slides"] .page.s-out-r,
+    body[data-view="slides"] .s-in .sheet > *, body[data-view="slides"] .s-in-r .sheet > *{ animation-duration:.01s !important; animation-delay:0s !important; }
   }
 
   /* ============================================================
      RESPONSIVE
      ============================================================ */
-  @media (max-width: 1024px){          /* iPad & small laptops */
+  @media (max-width: 1024px){
     .side-nav{ right:12px; }
     .side-nav .label{ display:none; }
-    .arrow.prev{ left: calc(10vw + 6px); }
-    .arrow.next{ right: calc(10vw + 6px); }
+    .arrow.prev{ left:calc(10vw + 6px); }
+    .arrow.next{ right:calc(10vw + 6px); }
+    .art-fig{ margin-top:-30px; }
   }
-  @media (max-width: 700px){           /* phones: full-bleed book, nav on top */
+  @media (max-width: 700px){
     .stage{ inset:56px 0 0 0; }
     .book{
       width:100vw;
       height:calc(100vh - 60px);
-      height:calc(100dvh - 60px);      /* respect mobile browser chrome */
+      height:calc(100dvh - 60px);
     }
     .page-face{ border-radius:0; }
     .book::before, .book::after{ display:none; }
 
-    /* top bar: ‹ at left, chapter dots centered, › at right */
     .arrow{ top:8px; margin-top:0; width:38px; height:38px; opacity:.85; }
     .arrow.prev{ left:10px; }
     .arrow.next{ right:10px; }
@@ -763,16 +680,18 @@
       flex-direction:row; align-items:center; gap:0;
     }
     .side-nav .rail, .side-nav .rail-fill{ display:none; }
-    .nav-item{ padding:10px 7px; }
+    .nav-item{ padding:10px 3.5px; }
+    .nav-item .dot{ width:6px; height:6px; }
     .chrome{ display:none; }
     .theme-toggle{ top:auto; bottom:12px; right:12px; width:36px; height:36px; }
+    .view-switch{ top:auto; bottom:12px; left:12px; padding:3px; }
+    .view-switch button{ font-size:.54rem; padding:5px 8px; }
 
     .repo-grid{ grid-template-columns:1fr 1fr; }
-    .facts{ grid-template-columns:1fr 1fr; }
-    .mag-wrap{ flex-direction:column-reverse; }
-    .polaroid{ align-self:center; }
-    .view-switch{ top:auto; bottom:12px; left:12px; padding:3px; }
-    .view-switch button{ font-size:.56rem; padding:5px 8px; }
+    .art-fig, .art-fig.left{ float:none; width:88%; margin:6px auto 16px; }
+    .pull{ float:none; width:100%; margin:8px 0 14px; }
+    .plate{ left:5%; right:5%; max-width:none; bottom:7%; }
+    .plate-page .display{ font-size:clamp(2.1rem,10vw,3rem); }
   }
 </style>
 </head>
@@ -784,22 +703,22 @@
 <div class="stage">
   <main class="book" id="book" aria-live="polite">
 
-    <!-- ── PAGE 1 · COVER ─────────────────────────────────── -->
+    <!-- ── 1 · COVER ──────────────────────────────────────── -->
     <section class="page cover-pg" data-title="Cover">
       <div class="page-face front">
         <div class="sheet cover">
           <div class="tp-frame">
-            <div class="tp-sm">A Living Curriculum Vitae</div>
+            <div class="tp-sm">The Complete &amp; Unabridged</div>
             <div class="tp-rule double"></div>
             <div class="tp-the">the</div>
             <div class="tp-big">Story</div>
             <div class="tp-the">of</div>
             <div class="tp-big">Nitesh</div>
-            <div class="tp-sub">being a true &amp; faithful account of his journey,
-              the repositories he has built, the tools of his trade,
-              &amp; other curiosities</div>
+            <div class="tp-sub">a life told in fifteen pages, with photographs —
+              being a true account of his years, his repositories,
+              &amp; the questions that started it all</div>
             <div class="tp-rule"></div>
-            <div class="tp-sm">for recruiters, collaborators,<br>&amp; other curious readers</div>
+            <div class="tp-sm">Est. 1992 &nbsp;·&nbsp; This edition 2026</div>
             <div class="tp-orn">❦</div>
             <div class="tp-rule double"></div>
             <div class="hint">Slide left to open</div>
@@ -807,12 +726,10 @@
         </div>
         <div class="tap-zone next" data-dir="1"><i>›</i></div>
       </div>
-      <div class="page-face back"><div class="sheet"></div></div>
-      <div class="curl"></div>
     </section>
 
-    <!-- ── PAGE 2 · 1992 — A NEWSPAPER FRONT PAGE ─────────── -->
-    <section class="page era-1992" data-title="1992 · Born">
+    <!-- ── 2 · 1992 FRONT PAGE ────────────────────────────── -->
+    <section class="page era-1992" data-title="1992">
       <div class="page-face front">
         <div class="sheet np">
           <header class="np-head">
@@ -824,134 +741,248 @@
           <div class="np-deck">Neighbours report unusually high curiosity levels — experts
             predict "this one is going to take everything apart."</div>
           <div class="np-cols">
-            <!-- ✏️ EDIT ME: replace this <svg> with your real photo:
-                 <img src="your-photo-1992.jpg" alt="Me as a baby, 1992"> -->
             <figure class="np-photo">
-              <svg viewBox="0 0 200 150" role="img" aria-label="Vintage placeholder portrait — the figures move, wizarding-newspaper style">
-                <defs>
-                  <pattern id="ht92" width="4.2" height="4.2" patternUnits="userSpaceOnUse">
-                    <circle cx="2.1" cy="2.1" r="1.15" fill="#1c1c1c"/>
-                  </pattern>
-                </defs>
-                <rect width="200" height="150" fill="#cfcabc"/>
-                <g class="living sway">
-                  <circle class="nodding" cx="70" cy="60" r="30" fill="url(#ht92)"/>
-                  <path d="M22 150 C22 106 48 96 70 96 C92 96 118 106 118 150 Z" fill="url(#ht92)"/>
-                </g>
-                <g class="living sway2" opacity=".85">
-                  <path class="waving" d="M158 112 L180 82 L187 88 L166 116 Z" fill="url(#ht92)"/>
-                  <circle class="nodding" cx="146" cy="74" r="22" fill="url(#ht92)"/>
-                  <path d="M112 150 C112 118 130 110 146 110 C162 110 180 118 180 150 Z" fill="url(#ht92)"/>
-                </g>
-                <rect x="1.5" y="1.5" width="197" height="147" fill="none" stroke="#1c1c1c" stroke-width="3"/>
-              </svg>
-              <figcaption>The author (left), pictured with an early collaborator.
-                — Staff photograph</figcaption>
+              <div class="kb"><img src="img/1992.jpg" alt="The author as a baby, 1992, seated in a basket chair"></div>
+              <figcaption>The subject, photographed at the family estate (a basket
+                chair), 1992. Already unimpressed. — Staff photograph</figcaption>
             </figure>
             <!-- ✏️ EDIT ME: your real 1992 story, in breathless newspaper prose -->
             <p><span class="np-lead">Somewhere in India, 1992.</span> — In a year when
               the world was still dialling up, a small human arrived with an unusual
               fascination for how things work. First words came late; first questions
               never stopped.</p>
-            <p>Witnesses describe a childhood of dismantled toys, rescued screws and
-              suspiciously quiet afternoons. "Every radio in this house has been opened
-              at least twice," one family member reported. "Some of them still work."</p>
-            <p>That curiosity, sources confirm, would soon be pointed at computers —
-              with consequences this newspaper will document in the pages that
-              follow. Turn to page 3 for the developing story.</p>
+            <p>Witnesses describe the early months as deceptively calm. "He just sat
+              there in that chair," one relative recalled, "watching everything. We
+              thought it was cute. We did not know he was taking notes."</p>
+            <p>The years that followed produced a documented trail of dismantled toys,
+              rescued screws and suspiciously quiet afternoons. Every radio in the
+              house has reportedly been opened at least twice. Some of them still work.</p>
+            <p>That curiosity, sources confirm, would eventually be pointed at
+              computers — with consequences this paper documents in the pages that
+              follow. Turn the page for the developing story.</p>
           </div>
           <div class="folio"><span>The Daily Nitesh</span><span>· 2 ·</span></div>
         </div>
         <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
         <div class="tap-zone next" data-dir="1"><i>›</i></div>
       </div>
-      <div class="page-face back"><div class="sheet"></div></div>
-      <div class="curl"></div>
     </section>
 
-    <!-- ── PAGE 3 · THE 2000s — SEPIA SCRAPBOOK ───────────── -->
-    <section class="page era-2000s" data-title="2000s · Journey">
+    <!-- ── 3 · THE EARLY YEARS ────────────────────────────── -->
+    <section class="page" data-title="Early Years">
       <div class="page-face front">
         <div class="sheet">
-          <div class="chapter-eyebrow">The 2000s · Chapter Two</div>
-          <h2>The <em>Journey</em> begins</h2>
-          <div class="mag-wrap">
-            <!-- ✏️ EDIT ME: put your real years & milestones here -->
-            <div class="timeline">
-              <div class="milestone">
-                <div class="when">1992 · The Beginning</div>
-                <h3>Born curious</h3>
-                <p>Arrived with more questions than the decade had answers.
-                   The dismantling of household electronics begins shortly after.</p>
-              </div>
-              <div class="milestone">
-                <div class="when">Late 1990s · First Machine</div>
-                <h3>A computer enters the house</h3>
-                <p>Games were played, then questioned, then taken apart. The family
-                   PC survives — barely — and a lifelong obsession does not.</p>
-              </div>
-              <div class="milestone">
-                <div class="when">2000s · First Code</div>
-                <h3>Hello, World</h3>
-                <p>Discovered that the machine could be told what to do. Built small
-                   scripts, broke them, fixed them, and got hooked on the loop.</p>
-              </div>
-              <div class="milestone">
-                <div class="when">2010s · The Craft</div>
-                <h3>From scripts to systems</h3>
-                <p>Went deep into how software really works — languages, tooling,
-                   architecture. Started shipping things people actually used.</p>
-              </div>
-            </div>
-            <!-- ✏️ EDIT ME: replace this <svg> with a real photo:
-                 <img src="your-photo-2000s.jpg" alt="Me in the 2000s"> -->
-            <figure class="polaroid">
-              <svg viewBox="0 0 200 200" role="img" aria-label="Sepia placeholder photo — the figure sways gently">
-                <rect width="200" height="200" fill="#c9b68a"/>
-                <rect width="200" height="200" fill="#7a6a45" opacity=".18"/>
-                <g class="living sway">
-                  <circle class="nodding" cx="100" cy="84" r="36" fill="#4a3b22"/>
-                  <path d="M38 200 C38 148 70 132 100 132 C130 132 162 148 162 200 Z" fill="#4a3b22"/>
-                </g>
-                <rect y="184" width="200" height="16" fill="rgba(255,255,255,.14)"/>
-              </svg>
-              <figcaption>Summer, sometime in the 2000s.<br>(placeholder photo)</figcaption>
+          <div class="kicker">The Early Years · Chapter One</div>
+          <h2 class="headline">The Boy in the <em>Basket Chair</em></h2>
+          <div class="standfirst">An investigation into the formative years, drawing on
+            eyewitness accounts, family folklore, and one surviving photograph.</div>
+          <div class="body-copy">
+            <figure class="art-fig tall">
+              <div class="kb kb-b"><img src="img/1992.jpg" alt="Baby portrait, 1992" style="object-position:50% 30%"></div>
+              <figcaption>Exhibit A. The chair did not survive the decade;
+                the curiosity did.</figcaption>
             </figure>
+            <!-- ✏️ EDIT ME: replace with your own childhood story -->
+            <p class="drop">Every account of the early years agrees on one detail: the
+              questions. Why does the fan turn. Where does the light go when it is off.
+              What is inside the radio, and — more urgently — <b>can it be opened</b>.</p>
+            <p>The household adapted the way households do. Screwdrivers migrated to
+              higher shelves. Warranty cards were quietly discarded, having long lost
+              their meaning. An unspoken rule emerged that anything left unattended
+              for more than a week was legally salvage.</p>
+            <p>It would be years before anyone in the house said the word
+              <i>engineer</i> out loud. But the evidence, in retrospect, was
+              overwhelming — and it was scattered in small screws across every
+              windowsill of the house.</p>
+            <p class="footnote">✏ This page is written from placeholder memories.
+              Its owner has promised to replace them with true ones.</p>
           </div>
-          <div class="folio"><span>My Story</span><span>· 3 ·</span></div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 3 ·</span></div>
         </div>
         <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
         <div class="tap-zone next" data-dir="1"><i>›</i></div>
       </div>
-      <div class="page-face back"><div class="sheet"></div></div>
-      <div class="curl"></div>
     </section>
 
-    <!-- ── PAGE 4 · MY CONTRIBUTIONS ──────────────────────── -->
-    <section class="page era-2010s" data-title="2010s · Building">
+    <!-- ── 4 · A DECADE OF QUESTIONS ──────────────────────── -->
+    <section class="page" data-title="Questions">
       <div class="page-face front">
         <div class="sheet">
-          <div class="chapter-eyebrow">The 2010s · Chapter Three</div>
-          <h2>Things I've <em>Built</em></h2>
+          <div class="kicker">The Nineties · Chapter Two</div>
+          <h2 class="headline">A Decade of <em>Questions</em></h2>
+          <div class="standfirst">Before the machines arrived, there was an apprenticeship
+            in ordinary things — and a family who mostly survived it.</div>
+          <div class="body-copy">
+            <aside class="pull">"We stopped buying him toys that
+              couldn't be opened. It was cheaper."
+              <small>— a parent, allegedly</small></aside>
+            <p class="drop">The nineties, in this house, were an era of practical
+              research. Ceiling fans were studied from below with scientific patience.
+              The sewing machine was observed for hours. The television — too sacred
+              to dismantle — was instead interrogated from every angle, its cabinet
+              tapped like a suspect wall.</p>
+            <p>School added its own material: geometry boxes, wax crayons, the immense
+              engineering of a fountain pen. Teachers filed the standard reports.
+              <i>Bright. Distracted. Asks too many questions.</i> Only one of those
+              three would ever be corrected.</p>
+            <p>What the decade actually taught was a habit that never left: the quiet
+              conviction that everything — fans, radios, rules, systems — is
+              understandable if you are willing to look inside it.</p>
+            <p class="footnote">✏ Placeholder anecdotes. The fountain pen, however,
+              feels true everywhere.</p>
+          </div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 4 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+    </section>
+
+    <!-- ── 5 · THE FIRST MACHINE ──────────────────────────── -->
+    <section class="page" data-title="First Machine">
+      <div class="page-face front">
+        <div class="sheet">
+          <div class="kicker">Turn of the Century · Chapter Three</div>
+          <h2 class="headline">A Computer <em>Enters the House</em></h2>
+          <div class="standfirst">It hummed. It glowed. It asked for a password nobody
+            had set. Nothing was ever the same.</div>
+          <div class="body-copy">
+            <aside class="pull">"The family PC survived. Barely.
+              The obsession did not."
+              <small>— household records</small></aside>
+            <p class="drop">The machine arrived the way important things do — in a
+              cardboard box, with a manual nobody read and a cable nobody could
+              identify. It was installed in the most public room of the house, which
+              was meant to limit its use and instead created an audience.</p>
+            <p>Games were played first, as is proper. Then the games were questioned.
+              Why is it slow. Where do the files live. What happens if this folder —
+              the one with the important-looking name — is renamed. (Answer: the
+              machine sulks for a weekend, and a boy learns his first lesson about
+              backups.)</p>
+            <p>Within a year the family computer had a routine maintenance schedule,
+              an unofficial administrator, and a strong opinion living inside it about
+              how things ought to be organised. The administrator was twelve.</p>
+            <p class="footnote">✏ Adjust the dates and the disasters to match your
+              own first machine.</p>
+          </div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 5 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+    </section>
+
+    <!-- ── 6 · HELLO, WORLD ───────────────────────────────── -->
+    <section class="page" data-title="Hello World">
+      <div class="page-face front">
+        <div class="sheet">
+          <div class="kicker">The Discovery · Chapter Four</div>
+          <h2 class="headline">The Machine <em>Obeys</em></h2>
+          <div class="standfirst">On the day the subject discovered that computers can
+            be told what to do, the neighbourhood's radios were finally safe.</div>
+          <div class="body-copy">
+            <p class="drop">It is difficult to explain, to anyone who has not felt it,
+              the precise voltage of the first time a program runs. Ten lines, typed
+              with two fingers. A pause. And then the machine — this vast, humming,
+              inscrutable appliance — does <b>exactly what it was told</b>.</p>
+            <p>The first program printed a greeting, as first programs do. The second
+              printed it one hundred times, because power corrupts. The third had a
+              bug, and thereby taught more than the first two combined.</p>
+            <p>From that afternoon forward the pattern was set: build a small thing,
+              break it, understand why, build it again properly. It is — the subject
+              maintains to this day — the only reliable curriculum anyone has ever
+              designed.</p>
+            <aside class="pull">Build a small thing. Break it.
+              Understand why. Build it again, properly.
+              <small>— the only curriculum that ever worked</small></aside>
+            <p>The dismantling years were over. The assembling years had begun.</p>
+            <p class="footnote">✏ Swap in your first language, your first bug,
+              your first small victory.</p>
+          </div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 6 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+    </section>
+
+    <!-- ── 7 · PHOTO SPREAD: THE WANDERING YEARS ──────────── -->
+    <section class="page" data-title="Wander">
+      <div class="page-face front">
+        <div class="sheet plate-page">
+          <div class="kb kb-b"><img src="img/kayak.jpg" alt="Kayaking beneath limestone cliffs, looking out over the water"></div>
+          <h2 class="display">The<br>Wandering<br><i>Years</i></h2>
+          <div class="plate right">
+            <h3>Ha Long Bay, by paddle</h3>
+            <p>Somewhere along the way it became policy: understand systems by
+              travelling through them. Rivers, cities, codebases — the method
+              is the same. Go slowly, pay attention, and do your own steering.</p>
+            <span class="credit">Photograph · the subject, mid-question</span>
+          </div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 7 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+    </section>
+
+    <!-- ── 8 · THE CRAFT ──────────────────────────────────── -->
+    <section class="page" data-title="The Craft">
+      <div class="page-face front">
+        <div class="sheet">
+          <div class="kicker">The Working Years · Chapter Five</div>
+          <h2 class="headline">From Scripts <em>to Systems</em></h2>
+          <div class="standfirst">In which the hobby acquires version control, code
+            review, and — regrettably — meetings.</div>
+          <div class="body-copy">
+            <p class="drop">There is a particular decade in every builder's life when
+              the toys become tools. The scripts grow tests. The experiments grow
+              users, which is wonderful, and the users grow expectations, which is
+              educational.</p>
+            <p>The subject learned the trade the durable way: by shipping things and
+              then being responsible for them. Production taught what no tutorial
+              could — that software is mostly a long conversation between the person
+              you were when you wrote it and the person you are at 2 a.m. when it
+              breaks.</p>
+            <aside class="pull">Code that reads like prose. Systems that
+              fail loudly and recover quietly. Documentation that
+              respects the next person's time.
+              <small>— the standing orders</small></aside>
+            <p>Along the way came the open-source habit: reading other people's code
+              like literature, fixing what needed fixing, and leaving every campsite
+              slightly cleaner than it was found.</p>
+            <p class="footnote">✏ Insert your actual roles, stacks and war stories here.</p>
+          </div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 8 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+    </section>
+
+    <!-- ── 9 · THINGS I'VE BUILT ──────────────────────────── -->
+    <section class="page" data-title="Built">
+      <div class="page-face front">
+        <div class="sheet">
+          <div class="kicker">The Public Record · Chapter Six</div>
+          <h2 class="headline">Things I've <em>Built</em></h2>
           <p class="repo-status" id="repoStatus">Fetching repositories from GitHub…</p>
           <div class="repo-grid" id="repoGrid"><!-- populated by JS --></div>
-          <div class="folio"><span>My Story</span><span>· 4 ·</span></div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 9 ·</span></div>
         </div>
         <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
         <div class="tap-zone next" data-dir="1"><i>›</i></div>
       </div>
-      <div class="page-face back"><div class="sheet"></div></div>
-      <div class="curl"></div>
     </section>
 
-    <!-- ── PAGE 5 · TOOLBOX ───────────────────────────────── -->
-    <section class="page era-2020s" data-title="2020s · Toolbox">
+    <!-- ── 10 · THE INSTRUMENTS ───────────────────────────── -->
+    <section class="page" data-title="Toolbox">
       <div class="page-face front">
         <div class="sheet">
-          <div class="chapter-eyebrow">The 2020s · Chapter Four</div>
-          <h2>My <em>Toolbox</em></h2>
-          <p class="lede">The instruments I reach for. Every tool tells a story about
-            the problems it helped solve.</p>
+          <div class="kicker">The Workshop · Chapter Seven</div>
+          <h2 class="headline">The <em>Instruments</em></h2>
+          <div class="standfirst">An inventory of the workshop, taken without sentiment.
+            Tools earn their place here; nothing is kept for fashion.</div>
           <!-- ✏️ EDIT ME: swap in your actual skills -->
           <div class="skill-groups">
             <div class="skill-group">
@@ -982,55 +1013,142 @@
               <h3>Beyond Code</h3>
               <div class="chips">
                 <span class="chip">Writing</span><span class="chip">Mentoring</span>
-                <span class="chip">Problem Solving</span><span class="chip">Curiosity</span>
+                <span class="chip">Travel</span><span class="chip">Curiosity</span>
               </div>
             </div>
           </div>
-          <div class="folio"><span>My Story</span><span>· 5 ·</span></div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 10 ·</span></div>
         </div>
         <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
         <div class="tap-zone next" data-dir="1"><i>›</i></div>
       </div>
-      <div class="page-face back"><div class="sheet"></div></div>
-      <div class="curl"></div>
     </section>
 
-    <!-- ── PAGE 6 · 2026 — SUPER FANCY ────────────────────── -->
-    <section class="page era-2026" data-title="2026 · Today">
+    <!-- ── 11 · THE METHOD ────────────────────────────────── -->
+    <section class="page" data-title="Method">
       <div class="page-face front">
-        <div class="aurora"><i></i><i></i><i></i></div>
+        <div class="sheet">
+          <div class="kicker">Editorial · Chapter Eight</div>
+          <h2 class="headline">How the Work <em>Gets Done</em></h2>
+          <div class="standfirst">Five working principles, printed here so the author
+            can be held to them.</div>
+          <ol class="creed">
+            <li><div><b>Open it up.</b>
+              <p>Nothing is magic. Read the source, trace the wire, ask the
+                impertinent question. Understanding is a decision.</p></div></li>
+            <li><div><b>Small, then correct, then fast.</b>
+              <p>In that order. Every disaster in the archive came from
+                reversing it.</p></div></li>
+            <li><div><b>Leave the campsite cleaner.</b>
+              <p>Every file touched should be slightly better for the visit —
+                clearer name, truer comment, one less trap for the next person.</p></div></li>
+            <li><div><b>Write it down.</b>
+              <p>The best documentation is a kindness addressed to a stranger —
+                who is usually you, in six months.</p></div></li>
+            <li><div><b>Stay a beginner.</b>
+              <p>The basket chair is long gone. The wide-eyed stare at new
+                machinery, ideally, never goes.</p></div></li>
+          </ol>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 11 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+    </section>
+
+    <!-- ── 12 · PHOTO SPREAD: OFF THE CLOCK ───────────────── -->
+    <section class="page" data-title="Off the Clock">
+      <div class="page-face front">
+        <div class="sheet plate-page">
+          <div class="kb kb-c"><img src="img/trainstreet.jpg" alt="Sitting beside the rails on Hanoi's train street" style="object-position:60% 30%"></div>
+          <h2 class="display">Off<br>the<br><i>Clock</i></h2>
+          <div class="plate">
+            <h3>Hanoi, train street</h3>
+            <p>A café where the timetable is the entertainment and the espresso
+              comes with a safety briefing. The subject reports it is the best
+              place he knows to think about throughput.</p>
+            <span class="credit">Photograph · between trains</span>
+          </div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 12 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+    </section>
+
+    <!-- ── 13 · THE QUIET HOURS ───────────────────────────── -->
+    <section class="page" data-title="Quiet Hours">
+      <div class="page-face front">
+        <div class="sheet plate-page">
+          <div class="kb"><img src="img/dusk.jpg" alt="Standing at a railing at dusk, a bridge and water in the distance"></div>
+          <div class="plate right" style="bottom:auto; top:10%;">
+            <h3>The quiet hours</h3>
+            <p>Not everything worth doing compiles. Some evenings are for
+              railings, rivers, and letting the day's problems arrange
+              themselves into tomorrow's obvious answers.</p>
+            <span class="credit">Photograph · far from the keyboard</span>
+          </div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 13 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+    </section>
+
+    <!-- ── 14 · THE SUBJECT, TODAY ────────────────────────── -->
+    <section class="page" data-title="Today">
+      <div class="page-face front">
+        <div class="sheet">
+          <div class="kicker">The Present Day · Chapter Nine</div>
+          <h2 class="headline">The Subject, <em>Today</em></h2>
+          <div class="standfirst">Thirty-odd years after the basket chair: a status
+            report, filed by the subject himself.</div>
+          <div class="body-copy">
+            <figure class="art-fig left tall">
+              <div class="kb kb-b"><img src="img/portrait.jpg" alt="Recent portrait, smiling, outdoors" style="object-position:50% 25%"></div>
+              <figcaption>The subject, present day. The stare has relaxed;
+                the questions have not.</figcaption>
+            </figure>
+            <p class="drop">The inventory, three decades on: one engineer, field-tested.
+              A public shelf of repositories, each one a small argument about how
+              things ought to work. A toolbox that keeps changing and a method that
+              refuses to. More grey in the hair than in the outlook.</p>
+            <p>The work these days is the same as it always was, only larger —
+              open the system, understand it honestly, leave it better. The radios
+              of 1996 have become distributed systems, which break with more dignity
+              but for the same reasons.</p>
+            <p>Asked for a forward-looking statement, the subject offered only this:
+              <b>the best chapter is the one currently being written</b> — and turned
+              back to the keyboard.</p>
+            <p class="footnote">✏ Update this dispatch as the story develops.</p>
+          </div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 14 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+    </section>
+
+    <!-- ── 15 · EPILOGUE ──────────────────────────────────── -->
+    <section class="page end-pg" data-title="Epilogue">
+      <div class="page-face front">
         <div class="sheet epilogue">
-          <div class="chapter-eyebrow">2026 · Epilogue</div>
-          <div class="glass">
-            <!-- ✏️ EDIT ME: swap this <svg> for your latest photo:
-                 <img src="your-photo-2026.jpg" alt="Me, today" style="width:100%;height:100%;object-fit:cover"> -->
-            <div class="avatar-ring"><div class="inner">
-              <svg viewBox="0 0 100 100" role="img" aria-label="Placeholder avatar — floats softly">
-                <g class="floaty">
-                  <circle cx="50" cy="38" r="18" fill="#94a3b8"/>
-                  <path d="M18 100 C18 72 34 62 50 62 C66 62 82 72 82 100 Z" fill="#94a3b8"/>
-                </g>
-              </svg>
-            </div></div>
-            <blockquote>"The best stories are the ones we <span>build together</span>.
-              If mine resonated with you — let's write the next chapter."</blockquote>
-            <div class="contact-row">
-              <a class="contact-btn primary" href="mailto:nitesh9392@gmail.com">
-                ✉ &nbsp;Say hello
-              </a>
-              <a class="contact-btn ghost" href="https://github.com/nit-saw" target="_blank" rel="noopener">
-                <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-                github.com/nit-saw
-              </a>
-            </div>
+          <div class="epi-portrait"><img src="img/portrait.jpg" alt="Nitesh, present day"></div>
+          <blockquote>"The best stories are the ones we build together.
+            If mine resonated with you — let's write the next chapter."</blockquote>
+          <div class="sig">— Nitesh · est. 1992</div>
+          <div class="contact-row">
+            <a class="contact-btn primary" href="mailto:nitesh9392@gmail.com">Say hello</a>
+            <a class="contact-btn ghost" href="https://github.com/nit-saw" target="_blank" rel="noopener">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              github.com/nit-saw
+            </a>
           </div>
           <div class="end-hint">The End — for now</div>
-          <div class="folio"><span>My Story</span><span>· 6 ·</span></div>
+          <div class="folio"><span>The Story of Nitesh</span><span>· 15 ·</span></div>
         </div>
         <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
       </div>
-      <div class="page-face back"><div class="sheet"></div></div>
-      <div class="curl"></div>
     </section>
 
   </main>
@@ -1047,7 +1165,7 @@
 <button class="arrow prev" id="prevBtn" aria-label="Previous page">‹</button>
 <button class="arrow next" id="nextBtn" aria-label="Next page">›</button>
 <div class="chrome">
-  <div class="pageno" id="pageNo">1 / 6</div>
+  <div class="pageno" id="pageNo">1 / 15</div>
 </div>
 
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle day / night reading mode">☾</button>
@@ -1068,21 +1186,13 @@
   var GITHUB_USER = "nit-saw";          // ✏️ your GitHub username
   var MAX_REPOS   = 6;                  // how many repo cards to show
 
-  // Fallback shelf — shown if the GitHub API can't be reached
-  // (offline, rate-limited, or viewed in a sandboxed preview).
+  // Fallback shelf — shown if the GitHub API can't be reached.
   var FALLBACK_REPOS = [
     { name:"vscode-docs", description:"Public documentation for Visual Studio Code — my playground for docs contributions.", language:"Markdown", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw/vscode-docs" },
-    { name:"my-portfolio", description:"This very book you're reading — a CV that turns pages like a Kindle.", language:"HTML", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw" },
+    { name:"NiteshSaw", description:"This very paper you're reading — a CV that turns pages like a book.", language:"HTML", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw/NiteshSaw" },
     { name:"experiments", description:"A drawer of prototypes, ideas and half-finished magic tricks.", language:"JavaScript", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw?tab=repositories" },
-    { name:"learning-notes", description:"Notes-to-self from the endless journey of learning to build software.", language:"Markdown", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw?tab=repositories" }
+    { name:"learning-notes", description:"Notes-to-self from the endless business of learning to build software.", language:"Markdown", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw?tab=repositories" }
   ];
-
-  var LANG_COLORS = {
-    JavaScript:"#f1e05a", TypeScript:"#3178c6", Python:"#3572A5", HTML:"#e34c26",
-    CSS:"#563d7c", Markdown:"#083fa1", Java:"#b07219", Go:"#00ADD8", Rust:"#dea584",
-    C:"#555555", "C++":"#f34b7d", "C#":"#178600", Shell:"#89e051", Ruby:"#701516",
-    PHP:"#4F5D95", Swift:"#F05138", Kotlin:"#A97BFF", Vue:"#41b883", Dart:"#00B4AB"
-  };
 
   /* ══════════ PAGE-TURN SOUND (synthesized paper, no audio file) ══════════ */
   var audioCtx = null;
@@ -1099,26 +1209,23 @@
     if (ctx.state === "suspended") ctx.resume();
     var t0 = ctx.currentTime;
 
-    // 1) the soft "swish" of paper sliding through air
     var swishDur = 0.38;
     var swish = ctx.createBuffer(1, Math.floor(ctx.sampleRate * swishDur), ctx.sampleRate);
     var s = swish.getChannelData(0);
     for (var i = 0; i < s.length; i++){
       var t = i / s.length;
-      // noise shaped like a breath: rises, peaks early, tapers off
       s[i] = (Math.random() * 2 - 1) * Math.pow(Math.sin(Math.PI * Math.pow(t, .65)), 2);
     }
     var swishSrc = ctx.createBufferSource(); swishSrc.buffer = swish;
     var swishBP = ctx.createBiquadFilter();
     swishBP.type = "bandpass"; swishBP.Q.value = 0.7;
     swishBP.frequency.setValueAtTime(700, t0);
-    swishBP.frequency.exponentialRampToValueAtTime(2400, t0 + swishDur); // pitch rises as the page speeds up
+    swishBP.frequency.exponentialRampToValueAtTime(2400, t0 + swishDur);
     var swishGain = ctx.createGain();
     swishGain.gain.setValueAtTime(0.16, t0);
     swishSrc.connect(swishBP); swishBP.connect(swishGain); swishGain.connect(ctx.destination);
     swishSrc.start(t0);
 
-    // 2) the crisp little "flick" as the page settles
     var flickDur = 0.07;
     var flick = ctx.createBuffer(1, Math.floor(ctx.sampleRate * flickDur), ctx.sampleRate);
     var f = flick.getChannelData(0);
@@ -1135,7 +1242,7 @@
     flickSrc.start(t0 + swishDur * 0.72);
   }
 
-  /* ══════════ BOOK ENGINE (fold model) ══════════ */
+  /* ══════════ BOOK ENGINE (diagonal fold model) ══════════ */
   var pages   = Array.prototype.slice.call(document.querySelectorAll(".page"));
   var total   = pages.length;
   var current = 0;
@@ -1144,10 +1251,8 @@
   var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var mode    = "book";               // book | site | cards | slides
 
-  // give every page its fold apparatus, and lift the tap-zones out of the
-  // clipped front face so they stay clickable while the page is curled
   pages.forEach(function(pg){
-    pg._p = 0;                                    // fold progress 0..1
+    pg._p = 0;
     Array.prototype.forEach.call(pg.querySelectorAll(".tap-zone"), function(z){
       pg.appendChild(z);
     });
@@ -1157,8 +1262,6 @@
     pg._fb = fb; pg._sh = sh;
   });
 
-  // z-index bookkeeping: unturned pages stack front-to-back;
-  // turned pages stack so the most recently turned is on top of the left pile.
   function restack(){
     pages.forEach(function(p, i){
       p.style.zIndex = (i < current) ? (i + 1) : (total - i + total);
@@ -1166,8 +1269,6 @@
   }
 
   /* ── geometry helpers for the diagonal fold ── */
-
-  // clip a convex polygon by the crease line; keep>=0 keeps the front side
   function clipPoly(poly, sideFn, keepPositive){
     var out = [];
     for (var i = 0; i < poly.length; i++){
@@ -1188,21 +1289,13 @@
       return P.x.toFixed(1) + "px " + P.y.toFixed(1) + "px";
     }).join(",") + ")";
   }
-  // css linear-gradient angle whose direction matches unit vector v
-  // (screen coords: x right, y down)
   function gradAngle(v){ return Math.atan2(v.x, -v.y) * 180 / Math.PI; }
-  // length of the gradient line for that angle across a W×H box,
-  // and the position of point P along it (px from the gradient start)
   function gradPos(v, P, W, H){
     var Lg = Math.abs(W * v.x) + Math.abs(H * v.y);
     return { at: (P.x - W/2) * v.x + (P.y - H/2) * v.y + Lg / 2, len: Lg };
   }
 
-  /* The heart of the turn. The crease is DIAGONAL, like grabbing the
-     top-right corner of a real page: it runs from the top edge down-left
-     to the bottom edge, and sweeps across the page as p goes 0→1.
-     The folded flap is the true mirror of the removed region. */
-  var TILT = 0.20;   // crease slope: top intercept leads the bottom one
+  var TILT = 0.20;   // crease slope: top-right corner leads toward the left middle
 
   function setFold(pg, p){
     pg._p = p;
@@ -1215,23 +1308,22 @@
       return;
     }
 
-    var k = H * TILT;                        // horizontal lead of the crease top
-    var m = (W + k) * (1 - p) - k;           // crease midline, sweeps past the spine
-    var T = { x: m - k, y: 0 };              // crease meets top edge here…
-    var Bp = { x: m + k, y: H };             // …and bottom edge here (further right)
+    var k = H * TILT;
+    var m = (W + k) * (1 - p) - k;
+    var T = { x: m - k, y: 0 };
+    var Bp = { x: m + k, y: H };
     var d = { x: Bp.x - T.x, y: Bp.y - T.y };
     var dl = Math.hypot(d.x, d.y);
 
-    function side(P){ return d.x * (P.y - T.y) - d.y * (P.x - T.x); }  // >0 = front side
+    function side(P){ return d.x * (P.y - T.y) - d.y * (P.x - T.x); }
     var rect = [{x:0,y:0},{x:W,y:0},{x:W,y:H},{x:0,y:H}];
     var frontPoly = clipPoly(rect, side, true);
     var flapPoly  = clipPoly(rect, side, false);
-    if (!flapPoly.length || frontPoly.length < 3 && p < 0.5){ return; }
+    if (!flapPoly.length){ return; }
 
     front.style.clipPath = front.style.webkitClipPath =
       frontPoly.length ? toPolygon(frontPoly) : "inset(0 0 0 100%)";
 
-    // mirror the flap across the crease line
     var len2 = d.x*d.x + d.y*d.y;
     function reflect(P){
       var t = ((P.x - T.x) * d.x + (P.y - T.y) * d.y) / len2;
@@ -1240,11 +1332,9 @@
     }
     var mir = flapPoly.map(reflect);
 
-    var lift = Math.sin(Math.PI * Math.min(p, 1));   // how tall the sheet stands
+    var lift = Math.sin(Math.PI * Math.min(p, 1));
 
-    // flap: paper shaded perpendicular to the crease — dark in the crease,
-    // bright across the curl's crown, a whisper of tone at the free edge
-    var vL = { x: -d.y/dl, y: d.x/dl };              // normal pointing into the flap
+    var vL = { x: -d.y/dl, y: d.x/dl };
     var gp = gradPos(vL, T, W, H);
     var depth = 1;
     mir.forEach(function(P){
@@ -1260,7 +1350,6 @@
       "var(--paper-deep) " + (gp.at + depth*0.85).toFixed(1) + "px," +
       "rgba(0,0,0,.06) " + (gp.at + depth).toFixed(1) + "px)";
 
-    // shadow the standing sheet casts past the crease onto the next page
     var vR = { x: d.y/dl, y: -d.x/dl };
     var gr = gradPos(vR, T, W, H);
     var shW = Math.max(26, depth * 0.4);
@@ -1272,7 +1361,6 @@
       "rgba(0,0,0,0) " + (gr.at + shW).toFixed(1) + "px)";
     sh.style.opacity = (0.9 * lift).toFixed(3);
 
-    // the sheet drifts past the spine at the end — fade it away
     pg.style.opacity = p > 0.82 ? String(Math.max(0, 1 - (p - 0.82) / 0.18)) : "";
   }
 
@@ -1292,7 +1380,7 @@
     pg._anim = requestAnimationFrame(frame);
   }
 
-  function turnForward(i, dur, done){          // fold page i over to the left
+  function turnForward(i, dur, done){
     var pg = pages[i];
     pg.classList.remove("flipped");
     pg.style.zIndex = 2 * total + 5;
@@ -1305,7 +1393,7 @@
     });
   }
 
-  function turnBackward(i, dur, done){         // bring page i back from the left
+  function turnBackward(i, dur, done){
     var pg = pages[i];
     pg.classList.remove("flipped");
     pg.style.zIndex = 2 * total + 5;
@@ -1322,8 +1410,6 @@
     if (target === current || busy) return;
     busy = true;
 
-    // one single page turn, no matter how far the jump — the pages in
-    // between are tucked away so the turn lands straight on the target
     var j;
     if (target > current){
       for (j = current + 1; j < target; j++) pages[j].classList.add("flipped");
@@ -1343,7 +1429,6 @@
 
   /* ══════════ VIEW MODES: book · site · cards · slides ══════════ */
 
-  // iMessage-style stack: current card front & centre, the rest fanned behind
   function applyCards(){
     pages.forEach(function(pg, i){
       var d = i - current;
@@ -1383,10 +1468,9 @@
     inn.classList.add(back ? "s-in-r" : "s-in");
     playPageSound();
     current = target; updateChrome();
-    setTimeout(function(){ applySlides(); busy = false; }, 680);
+    setTimeout(function(){ applySlides(); busy = false; }, 960);
   }
 
-  // one navigation entry point; each mode moves its own way
   function navTo(target){
     target = Math.max(0, Math.min(total - 1, target));
     if (mode === "book"){ go(target); return; }
@@ -1412,7 +1496,6 @@
     document.querySelectorAll("#viewSwitch button").forEach(function(b){
       b.classList.toggle("active", b.dataset.mode === m);
     });
-    // clean the slate: no folds, no leftover inline state
     busy = false;
     pages.forEach(function(pg){
       if (pg._anim){ cancelAnimationFrame(pg._anim); pg._anim = null; }
@@ -1441,7 +1524,6 @@
     b.addEventListener("click", function(){ setMode(b.dataset.mode); });
   });
 
-  // scroll-spy: in site mode the right-hand nav follows the reader
   if (window.IntersectionObserver){
     var io = new IntersectionObserver(function(entries){
       if (mode !== "site") return;
@@ -1479,7 +1561,6 @@
     pageNo.textContent = (current + 1) + " / " + total;
     prevBtn.disabled = current === 0;
     nextBtn.disabled = current === total - 1;
-    // progress rail: fill down to the active dot
     requestAnimationFrame(function(){
       var active = navItems[current];
       var navRect = sideNav.getBoundingClientRect();
@@ -1488,7 +1569,7 @@
     });
   }
 
-  /* ══════════ INPUT: arrows, keys, wheel, swipe, tap-zones ══════════ */
+  /* ══════════ INPUT ══════════ */
   prevBtn.addEventListener("click", function(){ navTo(current - 1); });
   nextBtn.addEventListener("click", function(){ navTo(current + 1); });
 
@@ -1497,7 +1578,7 @@
   });
 
   document.addEventListener("keydown", function(e){
-    if (mode === "site"){                                  // native scroll owns space/pgup/pgdn
+    if (mode === "site"){
       if (e.key === "ArrowRight"){ e.preventDefault(); navTo(current + 1); }
       if (e.key === "ArrowLeft") { e.preventDefault(); navTo(current - 1); }
       return;
@@ -1510,7 +1591,7 @@
 
   var wheelLock = 0;
   document.addEventListener("wheel", function(e){
-    if (mode === "site") return;                           // the browser scrolls
+    if (mode === "site") return;
     var now = Date.now();
 
     // trackpad: a two-finger horizontal swipe turns the page
@@ -1521,7 +1602,6 @@
       return;
     }
 
-    // vertical: let inner page content scroll first
     var sheet = e.target.closest && e.target.closest(".sheet");
     if (sheet && sheet.scrollHeight > sheet.clientHeight){
       var atTop    = sheet.scrollTop <= 0;
@@ -1537,7 +1617,7 @@
   /* ── slide to turn: drag left and the sheet folds over under your finger ── */
   var stage = document.querySelector(".stage");
   var drag = { on:false, dir:0, pg:null, startX:0, startY:0, startP:0,
-               lastX:0, lastT:0, vx:0, id:null };
+               lastX:0, lastT:0, vx:0, id:null, cards:false };
   var suppressClick = false;
 
   stage.addEventListener("pointerdown", function(e){
@@ -1557,10 +1637,10 @@
 
     if (!drag.dir){
       if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
-      var dir = dx < 0 ? 1 : -1;                      // 1 = forward (slide left)
+      var dir = dx < 0 ? 1 : -1;
       var pg;
       if (mode === "cards"){
-        pg = pages[current];                          // the top card follows the finger
+        pg = pages[current];
         drag.cards = true;
         pg.style.transition = "none";
       } else {
@@ -1570,7 +1650,7 @@
         if (!pg){ drag.on = false; return; }
         if (pg._anim){ cancelAnimationFrame(pg._anim); pg._anim = null; }
         pg.classList.remove("flipped");
-        if (dir === -1 && pg._p < 0.01) setFold(pg, 1); // it was resting fully turned
+        if (dir === -1 && pg._p < 0.01) setFold(pg, 1);
         drag.startP = pg._p;
         pg.style.zIndex = 2 * total + 5;
       }
@@ -1580,7 +1660,6 @@
       try { stage.setPointerCapture(e.pointerId); } catch(err){}
     }
 
-    // track flick velocity (px/ms, smoothed)
     var now = performance.now();
     var dt = Math.max(1, now - drag.lastT);
     drag.vx = 0.7 * drag.vx + 0.3 * ((e.clientX - drag.lastX) / dt);
@@ -1604,23 +1683,21 @@
     if (!pg) return;
     stage.classList.remove("dragging");
 
-    // a flick only counts if the pointer was still moving at release
     var stale = performance.now() - drag.lastT > 120;
     var flickL = !stale && drag.vx < -0.45, flickR = !stale && drag.vx > 0.45;
 
     if (drag.cards){
-      var dx = drag.lastX - drag.startX;
+      var dxc = drag.lastX - drag.startX;
       var moved = 0;
-      if ((dx < -90 || flickL) && current < total - 1) moved = 1;
-      else if ((dx > 90 || flickR) && current > 0)     moved = -1;
+      if ((dxc < -90 || flickL) && current < total - 1) moved = 1;
+      else if ((dxc > 90 || flickR) && current > 0)     moved = -1;
       if (moved){ current += moved; playPageSound(); updateChrome(); }
-      applyCards();                                    // restores transitions & positions
+      applyCards();
       drag.pg = null;
       return;
     }
 
     var p = pg._p;
-    // where does the sheet settle? finish the turn, or fall back open
     var to;
     if (drag.dir === 1) to = (flickR ? 0 : (flickL || p > 0.12) ? 1 : 0);
     else                to = (flickL ? 1 : (flickR || p < 0.88) ? 0 : 1);
@@ -1630,7 +1707,6 @@
 
     busy = true;
     if (p > 0.02 && p < 0.98) playPageSound();
-    // momentum: the further it has to travel, the longer — but flicks snap
     var dur = Math.max(140, 520 * Math.abs(to - p) * (flickL || flickR ? 0.55 : 1));
     animateFold(pg, to, dur, function(){
       if (to === 1){ pg.classList.add("flipped"); setFold(pg, 0); }
@@ -1643,7 +1719,6 @@
   stage.addEventListener("pointerup", endDrag);
   stage.addEventListener("pointercancel", endDrag);
 
-  // a drag shouldn't also fire the link/tap-zone underneath the finger
   document.addEventListener("click", function(e){
     if (suppressClick){
       e.preventDefault();
@@ -1652,7 +1727,7 @@
     }
   }, true);
 
-  /* ── iBooks-style invitation: the page edge lifts as you hover it ── */
+  /* ── the page edge lifts in invitation as you hover it ── */
   document.querySelectorAll(".tap-zone.next").forEach(function(z){
     z.addEventListener("mouseenter", function(){
       if (mode !== "book" || busy || drag.on || current >= total - 1) return;
@@ -1669,15 +1744,15 @@
     });
   });
 
-  /* ══════════ DAY / NIGHT (like a kindle's reading light) ══════════ */
+  /* ══════════ DAY / NIGHT ══════════ */
   var toggle = document.getElementById("themeToggle");
   var saved = null;
   try { saved = localStorage.getItem("book-theme"); } catch(e){}
-  setTheme(saved || "day");   // a white book by default; ☾ switches to night reading
+  setTheme(saved || "day");
 
   function setTheme(t){
-    document.documentElement.setAttribute("data-theme", t === "night" ? "night" : "");
-    if (t !== "night") document.documentElement.removeAttribute("data-theme");
+    if (t === "night") document.documentElement.setAttribute("data-theme", "night");
+    else document.documentElement.removeAttribute("data-theme");
     toggle.textContent = t === "night" ? "☀" : "☾";
     try { localStorage.setItem("book-theme", t); } catch(e){}
   }
@@ -1697,13 +1772,12 @@
     a.target = "_blank";
     a.rel = "noopener";
     var lang = r.language || "—";
-    var color = LANG_COLORS[lang] || "#9a9186";
     a.innerHTML =
       '<h3><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25v3.25a.25.25 0 0 0 .4.2l1.45-1.087a.25.25 0 0 1 .3 0L8.6 15.7a.25.25 0 0 0 .4-.2v-3.25a.25.25 0 0 0-.25-.25h-3.5a.25.25 0 0 0-.25.25Z"/></svg>' +
       escapeHtml(r.name) + '</h3>' +
       '<p>' + escapeHtml(r.description || "No description — the mystery is part of the charm.") + '</p>' +
       '<div class="repo-meta">' +
-        '<span><span class="lang-dot" style="background:' + color + '"></span>' + escapeHtml(lang) + '</span>' +
+        '<span><span class="lang-dot"></span>' + escapeHtml(lang) + '</span>' +
         '<span>★ ' + (r.stargazers_count || 0) + '</span>' +
         '<span>⑂ ' + (r.forks_count || 0) + '</span>' +
       '</div>';
@@ -1731,7 +1805,7 @@
     });
     status.textContent = live
       ? "Live from github.com/" + GITHUB_USER + " · " + repos.length + " public repositories"
-      : "A selection from my shelf · full list at github.com/" + GITHUB_USER;
+      : "A selection from the shelf · full list at github.com/" + GITHUB_USER;
   }
 
   function loadRepos(){
@@ -1740,7 +1814,6 @@
       .then(function(res){ if (!res.ok) throw new Error(res.status); return res.json(); })
       .then(function(repos){
         if (!Array.isArray(repos) || repos.length === 0) throw new Error("empty");
-        // most interesting first: stars, then recency
         repos.sort(function(a, b){
           return (b.stargazers_count - a.stargazers_count) ||
                  (new Date(b.pushed_at) - new Date(a.pushed_at));
