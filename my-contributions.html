@@ -12,22 +12,24 @@
      ============================================================ */
 
   :root{
-    --paper:        #f7f2e7;
-    --paper-deep:   #efe7d6;
-    --paper-edge:   #e3d9c3;
-    --ink:          #2b2620;
-    --ink-soft:     #5c544a;
-    --ink-faint:    #8d8272;
+    --paper:        #ffffff;
+    --paper-deep:   #f6f5f2;
+    --paper-edge:   #e7e5e0;
+    --ink:          #23272d;
+    --ink-soft:     #555b63;
+    --ink-faint:    #969ca4;
     --accent:       #b3592c;
     --accent-soft:  #d98f5f;
     --gold:         #c19a4b;
-    --shadow:       rgba(43, 32, 18, .35);
-    --bg1:          #1b1712;
-    --bg2:          #3a2f24;
-    --card:         rgba(255,255,255,.45);
-    --card-border:  rgba(43,38,32,.12);
-    --nav-ink:      #e9ddc8;
-    --nav-faint:    rgba(233,221,200,.45);
+    --shadow:       rgba(70, 60, 45, .28);
+    --bg1:          #dfddd8;
+    --bg2:          #f2f1ee;
+    --card:         rgba(0,0,0,.025);
+    --card-border:  rgba(35,39,45,.12);
+    --nav-ink:      #2c3036;
+    --nav-faint:    rgba(44,48,54,.4);
+    --chrome-btn:   rgba(255,255,255,.65);
+    --page-shadow:  rgba(60,55,45,.10);   /* kept light: all six pages' shadows stack up */
   }
 
   html[data-theme="night"]{
@@ -47,6 +49,8 @@
     --card-border:  rgba(232,227,216,.12);
     --nav-ink:      #e8e3d8;
     --nav-faint:    rgba(232,227,216,.4);
+    --chrome-btn:   rgba(0,0,0,.25);
+    --page-shadow:  rgba(0,0,0,.25);
   }
 
   *{ margin:0; padding:0; box-sizing:border-box; }
@@ -77,12 +81,18 @@
     display:flex; align-items:center; justify-content:center;
     perspective: 2400px;
     z-index:1;
+    touch-action: pan-y;   /* horizontal drags turn the page */
   }
+  .page-face.front{ cursor: grab; }
+  .stage.dragging .page-face.front{ cursor: grabbing; }
+  .stage.dragging{ user-select: none; -webkit-user-select: none; }
+  .page.dragging{ transition: none !important; visibility: visible !important; }
 
   .book{
     position:relative;
-    width:min(880px, calc(100vw - 150px));
-    height:min(640px, calc(100vh - 90px));
+    /* 20% breathing room from every side of the screen */
+    width:60vw;
+    height:60vh;
     transform-style: preserve-3d;
   }
 
@@ -100,7 +110,7 @@
   .book::before{
     content:"";
     position:absolute; top:10px; bottom:10px; left:-10px; width:10px;
-    background: linear-gradient(to right, #4a3c2a, #6b5a42);
+    background: linear-gradient(to right, #cfccc6, #e4e2dd);
     border-radius: 4px 0 0 4px;
     box-shadow: -6px 10px 30px var(--shadow);
     transform: translateZ(-10px);
@@ -137,7 +147,7 @@
     background:
       linear-gradient(105deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 4%),
       linear-gradient(to bottom right, var(--paper), var(--paper-deep));
-    box-shadow: 0 18px 55px var(--shadow);
+    box-shadow: 0 14px 40px var(--page-shadow);
     overflow:hidden;
   }
   .page-face.back{
@@ -420,19 +430,19 @@
   .chrome .pageno{ font-size:.72rem; letter-spacing:.28em; min-width:70px; text-align:center; }
   .arrow{
     width:40px; height:40px; border-radius:50%;
-    border:1px solid var(--nav-faint); background:rgba(0,0,0,.15);
+    border:1px solid var(--nav-faint); background:var(--chrome-btn);
     color:var(--nav-ink); cursor:pointer; font-size:1rem;
     display:grid; place-items:center;
     transition: all .3s ease; backdrop-filter: blur(4px);
   }
-  .arrow:hover{ background:var(--accent); border-color:var(--accent); transform:scale(1.1); }
+  .arrow:hover{ background:var(--accent); border-color:var(--accent); color:#fff; transform:scale(1.1); }
   .arrow:disabled{ opacity:.25; cursor:default; transform:none; }
-  .arrow:disabled:hover{ background:rgba(0,0,0,.15); border-color:var(--nav-faint); }
+  .arrow:disabled:hover{ background:var(--chrome-btn); border-color:var(--nav-faint); color:var(--nav-ink); }
 
   .theme-toggle{
     position:fixed; top:20px; right:26px; z-index:10;
     width:40px; height:40px; border-radius:50%;
-    border:1px solid var(--nav-faint); background:rgba(0,0,0,.15);
+    border:1px solid var(--nav-faint); background:var(--chrome-btn);
     color:var(--nav-ink); cursor:pointer; font-size:1.05rem;
     display:grid; place-items:center; transition:all .3s ease;
     backdrop-filter: blur(4px);
@@ -459,14 +469,14 @@
      RESPONSIVE
      ============================================================ */
   @media (max-width: 860px){
-    .book{ width:calc(100vw - 64px); height:calc(100vh - 76px); }
+    .book{ width:74vw; height:64vh; }  /* relax the margins a little so text stays readable */
     .side-nav{ right:10px; }
     .side-nav .label{ display:none; }
     .theme-toggle{ right:12px; top:12px; }
   }
   @media (max-width: 560px){
     .repo-grid{ grid-template-columns:1fr 1fr; }
-    .book{ width:calc(100vw - 44px); }
+    .book{ width:82vw; height:66vh; }
   }
 </style>
 </head>
@@ -707,6 +717,57 @@
     PHP:"#4F5D95", Swift:"#F05138", Kotlin:"#A97BFF", Vue:"#41b883", Dart:"#00B4AB"
   };
 
+  /* ══════════ PAGE-TURN SOUND (synthesized paper, no audio file) ══════════ */
+  var audioCtx = null;
+  function getAudio(){
+    if (audioCtx) return audioCtx;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    audioCtx = new AC();
+    return audioCtx;
+  }
+  function playPageSound(){
+    var ctx = getAudio();
+    if (!ctx) return;
+    if (ctx.state === "suspended") ctx.resume();
+    var t0 = ctx.currentTime;
+
+    // 1) the soft "swish" of paper sliding through air
+    var swishDur = 0.38;
+    var swish = ctx.createBuffer(1, Math.floor(ctx.sampleRate * swishDur), ctx.sampleRate);
+    var s = swish.getChannelData(0);
+    for (var i = 0; i < s.length; i++){
+      var t = i / s.length;
+      // noise shaped like a breath: rises, peaks early, tapers off
+      s[i] = (Math.random() * 2 - 1) * Math.pow(Math.sin(Math.PI * Math.pow(t, .65)), 2);
+    }
+    var swishSrc = ctx.createBufferSource(); swishSrc.buffer = swish;
+    var swishBP = ctx.createBiquadFilter();
+    swishBP.type = "bandpass"; swishBP.Q.value = 0.7;
+    swishBP.frequency.setValueAtTime(700, t0);
+    swishBP.frequency.exponentialRampToValueAtTime(2400, t0 + swishDur); // pitch rises as the page speeds up
+    var swishGain = ctx.createGain();
+    swishGain.gain.setValueAtTime(0.16, t0);
+    swishSrc.connect(swishBP); swishBP.connect(swishGain); swishGain.connect(ctx.destination);
+    swishSrc.start(t0);
+
+    // 2) the crisp little "flick" as the page settles
+    var flickDur = 0.07;
+    var flick = ctx.createBuffer(1, Math.floor(ctx.sampleRate * flickDur), ctx.sampleRate);
+    var f = flick.getChannelData(0);
+    for (var j = 0; j < f.length; j++){
+      var ft = j / f.length;
+      f[j] = (Math.random() * 2 - 1) * Math.exp(-9 * ft);
+    }
+    var flickSrc = ctx.createBufferSource(); flickSrc.buffer = flick;
+    var flickHP = ctx.createBiquadFilter();
+    flickHP.type = "highpass"; flickHP.frequency.value = 1800;
+    var flickGain = ctx.createGain();
+    flickGain.gain.setValueAtTime(0.22, t0);
+    flickSrc.connect(flickHP); flickHP.connect(flickGain); flickGain.connect(ctx.destination);
+    flickSrc.start(t0 + swishDur * 0.72);
+  }
+
   /* ══════════ BOOK ENGINE ══════════ */
   var pages   = Array.prototype.slice.call(document.querySelectorAll(".page"));
   var total   = pages.length;
@@ -739,6 +800,7 @@
       pg.style.zIndex = 2 * total + 5;
       if (forward) pg.classList.add("flipped");
       else         pg.classList.remove("flipped");
+      playPageSound();
       idx += step;
       var delay = (Math.abs(target - current) > 1) ? 190 : 1060;
       setTimeout(function(){
@@ -823,21 +885,92 @@
     go(current + (e.deltaY > 0 ? 1 : -1));
   }, { passive:true });
 
-  var touchX = null;
-  document.addEventListener("touchstart", function(e){ touchX = e.touches[0].clientX; }, { passive:true });
-  document.addEventListener("touchend", function(e){
-    if (touchX === null) return;
-    var dx = e.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 55) go(current + (dx < 0 ? 1 : -1));
-    touchX = null;
-  }, { passive:true });
+  /* ── slide to turn: drag left and the page peels open under your finger ── */
+  var stage = document.querySelector(".stage");
+  var bookEl = document.getElementById("book");
+  var drag = { on:false, dir:0, pg:null, startX:0, startY:0, prog:0, id:null };
+  var suppressClick = false;
+
+  stage.addEventListener("pointerdown", function(e){
+    if (busy || e.button > 0) return;
+    if (e.target.closest("button")) return;
+    drag.on = true; drag.dir = 0; drag.pg = null;
+    drag.startX = e.clientX; drag.startY = e.clientY;
+    drag.id = e.pointerId;
+  });
+
+  stage.addEventListener("pointermove", function(e){
+    if (!drag.on || e.pointerId !== drag.id) return;
+    var dx = e.clientX - drag.startX;
+    var dy = e.clientY - drag.startY;
+
+    if (!drag.dir){
+      if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+      var dir = dx < 0 ? 1 : -1;                      // 1 = forward (slide left)
+      var pg = dir === 1
+        ? (current < total - 1 ? pages[current] : null)
+        : (current > 0 ? pages[current - 1] : null);
+      if (!pg){ drag.on = false; return; }
+      drag.dir = dir; drag.pg = pg;
+      pg.classList.add("dragging");
+      pg.style.zIndex = 2 * total + 5;
+      stage.classList.add("dragging");
+      suppressClick = true;
+      try { stage.setPointerCapture(e.pointerId); } catch(err){}
+    }
+
+    var w = bookEl.clientWidth;
+    if (drag.dir === 1){
+      drag.prog = Math.min(1, Math.max(0, -dx / (w * 0.85)));
+    } else {
+      drag.prog = 1 - Math.min(1, Math.max(0, dx / (w * 0.85)));
+    }
+    drag.pg.style.transform = "rotateY(" + (-180 * drag.prog) + "deg)";
+  });
+
+  function endDrag(e){
+    if (!drag.on) return;
+    drag.on = false;
+    var pg = drag.pg;
+    if (!pg){ return; }
+    stage.classList.remove("dragging");
+
+    // past the threshold? finish the turn; otherwise let the page fall back
+    var flip;
+    if (drag.dir === 1){ flip = drag.prog > 0.22; if (flip) current++; }
+    else               { flip = drag.prog > 0.78; if (!flip) current--; }
+
+    busy = true;
+    pg.classList.remove("dragging");                  // restores the transition
+    void pg.offsetWidth;                              // flush so it animates from the drag angle
+    pg.style.transform = "";
+    pg.classList.toggle("flipped", flip);
+    if (drag.prog > 0.02 && drag.prog < 0.98) playPageSound();
+    updateChrome();
+    setTimeout(function(){
+      pg.style.zIndex = "";
+      restack();
+      busy = false;
+    }, 1100);
+    drag.pg = null;
+  }
+  stage.addEventListener("pointerup", endDrag);
+  stage.addEventListener("pointercancel", endDrag);
+
+  // a drag shouldn't also fire the link/tap-zone underneath the finger
+  document.addEventListener("click", function(e){
+    if (suppressClick){
+      e.preventDefault();
+      e.stopPropagation();
+      suppressClick = false;
+    }
+  }, true);
 
   /* ══════════ DAY / NIGHT (like a kindle's reading light) ══════════ */
   var toggle = document.getElementById("themeToggle");
-  var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
   var saved = null;
   try { saved = localStorage.getItem("book-theme"); } catch(e){}
-  setTheme(saved || (prefersDark ? "night" : "day"));
+  setTheme(saved || "day");   // a white book by default; ☾ switches to night reading
 
   function setTheme(t){
     document.documentElement.setAttribute("data-theme", t === "night" ? "night" : "");
