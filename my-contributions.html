@@ -22,7 +22,7 @@
     --accent:       #a34a1f;
     --accent-soft:  #c67c46;
     --gold:         #a5761f;
-    --shadow:       rgba(80, 60, 30, .28);
+    --shadow:       rgba(80, 60, 30, .14);
     --bg1:          #d6cdb8;
     --bg2:          #eee8d9;
     --card:         rgba(60,40,10,.035);
@@ -30,7 +30,7 @@
     --nav-ink:      #4a3f2d;
     --nav-faint:    rgba(74,63,45,.42);
     --chrome-btn:   rgba(255,255,255,.5);
-    --page-shadow:  rgba(80,60,30,.11);   /* kept light: all six pages' shadows stack up */
+    --page-shadow:  rgba(80,60,30,.06);   /* kindle-flat: barely-there page shadow */
     /* the cover: curry powder & espresso ink */
     --curry-1:      #d9a233;
     --curry-2:      #c4881a;
@@ -96,8 +96,9 @@
 
   .book{
     position:relative;
-    width:min(900px, calc(100vw - 120px));
-    height:min(650px, calc(100vh - 110px));
+    /* the book IS the page: 10% gutters at the sides, slim top/bottom */
+    width:80vw;
+    height:calc(100vh - 48px);
   }
 
   /* stacked page edges on the right — the "rest of the book" */
@@ -108,7 +109,7 @@
       repeating-linear-gradient(to right,
         var(--paper-edge) 0px, var(--paper) 1px, var(--paper-edge) 2.5px);
     border-radius: 0 4px 4px 0;
-    box-shadow: 8px 10px 30px var(--shadow);
+    box-shadow: 3px 5px 12px var(--shadow);
     transform: translateZ(-8px);
   }
   .book::before{
@@ -116,7 +117,7 @@
     position:absolute; top:10px; bottom:10px; left:-10px; width:10px;
     background: linear-gradient(to right, #cfccc6, #e4e2dd);
     border-radius: 4px 0 0 4px;
-    box-shadow: -6px 10px 30px var(--shadow);
+    box-shadow: -3px 5px 12px var(--shadow);
     transform: translateZ(-10px);
   }
   html[data-theme="night"] .book::before{
@@ -137,8 +138,8 @@
       linear-gradient(105deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 4%),
       linear-gradient(to bottom right, var(--paper), var(--paper-deep));
     box-shadow:
-      inset 0 0 70px rgba(120,90,40,.09),   /* gentle age toward the edges */
-      0 14px 40px var(--page-shadow);
+      inset 0 0 44px rgba(120,90,40,.06),   /* gentle age toward the edges */
+      0 5px 16px var(--page-shadow);
     overflow:hidden;
   }
   .page-face.back{ display:none; }
@@ -424,23 +425,27 @@
     box-shadow:0 0 0 5px rgba(224,138,84,.18), 0 0 14px rgba(224,138,84,.5);
   }
 
-  /* ------- bottom chrome: pager + arrows ------- */
+  /* ------- chrome: page arrows float over the book's edges, kindle-style ------- */
   .chrome{
-    position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-    z-index:10; display:flex; align-items:center; gap:20px;
+    position:fixed; left:50%; bottom:5px; transform:translateX(-50%);
+    z-index:10; display:flex; align-items:center;
     font-family: ui-sans-serif, system-ui, sans-serif;
     color:var(--nav-faint);
   }
-  .chrome .pageno{ font-size:.72rem; letter-spacing:.28em; min-width:70px; text-align:center; }
+  .chrome .pageno{ font-size:.66rem; letter-spacing:.28em; min-width:70px; text-align:center; }
   .arrow{
-    width:40px; height:40px; border-radius:50%;
+    position:fixed; z-index:12; top:50%; margin-top:-21px;
+    width:42px; height:42px; border-radius:50%;
     border:1px solid var(--nav-faint); background:var(--chrome-btn);
-    color:var(--nav-ink); cursor:pointer; font-size:1rem;
+    color:var(--nav-ink); cursor:pointer; font-size:1.05rem;
     display:grid; place-items:center;
     transition: all .3s ease; backdrop-filter: blur(4px);
+    opacity:.7;
   }
-  .arrow:hover{ background:var(--accent); border-color:var(--accent); color:#fff; transform:scale(1.1); }
-  .arrow:disabled{ opacity:.25; cursor:default; transform:none; }
+  .arrow.prev{ left: calc(10vw + 14px); }
+  .arrow.next{ right: calc(10vw + 14px); }
+  .arrow:hover{ background:var(--accent); border-color:var(--accent); color:#fff; transform:scale(1.1); opacity:1; }
+  .arrow:disabled{ opacity:.18; cursor:default; transform:none; }
   .arrow:disabled:hover{ background:var(--chrome-btn); border-color:var(--nav-faint); color:var(--nav-ink); }
 
   .theme-toggle{
@@ -473,21 +478,36 @@
      RESPONSIVE
      ============================================================ */
   @media (max-width: 1024px){          /* iPad & small laptops */
-    .book{ width:calc(100vw - 84px); height:calc(100vh - 130px); }
     .side-nav{ right:12px; }
     .side-nav .label{ display:none; }
+    .arrow.prev{ left: calc(10vw + 6px); }
+    .arrow.next{ right: calc(10vw + 6px); }
   }
-  @media (max-width: 700px){           /* phones */
+  @media (max-width: 700px){           /* phones: full-bleed book, nav on top */
+    .stage{ inset:56px 0 0 0; }
     .book{
-      width:calc(100vw - 40px);
-      height:calc(100vh - 150px);
-      height:calc(100dvh - 150px);     /* respect mobile browser chrome */
+      width:100vw;
+      height:calc(100vh - 60px);
+      height:calc(100dvh - 60px);      /* respect mobile browser chrome */
     }
-    .side-nav{ right:6px; }
-    .theme-toggle{ right:12px; top:12px; }
+    .page-face{ border-radius:0; }
+    .book::before, .book::after{ display:none; }
+
+    /* top bar: ‹ at left, chapter dots centered, › at right */
+    .arrow{ top:8px; margin-top:0; width:38px; height:38px; opacity:.85; }
+    .arrow.prev{ left:10px; }
+    .arrow.next{ right:10px; }
+    .side-nav{
+      top:12px; right:auto; left:50%; transform:translateX(-50%);
+      flex-direction:row; align-items:center; gap:0;
+    }
+    .side-nav .rail, .side-nav .rail-fill{ display:none; }
+    .nav-item{ padding:10px 7px; }
+    .chrome{ display:none; }
+    .theme-toggle{ top:auto; bottom:12px; right:12px; width:36px; height:36px; }
+
     .repo-grid{ grid-template-columns:1fr 1fr; }
     .facts{ grid-template-columns:1fr 1fr; }
-    .chrome{ bottom:12px; gap:14px; }
   }
 </style>
 </head>
@@ -704,11 +724,11 @@
   <!-- items injected by JS from page data-titles -->
 </nav>
 
-<!-- ═══════════ BOTTOM CHROME ═══════════ -->
+<!-- ═══════════ CHROME: edge arrows + pager ═══════════ -->
+<button class="arrow prev" id="prevBtn" aria-label="Previous page">‹</button>
+<button class="arrow next" id="nextBtn" aria-label="Next page">›</button>
 <div class="chrome">
-  <button class="arrow" id="prevBtn" aria-label="Previous page">‹</button>
   <div class="pageno" id="pageNo">1 / 6</div>
-  <button class="arrow" id="nextBtn" aria-label="Next page">›</button>
 </div>
 
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle day / night reading mode">☾</button>
@@ -974,20 +994,23 @@
     if (target === current || busy) return;
     busy = true;
 
-    var forward = target > current;
-    var span = Math.abs(target - current);
-    var dur = span > 1 ? 330 : 780;            // riffle quickly through jumps
-    var i = current;
-
-    current = target;                           // UI reflects destination at once
-    updateChrome();
-
-    (function step(){
-      var doneAll = forward ? (i >= target) : (i <= target);
-      if (doneAll){ restack(); busy = false; return; }
-      if (forward){ turnForward(i, dur, step); i++; }
-      else        { turnBackward(i - 1, dur, step); i--; }
-    })();
+    // one single page turn, no matter how far the jump — the pages in
+    // between are tucked away so the turn lands straight on the target
+    var j;
+    if (target > current){
+      for (j = current + 1; j < target; j++) pages[j].classList.add("flipped");
+      var from = current;
+      current = target; updateChrome();
+      turnForward(from, 780, function(){ restack(); busy = false; });
+    } else {
+      var mids = [];
+      for (j = target + 1; j < current; j++) mids.push(pages[j]);
+      current = target; updateChrome();
+      turnBackward(target, 780, function(){
+        mids.forEach(function(p){ p.classList.remove("flipped"); });
+        restack(); busy = false;
+      });
+    }
   }
 
   /* ══════════ SIDE NAV ══════════ */
