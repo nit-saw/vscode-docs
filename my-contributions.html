@@ -86,7 +86,6 @@
   .page-face.front{ cursor: grab; }
   .stage.dragging .page-face.front{ cursor: grabbing; }
   .stage.dragging{ user-select: none; -webkit-user-select: none; }
-  .page.dragging{ transition: none !important; visibility: visible !important; }
 
   .book{
     position:relative;
@@ -119,30 +118,15 @@
     background: linear-gradient(to right, #23272e, #33383f);
   }
 
-  /* ------- pages ------- */
+  /* ------- pages (fold model: a page turns by folding over a moving
+     crease, like iBooks / Kindle — no rigid 3D rotation) ------- */
   .page{
     position:absolute; inset:0;
-    transform-style: preserve-3d;
-    transform-origin: left center;
-    transition: transform 1.05s cubic-bezier(.42,.05,.28,1), visibility 0s linear 0s;
-    will-change: transform;
   }
-  /* once fully turned, the page tucks away (it would otherwise hang
-     off the left edge of the screen like a loose leaf) */
-  .page.flipped{
-    transform: rotateY(-180deg);
-    visibility: hidden;
-    transition: transform 1.05s cubic-bezier(.42,.05,.28,1), visibility 0s linear 1.05s;
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .page{ transition: transform .01s linear; }
-  }
+  .page.flipped{ visibility:hidden; }
 
   .page-face{
     position:absolute; inset:0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
     border-radius: 3px 6px 6px 3px;
     background:
       linear-gradient(105deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 4%),
@@ -150,13 +134,8 @@
     box-shadow: 0 14px 40px var(--page-shadow);
     overflow:hidden;
   }
-  .page-face.back{
-    transform: rotateY(180deg);
-    border-radius: 6px 3px 3px 6px;
-    background:
-      linear-gradient(-105deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 4%),
-      linear-gradient(to bottom left, var(--paper), var(--paper-deep));
-  }
+  .page-face.back{ display:none; }
+  .page .curl{ display:none; }
 
   /* subtle paper grain */
   .page-face::before{
@@ -165,22 +144,29 @@
     background-size: 5px 5px;
   }
 
-  /* the kindle "curl" light that sweeps across a turning page */
-  .page .curl{
-    content:""; position:absolute; inset:0; pointer-events:none;
-    backface-visibility:hidden;
-    background: linear-gradient(100deg,
-      transparent 30%, rgba(255,255,255,.0) 44%,
-      rgba(255,255,255,.35) 50%,
-      rgba(0,0,0,.18) 56%, transparent 70%);
-    opacity:0;
-    transition: opacity .3s ease;
+  /* the white underside of the sheet, folded over at the crease.
+     Its right edge IS the crease: bright at the curl's crown,
+     darkening into the crease like curved paper catching light. */
+  .foldback{
+    display:none; position:absolute; top:0; bottom:0; z-index:7;
+    pointer-events:none;
+    background:
+      linear-gradient(to right,
+        rgba(0,0,0,.05)          0%,
+        var(--paper)             10%,
+        var(--paper)             45%,
+        var(--paper-deep)        72%,
+        rgba(0,0,0,.075)         94%,
+        rgba(0,0,0,.16)          100%);
+    background-color: var(--paper);
+    border-radius: 4px 0 0 4px;
+    box-shadow: -16px 6px 26px rgba(0,0,0,.16);
   }
-  .page.turning .curl{ opacity:1; animation: curlSweep 1.05s cubic-bezier(.42,.05,.28,1); }
-  @keyframes curlSweep{
-    0%   { background-position: 120% 0; opacity:0; }
-    25%  { opacity:1; }
-    100% { background-position:-40% 0; opacity:0; }
+  /* shadow the lifted sheet casts on the page being revealed */
+  .fold-shadow{
+    display:none; position:absolute; top:-1%; bottom:-1%; z-index:6;
+    pointer-events:none;
+    background: linear-gradient(to right, rgba(0,0,0,.26), rgba(0,0,0,0));
   }
 
   /* ------- page inner layout ------- */
@@ -768,11 +754,26 @@
     flickSrc.start(t0 + swishDur * 0.72);
   }
 
-  /* ══════════ BOOK ENGINE ══════════ */
+  /* ══════════ BOOK ENGINE (fold model) ══════════ */
   var pages   = Array.prototype.slice.call(document.querySelectorAll(".page"));
   var total   = pages.length;
   var current = 0;
   var busy    = false;
+  var bookEl  = document.getElementById("book");
+  var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // give every page its fold apparatus, and lift the tap-zones out of the
+  // clipped front face so they stay clickable while the page is curled
+  pages.forEach(function(pg){
+    pg._p = 0;                                    // fold progress 0..1
+    Array.prototype.forEach.call(pg.querySelectorAll(".tap-zone"), function(z){
+      pg.appendChild(z);
+    });
+    var fb = document.createElement("div"); fb.className = "foldback";    pg.appendChild(fb);
+    var sh = document.createElement("div"); sh.className = "fold-shadow"; pg.appendChild(sh);
+    pg._front = pg.querySelector(".page-face.front");
+    pg._fb = fb; pg._sh = sh;
+  });
 
   // z-index bookkeeping: unturned pages stack front-to-back;
   // turned pages stack so the most recently turned is on top of the left pile.
@@ -782,43 +783,101 @@
     });
   }
 
+  /* The heart of the turn. Progress p folds the sheet over a vertical
+     crease at m = W(1-p): the part right of the crease flips over and
+     lies mirrored to its left as the white underside, exactly like
+     folding real paper. p=0 flat, p=0.5 crease at the spine, p=1 gone. */
+  function setFold(pg, p){
+    pg._p = p;
+    var W = bookEl.clientWidth;
+    var front = pg._front, fb = pg._fb, sh = pg._sh;
+    if (p <= 0.001){
+      front.style.clipPath = ""; front.style.webkitClipPath = "";
+      fb.style.display = "none"; sh.style.display = "none";
+      pg.style.opacity = "";
+      return;
+    }
+    var m = W * (1 - p);          // crease position
+    var foldW = W - m;            // width of the folded-over part
+    var clip = "inset(0 " + foldW.toFixed(2) + "px 0 0)";
+    front.style.clipPath = clip; front.style.webkitClipPath = clip;
+
+    fb.style.display = "block";
+    fb.style.width = Math.max(foldW, 1).toFixed(2) + "px";
+    fb.style.left = (m - foldW).toFixed(2) + "px";
+
+    // shadow ahead of the crease, strongest when the sheet stands tallest
+    var lift = Math.sin(Math.PI * Math.min(p, 1));
+    sh.style.display = "block";
+    sh.style.left = m.toFixed(2) + "px";
+    sh.style.width = Math.max(26, foldW * 0.55).toFixed(2) + "px";
+    sh.style.opacity = (0.85 * lift).toFixed(3);
+    fb.style.boxShadow = "-16px 6px 26px rgba(0,0,0," + (0.20 * lift).toFixed(3) + ")";
+
+    // the sheet drifts out over the left margin at the end — fade it away
+    pg.style.opacity = p > 0.82 ? String(Math.max(0, 1 - (p - 0.82) / 0.18)) : "";
+  }
+
+  function easeInOutCubic(t){ return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+
+  function animateFold(pg, to, dur, done){
+    if (pg._anim) cancelAnimationFrame(pg._anim);
+    var from = pg._p;
+    if (REDUCED) dur = 1;
+    var t0 = performance.now();
+    function frame(now){
+      var t = dur <= 1 ? 1 : Math.min(1, (now - t0) / dur);
+      setFold(pg, from + (to - from) * easeInOutCubic(t));
+      if (t < 1){ pg._anim = requestAnimationFrame(frame); }
+      else { pg._anim = null; if (done) done(); }
+    }
+    pg._anim = requestAnimationFrame(frame);
+  }
+
+  function turnForward(i, dur, done){          // fold page i over to the left
+    var pg = pages[i];
+    pg.classList.remove("flipped");
+    pg.style.zIndex = 2 * total + 5;
+    playPageSound();
+    animateFold(pg, 1, dur, function(){
+      pg.classList.add("flipped");
+      setFold(pg, 0);
+      pg.style.zIndex = "";
+      if (done) done();
+    });
+  }
+
+  function turnBackward(i, dur, done){         // bring page i back from the left
+    var pg = pages[i];
+    pg.classList.remove("flipped");
+    pg.style.zIndex = 2 * total + 5;
+    if (pg._p < 0.99) setFold(pg, 1);
+    playPageSound();
+    animateFold(pg, 0, dur, function(){
+      pg.style.zIndex = "";
+      if (done) done();
+    });
+  }
+
   function go(target){
     target = Math.max(0, Math.min(total - 1, target));
     if (target === current || busy) return;
     busy = true;
 
     var forward = target > current;
-    var step = forward ? 1 : -1;
+    var span = Math.abs(target - current);
+    var dur = span > 1 ? 330 : 780;            // riffle quickly through jumps
+    var i = current;
 
-    // turn intermediate pages quickly, one after another, like riffling
-    var idx = current;
-    (function turnNext(){
-      if (idx === target){ finish(); return; }
-      var pg = forward ? pages[idx] : pages[idx - 1];
-      pg.classList.add("turning");
-      // raise the actively turning page above everything
-      pg.style.zIndex = 2 * total + 5;
-      if (forward) pg.classList.add("flipped");
-      else         pg.classList.remove("flipped");
-      playPageSound();
-      idx += step;
-      var delay = (Math.abs(target - current) > 1) ? 190 : 1060;
-      setTimeout(function(){
-        pg.classList.remove("turning");
-        turnNext();
-      }, delay);
-    })();
-
-    function finish(){
-      current = target;
-      restack();
-      updateChrome();
-      busy = false;
-    }
-
-    // update UI immediately so nav feels responsive
-    current = target;
+    current = target;                           // UI reflects destination at once
     updateChrome();
+
+    (function step(){
+      var doneAll = forward ? (i >= target) : (i <= target);
+      if (doneAll){ restack(); busy = false; return; }
+      if (forward){ turnForward(i, dur, step); i++; }
+      else        { turnBackward(i - 1, dur, step); i--; }
+    })();
   }
 
   /* ══════════ SIDE NAV ══════════ */
@@ -885,10 +944,10 @@
     go(current + (e.deltaY > 0 ? 1 : -1));
   }, { passive:true });
 
-  /* ── slide to turn: drag left and the page peels open under your finger ── */
+  /* ── slide to turn: drag left and the sheet folds over under your finger ── */
   var stage = document.querySelector(".stage");
-  var bookEl = document.getElementById("book");
-  var drag = { on:false, dir:0, pg:null, startX:0, startY:0, prog:0, id:null };
+  var drag = { on:false, dir:0, pg:null, startX:0, startY:0, startP:0,
+               lastX:0, lastT:0, vx:0, id:null };
   var suppressClick = false;
 
   stage.addEventListener("pointerdown", function(e){
@@ -896,6 +955,7 @@
     if (e.target.closest("button")) return;
     drag.on = true; drag.dir = 0; drag.pg = null;
     drag.startX = e.clientX; drag.startY = e.clientY;
+    drag.lastX = e.clientX; drag.lastT = performance.now(); drag.vx = 0;
     drag.id = e.pointerId;
   });
 
@@ -912,46 +972,57 @@
         : (current > 0 ? pages[current - 1] : null);
       if (!pg){ drag.on = false; return; }
       drag.dir = dir; drag.pg = pg;
-      pg.classList.add("dragging");
+      if (pg._anim){ cancelAnimationFrame(pg._anim); pg._anim = null; }
+      pg.classList.remove("flipped");
+      if (dir === -1 && pg._p < 0.01) setFold(pg, 1); // it was resting fully turned
+      drag.startP = pg._p;
       pg.style.zIndex = 2 * total + 5;
       stage.classList.add("dragging");
       suppressClick = true;
       try { stage.setPointerCapture(e.pointerId); } catch(err){}
     }
 
+    // track flick velocity (px/ms, smoothed)
+    var now = performance.now();
+    var dt = Math.max(1, now - drag.lastT);
+    drag.vx = 0.7 * drag.vx + 0.3 * ((e.clientX - drag.lastX) / dt);
+    drag.lastX = e.clientX; drag.lastT = now;
+
     var w = bookEl.clientWidth;
-    if (drag.dir === 1){
-      drag.prog = Math.min(1, Math.max(0, -dx / (w * 0.85)));
-    } else {
-      drag.prog = 1 - Math.min(1, Math.max(0, dx / (w * 0.85)));
-    }
-    drag.pg.style.transform = "rotateY(" + (-180 * drag.prog) + "deg)";
+    var p = Math.min(1, Math.max(0, drag.startP + (-dx) / (w * 1.25)));
+    setFold(drag.pg, p);
   });
 
   function endDrag(e){
     if (!drag.on) return;
     drag.on = false;
     var pg = drag.pg;
-    if (!pg){ return; }
+    if (!pg) return;
     stage.classList.remove("dragging");
 
-    // past the threshold? finish the turn; otherwise let the page fall back
-    var flip;
-    if (drag.dir === 1){ flip = drag.prog > 0.22; if (flip) current++; }
-    else               { flip = drag.prog > 0.78; if (!flip) current--; }
+    var p = pg._p;
+    // a flick only counts if the pointer was still moving at release
+    var stale = performance.now() - drag.lastT > 120;
+    var flickL = !stale && drag.vx < -0.45, flickR = !stale && drag.vx > 0.45;
+
+    // where does the sheet settle? finish the turn, or fall back open
+    var to;
+    if (drag.dir === 1) to = (flickR ? 0 : (flickL || p > 0.12) ? 1 : 0);
+    else                to = (flickL ? 1 : (flickR || p < 0.88) ? 0 : 1);
+
+    current += (drag.dir === 1 && to === 1) ? 1 : (drag.dir === -1 && to === 0) ? -1 : 0;
+    updateChrome();
 
     busy = true;
-    pg.classList.remove("dragging");                  // restores the transition
-    void pg.offsetWidth;                              // flush so it animates from the drag angle
-    pg.style.transform = "";
-    pg.classList.toggle("flipped", flip);
-    if (drag.prog > 0.02 && drag.prog < 0.98) playPageSound();
-    updateChrome();
-    setTimeout(function(){
+    if (p > 0.02 && p < 0.98) playPageSound();
+    // momentum: the further it has to travel, the longer — but flicks snap
+    var dur = Math.max(140, 520 * Math.abs(to - p) * (flickL || flickR ? 0.55 : 1));
+    animateFold(pg, to, dur, function(){
+      if (to === 1){ pg.classList.add("flipped"); setFold(pg, 0); }
       pg.style.zIndex = "";
       restack();
       busy = false;
-    }, 1100);
+    });
     drag.pg = null;
   }
   stage.addEventListener("pointerup", endDrag);
@@ -965,6 +1036,23 @@
       suppressClick = false;
     }
   }, true);
+
+  /* ── iBooks-style invitation: the page edge lifts as you hover it ── */
+  document.querySelectorAll(".tap-zone.next").forEach(function(z){
+    z.addEventListener("mouseenter", function(){
+      if (busy || drag.on || current >= total - 1) return;
+      var pg = pages[current];
+      pg.style.zIndex = 2 * total + 5;
+      animateFold(pg, 0.022, 240);
+    });
+    z.addEventListener("mouseleave", function(){
+      if (busy || drag.on) return;
+      var pg = pages[current];
+      if (pg._p > 0 && pg._p < 0.1){
+        animateFold(pg, 0, 300, function(){ pg.style.zIndex = ""; restack(); });
+      }
+    });
+  });
 
   /* ══════════ DAY / NIGHT (like a kindle's reading light) ══════════ */
   var toggle = document.getElementById("themeToggle");
