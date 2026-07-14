@@ -475,6 +475,177 @@
   }
 
   /* ============================================================
+     ERAS — the book ages forward as you read:
+     1992 newsprint → 2000s sepia → 2010s flat → 2020s vibrant → 2026 glass
+     ============================================================ */
+
+  /* — 1992 · black & white newspaper — */
+  .era-1992 .page-face.front{
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.016) 0 2px, transparent 2px 4px),
+      linear-gradient(to bottom right, #edebe0, #dedbce);
+  }
+  .np{ font-family: Georgia, "Times New Roman", serif; color:#1c1c1c; }
+  .np-head{ text-align:center; border-bottom:3px double #1c1c1c; padding-bottom:8px; margin-bottom:12px; }
+  .np-topline, .np-dateline{
+    display:flex; justify-content:space-between; gap:8px;
+    font-size:.58rem; letter-spacing:.14em; text-transform:uppercase;
+    border-bottom:1px solid #1c1c1c; padding:3px 2px;
+  }
+  .np-dateline{ border-bottom:none; border-top:1px solid #1c1c1c; margin-top:6px; padding-top:5px; }
+  .np-mast{
+    font-family:"Old English Text MT","UnifrakturCothic",Georgia,serif;
+    font-weight:700; font-size:clamp(1.9rem, 5vw, 3.1rem); line-height:1.15; padding:6px 0 2px;
+  }
+  .np-headline{
+    text-align:center; font-weight:900; letter-spacing:.01em;
+    font-size:clamp(1.5rem, 4.4vw, 2.5rem); line-height:1.05; margin:4px 0 8px;
+  }
+  .np-deck{
+    text-align:center; font-style:italic; font-size:.92rem; color:#333;
+    border-top:1px solid #1c1c1c; border-bottom:1px solid #1c1c1c;
+    padding:6px 8%; margin-bottom:14px;
+  }
+  .np-cols{
+    columns:2 240px; column-gap:26px; column-rule:1px solid #9a9585;
+    text-align:justify; font-size:.86rem; line-height:1.66; color:#222; flex:1;
+  }
+  .np-cols p{ margin-bottom:10px; }
+  .np-lead{ font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+  .np-photo{ break-inside:avoid; margin:0 0 10px; }
+  .np-photo svg, .np-photo img{ width:100%; display:block; filter:grayscale(1) contrast(1.05); border:1px solid #1c1c1c; }
+  .np-photo figcaption{
+    font-size:.68rem; font-style:italic; color:#444; text-align:left;
+    padding:4px 0 6px; border-bottom:1px solid #9a9585;
+  }
+  .era-1992 .folio{ color:#555; border-top:3px double #1c1c1c; }
+
+  /* — 2000s · sepia scrapbook — */
+  .era-2000s .page-face.front{
+    background: radial-gradient(120% 100% at 50% 0%, #f4e7c8, #e9d6ab 75%, #ddc48e 100%);
+  }
+  .era-2000s h2{ font-style:italic; }
+  .mag-wrap{ display:flex; gap:24px; align-items:flex-start; }
+  .mag-wrap .timeline{ flex:1; }
+  .polaroid{
+    flex:0 0 clamp(120px, 20vw, 190px);
+    background:#fdfbf4; padding:9px 9px 8px; margin:10px 4px 0 0;
+    box-shadow:0 6px 18px rgba(80,60,20,.28);
+    transform:rotate(2.5deg); position:relative;
+  }
+  .polaroid::before{                    /* a strip of old tape */
+    content:""; position:absolute; top:-9px; left:50%; width:64px; height:18px;
+    transform:translateX(-50%) rotate(-2deg);
+    background:rgba(222,203,152,.6); border:1px solid rgba(160,130,70,.25);
+  }
+  .polaroid svg, .polaroid img{ width:100%; display:block; filter:sepia(.45); }
+  .polaroid figcaption{
+    font-size:.68rem; font-style:italic; text-align:center;
+    color:#6b5a35; padding-top:7px; line-height:1.5;
+  }
+
+  /* — 2010s · flat & clean — */
+  .era-2010s .page-face.front{ background:#fbfcfd; }
+  .era-2010s .page-face.front::before{ opacity:.15; }
+  .era-2010s .sheet{ font-family: ui-sans-serif, system-ui, sans-serif; }
+  .era-2010s h2{ font-weight:800; letter-spacing:-.02em; color:#111827; }
+  .era-2010s h2 em{ font-style:normal; color:#2563eb; }
+  .era-2010s .chapter-eyebrow{ color:#2563eb; }
+  .era-2010s .repo-status{ color:#6b7280; }
+  .era-2010s .repo-card{ background:#fff; border:1px solid #e5e7eb; }
+  .era-2010s .repo-card h3{ color:#111827; }
+  .era-2010s .repo-card p{ color:#6b7280; }
+  .era-2010s .repo-meta{ color:#9ca3af; }
+  .era-2010s .repo-card::before{ background:linear-gradient(to right,#2563eb,#06b6d4); }
+  .era-2010s .repo-card:hover{ border-color:#bfdbfe; box-shadow:0 12px 28px rgba(37,99,235,.10); }
+  .era-2010s .folio{ color:#9ca3af; }
+
+  /* — 2020s · soft & vibrant — */
+  .era-2020s .page-face.front{
+    background: linear-gradient(135deg,#f8fafc 0%,#eef2ff 55%,#fdf2f8 100%);
+  }
+  .era-2020s .page-face.front::before{ opacity:0; }
+  .era-2020s .sheet{ font-family: ui-sans-serif, system-ui, sans-serif; }
+  .era-2020s h2{ font-weight:800; letter-spacing:-.02em; color:#111827; }
+  .era-2020s h2 em{
+    font-style:normal;
+    background:linear-gradient(90deg,#7c3aed,#db2777);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .era-2020s .chapter-eyebrow{ color:#7c3aed; }
+  .era-2020s p.lede{ color:#4b5563; }
+  .era-2020s .skill-group h3{ color:#7c3aed; border-color:#e9d5ff; }
+  .era-2020s .chip{
+    background:#fff; border:1px solid #e5e7eb; color:#374151; border-radius:12px;
+    box-shadow:0 2px 8px rgba(17,24,39,.05);
+  }
+  .era-2020s .chip:hover{
+    background:linear-gradient(90deg,#7c3aed,#db2777); border-color:transparent; color:#fff;
+    box-shadow:0 8px 20px rgba(124,58,237,.35); transform:translateY(-2px) scale(1.03);
+  }
+  .era-2020s .folio{ color:#9ca3af; }
+
+  /* — 2026 · super fancy: dark glass under an aurora — */
+  .era-2026 .page-face.front{ background:#0b0e16; }
+  .era-2026 .page-face.front::before{ opacity:0; }
+  .aurora{ position:absolute; inset:0; overflow:hidden; pointer-events:none; border-radius:inherit; }
+  .aurora i{
+    position:absolute; width:55%; height:55%; border-radius:50%;
+    filter:blur(70px); opacity:.5;
+  }
+  .aurora i:nth-child(1){ background:#6d28d9; top:-15%; left:-10%;
+    animation:drift1 11s ease-in-out infinite alternate; }
+  .aurora i:nth-child(2){ background:#0ea5e9; bottom:-20%; right:-10%;
+    animation:drift2 13s ease-in-out infinite alternate; }
+  .aurora i:nth-child(3){ background:#db2777; bottom:8%; left:28%; width:36%; height:36%; opacity:.3;
+    animation:drift1 17s ease-in-out infinite alternate-reverse; }
+  @keyframes drift1{ from{ transform:translate(0,0) scale(1);} to{ transform:translate(9%,7%) scale(1.15);} }
+  @keyframes drift2{ from{ transform:translate(0,0) scale(1.1);} to{ transform:translate(-8%,-6%) scale(.95);} }
+  @media (prefers-reduced-motion: reduce){ .aurora i{ animation:none; } }
+  .era-2026 .sheet{ font-family: ui-sans-serif, system-ui, sans-serif; }
+  .era-2026 .chapter-eyebrow{ color:#a5b4fc; align-self:stretch; }
+  .era-2026 .chapter-eyebrow::after{ background:linear-gradient(to right, rgba(165,180,252,.35), transparent); }
+  .glass{
+    display:flex; flex-direction:column; align-items:center;
+    max-width:600px; width:100%;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:22px;
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 20px 60px rgba(0,0,0,.4);
+    padding:clamp(20px,4.5vh,38px) clamp(18px,4vw,40px);
+  }
+  .era-2026 blockquote{ color:#e5e7eb; margin-bottom:0; }
+  .era-2026 blockquote span{
+    background:linear-gradient(90deg,#a78bfa,#22d3ee);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .avatar-ring{
+    width:92px; height:92px; border-radius:50%; padding:3px; margin-bottom:22px;
+    background:conic-gradient(from 40deg,#7c3aed,#06b6d4,#db2777,#7c3aed);
+    box-shadow:0 0 30px rgba(124,58,237,.45);
+  }
+  .avatar-ring .inner{
+    width:100%; height:100%; border-radius:50%; background:#0b0e16;
+    display:grid; place-items:center; overflow:hidden;
+  }
+  .avatar-ring svg{ width:72%; margin-top:12%; }
+  .avatar-ring img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
+  .era-2026 .contact-btn.primary{
+    background:linear-gradient(90deg,#7c3aed,#06b6d4); color:#fff;
+    box-shadow:0 10px 30px rgba(124,58,237,.45);
+  }
+  .era-2026 .contact-btn.ghost{
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); color:#d1d5db;
+  }
+  .end-hint{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.66rem; letter-spacing:.28em; text-transform:uppercase;
+    color:rgba(229,231,235,.4); margin-top:26px;
+  }
+  .era-2026 .folio{ color:rgba(229,231,235,.35); }
+
+  /* ============================================================
      RESPONSIVE
      ============================================================ */
   @media (max-width: 1024px){          /* iPad & small laptops */
@@ -508,6 +679,8 @@
 
     .repo-grid{ grid-template-columns:1fr 1fr; }
     .facts{ grid-template-columns:1fr 1fr; }
+    .mag-wrap{ flex-direction:column-reverse; }
+    .polaroid{ align-self:center; }
   }
 </style>
 </head>
@@ -546,30 +719,51 @@
       <div class="curl"></div>
     </section>
 
-    <!-- ── PAGE 2 · ABOUT ME ──────────────────────────────── -->
-    <section class="page" data-title="About Me">
+    <!-- ── PAGE 2 · 1992 — A NEWSPAPER FRONT PAGE ─────────── -->
+    <section class="page era-1992" data-title="1992 · Born">
       <div class="page-face front">
-        <div class="sheet">
-          <div class="chapter-eyebrow">Chapter One</div>
-          <h2>Hello, I'm <em>Nitesh.</em></h2>
-          <!-- ✏️ EDIT ME: replace this with your real story -->
-          <p class="lede drop">Every engineer has an origin story. Mine began with
-            curiosity — the itch to open things up and see how they work, then the
-            slightly more dangerous itch to put them back together <em>better</em>.
-            Somewhere between the first "Hello, World" and the first production
-            incident at 2 a.m., that curiosity became a craft.</p>
-          <p class="lede">I care about software that lasts: code that reads like prose,
-            systems that fail loudly and recover quietly, and documentation that
-            respects the next person's time. When I'm not building, I'm usually
-            reading, tinkering with side projects, or contributing back to the
-            open-source tools I rely on every day.</p>
-          <div class="facts">
-            <div class="fact"><b>Engineer</b><span>What I am</span></div>
-            <div class="fact"><b>Open Source</b><span>What I love</span></div>
-            <div class="fact"><b>@nit-saw</b><span>Where to find me</span></div>
-            <div class="fact"><b>Always Learning</b><span>Current status</span></div>
+        <div class="sheet np">
+          <header class="np-head">
+            <div class="np-topline"><span>Vol. I — No. 1</span><span>Late Edition</span><span>Price: One Smile</span></div>
+            <div class="np-mast">The Daily Nitesh</div>
+            <div class="np-dateline"><span>Est. 1992</span><span>"All the Code That's Fit to Ship"</span><span>Weather: Promising</span></div>
+          </header>
+          <div class="np-headline">A BUILDER IS BORN!</div>
+          <div class="np-deck">Neighbours report unusually high curiosity levels — experts
+            predict "this one is going to take everything apart."</div>
+          <div class="np-cols">
+            <!-- ✏️ EDIT ME: replace this <svg> with your real photo:
+                 <img src="your-photo-1992.jpg" alt="Me as a baby, 1992"> -->
+            <figure class="np-photo">
+              <svg viewBox="0 0 200 150" role="img" aria-label="Vintage placeholder portrait, halftone print">
+                <defs>
+                  <pattern id="ht92" width="4.2" height="4.2" patternUnits="userSpaceOnUse">
+                    <circle cx="2.1" cy="2.1" r="1.15" fill="#1c1c1c"/>
+                  </pattern>
+                </defs>
+                <rect width="200" height="150" fill="#cfcabc"/>
+                <circle cx="70" cy="60" r="30" fill="url(#ht92)"/>
+                <path d="M22 150 C22 106 48 96 70 96 C92 96 118 106 118 150 Z" fill="url(#ht92)"/>
+                <circle cx="146" cy="74" r="22" fill="url(#ht92)" opacity=".8"/>
+                <path d="M112 150 C112 118 130 110 146 110 C162 110 180 118 180 150 Z" fill="url(#ht92)" opacity=".8"/>
+                <rect x="1.5" y="1.5" width="197" height="147" fill="none" stroke="#1c1c1c" stroke-width="3"/>
+              </svg>
+              <figcaption>The author (left), pictured with an early collaborator.
+                — Staff photograph</figcaption>
+            </figure>
+            <!-- ✏️ EDIT ME: your real 1992 story, in breathless newspaper prose -->
+            <p><span class="np-lead">Somewhere in India, 1992.</span> — In a year when
+              the world was still dialling up, a small human arrived with an unusual
+              fascination for how things work. First words came late; first questions
+              never stopped.</p>
+            <p>Witnesses describe a childhood of dismantled toys, rescued screws and
+              suspiciously quiet afternoons. "Every radio in this house has been opened
+              at least twice," one family member reported. "Some of them still work."</p>
+            <p>That curiosity, sources confirm, would soon be pointed at computers —
+              with consequences this newspaper will document in the pages that
+              follow. Turn to page 3 for the developing story.</p>
           </div>
-          <div class="folio"><span>My Story</span><span>· 2 ·</span></div>
+          <div class="folio"><span>The Daily Nitesh</span><span>· 2 ·</span></div>
         </div>
         <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
         <div class="tap-zone next" data-dir="1"><i>›</i></div>
@@ -578,38 +772,52 @@
       <div class="curl"></div>
     </section>
 
-    <!-- ── PAGE 3 · THE JOURNEY ───────────────────────────── -->
-    <section class="page" data-title="The Journey">
+    <!-- ── PAGE 3 · THE 2000s — SEPIA SCRAPBOOK ───────────── -->
+    <section class="page era-2000s" data-title="2000s · Journey">
       <div class="page-face front">
         <div class="sheet">
-          <div class="chapter-eyebrow">Chapter Two</div>
-          <h2>The <em>Journey</em> so far</h2>
-          <!-- ✏️ EDIT ME: replace these milestones with your real ones -->
-          <div class="timeline">
-            <div class="milestone">
-              <div class="when">The Beginning</div>
-              <h3>First lines of code</h3>
-              <p>Discovered programming and fell down the rabbit hole. Built small
-                 scripts, broke them, fixed them, and got hooked on the feedback loop.</p>
+          <div class="chapter-eyebrow">The 2000s · Chapter Two</div>
+          <h2>The <em>Journey</em> begins</h2>
+          <div class="mag-wrap">
+            <!-- ✏️ EDIT ME: put your real years & milestones here -->
+            <div class="timeline">
+              <div class="milestone">
+                <div class="when">1992 · The Beginning</div>
+                <h3>Born curious</h3>
+                <p>Arrived with more questions than the decade had answers.
+                   The dismantling of household electronics begins shortly after.</p>
+              </div>
+              <div class="milestone">
+                <div class="when">Late 1990s · First Machine</div>
+                <h3>A computer enters the house</h3>
+                <p>Games were played, then questioned, then taken apart. The family
+                   PC survives — barely — and a lifelong obsession does not.</p>
+              </div>
+              <div class="milestone">
+                <div class="when">2000s · First Code</div>
+                <h3>Hello, World</h3>
+                <p>Discovered that the machine could be told what to do. Built small
+                   scripts, broke them, fixed them, and got hooked on the loop.</p>
+              </div>
+              <div class="milestone">
+                <div class="when">2010s · The Craft</div>
+                <h3>From scripts to systems</h3>
+                <p>Went deep into how software really works — languages, tooling,
+                   architecture. Started shipping things people actually used.</p>
+              </div>
             </div>
-            <div class="milestone">
-              <div class="when">Learning the Craft</div>
-              <h3>From scripts to systems</h3>
-              <p>Went deep into how software really works — languages, tooling,
-                 architecture. Started shipping projects people actually used.</p>
-            </div>
-            <div class="milestone">
-              <div class="when">Giving Back</div>
-              <h3>Open source contributions</h3>
-              <p>Started contributing to the ecosystem — docs, fixes, and projects of
-                 my own. Learned that great software is a team sport played in public.</p>
-            </div>
-            <div class="milestone">
-              <div class="when">Today</div>
-              <h3>Building what's next</h3>
-              <p>Focused on crafting quality software and sharing what I learn along
-                 the way. The best chapter is always the one being written.</p>
-            </div>
+            <!-- ✏️ EDIT ME: replace this <svg> with a real photo:
+                 <img src="your-photo-2000s.jpg" alt="Me in the 2000s"> -->
+            <figure class="polaroid">
+              <svg viewBox="0 0 200 200" role="img" aria-label="Sepia placeholder photo">
+                <rect width="200" height="200" fill="#c9b68a"/>
+                <rect width="200" height="200" fill="#7a6a45" opacity=".18"/>
+                <circle cx="100" cy="84" r="36" fill="#4a3b22"/>
+                <path d="M38 200 C38 148 70 132 100 132 C130 132 162 148 162 200 Z" fill="#4a3b22"/>
+                <rect y="184" width="200" height="16" fill="rgba(255,255,255,.14)"/>
+              </svg>
+              <figcaption>Summer, sometime in the 2000s.<br>(placeholder photo)</figcaption>
+            </figure>
           </div>
           <div class="folio"><span>My Story</span><span>· 3 ·</span></div>
         </div>
@@ -621,10 +829,10 @@
     </section>
 
     <!-- ── PAGE 4 · MY CONTRIBUTIONS ──────────────────────── -->
-    <section class="page" data-title="Contributions">
+    <section class="page era-2010s" data-title="2010s · Building">
       <div class="page-face front">
         <div class="sheet">
-          <div class="chapter-eyebrow">Chapter Three</div>
+          <div class="chapter-eyebrow">The 2010s · Chapter Three</div>
           <h2>Things I've <em>Built</em></h2>
           <p class="repo-status" id="repoStatus">Fetching repositories from GitHub…</p>
           <div class="repo-grid" id="repoGrid"><!-- populated by JS --></div>
@@ -638,10 +846,10 @@
     </section>
 
     <!-- ── PAGE 5 · TOOLBOX ───────────────────────────────── -->
-    <section class="page" data-title="Toolbox">
+    <section class="page era-2020s" data-title="2020s · Toolbox">
       <div class="page-face front">
         <div class="sheet">
-          <div class="chapter-eyebrow">Chapter Four</div>
+          <div class="chapter-eyebrow">The 2020s · Chapter Four</div>
           <h2>My <em>Toolbox</em></h2>
           <p class="lede">The instruments I reach for. Every tool tells a story about
             the problems it helped solve.</p>
@@ -688,25 +896,35 @@
       <div class="curl"></div>
     </section>
 
-    <!-- ── PAGE 6 · EPILOGUE ──────────────────────────────── -->
-    <section class="page" data-title="Epilogue">
+    <!-- ── PAGE 6 · 2026 — SUPER FANCY ────────────────────── -->
+    <section class="page era-2026" data-title="2026 · Today">
       <div class="page-face front">
+        <div class="aurora"><i></i><i></i><i></i></div>
         <div class="sheet epilogue">
-          <div class="chapter-eyebrow" style="align-self:stretch">Epilogue</div>
-          <blockquote>"The best stories are the ones we <span>build together</span>.
-            If mine resonated with you — let's write the next chapter."</blockquote>
-          <div class="contact-row">
-            <a class="contact-btn primary" href="mailto:nitesh9392@gmail.com">
-              ✉ &nbsp;Say hello
-            </a>
-            <a class="contact-btn ghost" href="https://github.com/nit-saw" target="_blank" rel="noopener">
-              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-              github.com/nit-saw
-            </a>
+          <div class="chapter-eyebrow">2026 · Epilogue</div>
+          <div class="glass">
+            <!-- ✏️ EDIT ME: swap this <svg> for your latest photo:
+                 <img src="your-photo-2026.jpg" alt="Me, today" style="width:100%;height:100%;object-fit:cover"> -->
+            <div class="avatar-ring"><div class="inner">
+              <svg viewBox="0 0 100 100" role="img" aria-label="Placeholder avatar">
+                <circle cx="50" cy="38" r="18" fill="#94a3b8"/>
+                <path d="M18 100 C18 72 34 62 50 62 C66 62 82 72 82 100 Z" fill="#94a3b8"/>
+              </svg>
+            </div></div>
+            <blockquote>"The best stories are the ones we <span>build together</span>.
+              If mine resonated with you — let's write the next chapter."</blockquote>
+            <div class="contact-row">
+              <a class="contact-btn primary" href="mailto:nitesh9392@gmail.com">
+                ✉ &nbsp;Say hello
+              </a>
+              <a class="contact-btn ghost" href="https://github.com/nit-saw" target="_blank" rel="noopener">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                github.com/nit-saw
+              </a>
+            </div>
           </div>
-          <div class="rule" style="width:120px;height:1px;margin:34px 0 18px;background:linear-gradient(to right,transparent,var(--gold),transparent)"></div>
-          <div class="hint" style="font-family:ui-sans-serif,system-ui,sans-serif;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-faint)">The End — for now</div>
-          <div class="folio" style="align-self:stretch"><span>My Story</span><span>· 6 ·</span></div>
+          <div class="end-hint">The End — for now</div>
+          <div class="folio"><span>My Story</span><span>· 6 ·</span></div>
         </div>
         <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
       </div>
@@ -1063,14 +1281,23 @@
 
   var wheelLock = 0;
   document.addEventListener("wheel", function(e){
-    // let inner page content scroll first
+    var now = Date.now();
+
+    // trackpad: a two-finger horizontal swipe turns the page
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)){
+      if (Math.abs(e.deltaX) < 16 || now - wheelLock < 1100) return;
+      wheelLock = now;
+      go(current + (e.deltaX > 0 ? 1 : -1));
+      return;
+    }
+
+    // vertical: let inner page content scroll first
     var sheet = e.target.closest && e.target.closest(".sheet");
     if (sheet && sheet.scrollHeight > sheet.clientHeight){
       var atTop    = sheet.scrollTop <= 0;
       var atBottom = sheet.scrollTop + sheet.clientHeight >= sheet.scrollHeight - 2;
       if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
     }
-    var now = Date.now();
     if (now - wheelLock < 1200) return;
     if (Math.abs(e.deltaY) < 24) return;
     wheelLock = now;
