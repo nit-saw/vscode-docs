@@ -12,24 +12,31 @@
      ============================================================ */
 
   :root{
-    --paper:        #ffffff;
-    --paper-deep:   #f6f5f2;
-    --paper-edge:   #e7e5e0;
-    --ink:          #23272d;
-    --ink-soft:     #555b63;
-    --ink-faint:    #969ca4;
-    --accent:       #b3592c;
-    --accent-soft:  #d98f5f;
-    --gold:         #c19a4b;
-    --shadow:       rgba(70, 60, 45, .28);
-    --bg1:          #dfddd8;
-    --bg2:          #f2f1ee;
-    --card:         rgba(0,0,0,.025);
-    --card-border:  rgba(35,39,45,.12);
-    --nav-ink:      #2c3036;
-    --nav-faint:    rgba(44,48,54,.4);
-    --chrome-btn:   rgba(255,255,255,.65);
-    --page-shadow:  rgba(60,55,45,.10);   /* kept light: all six pages' shadows stack up */
+    /* inner pages: paper of the ancient world, set with modern restraint */
+    --paper:        #f4ead3;
+    --paper-deep:   #ecdfc0;
+    --paper-edge:   #dccba4;
+    --ink:          #33291c;
+    --ink-soft:     #5f5340;
+    --ink-faint:    #94886e;
+    --accent:       #a34a1f;
+    --accent-soft:  #c67c46;
+    --gold:         #a5761f;
+    --shadow:       rgba(80, 60, 30, .28);
+    --bg1:          #d6cdb8;
+    --bg2:          #eee8d9;
+    --card:         rgba(60,40,10,.035);
+    --card-border:  rgba(51,41,28,.16);
+    --nav-ink:      #4a3f2d;
+    --nav-faint:    rgba(74,63,45,.42);
+    --chrome-btn:   rgba(255,255,255,.5);
+    --page-shadow:  rgba(80,60,30,.11);   /* kept light: all six pages' shadows stack up */
+    /* the cover: curry powder & espresso ink */
+    --curry-1:      #d9a233;
+    --curry-2:      #c4881a;
+    --curry-3:      #a86f10;
+    --cov-ink:      #3a2508;
+    --cov-cream:    #f9efd4;
   }
 
   html[data-theme="night"]{
@@ -89,10 +96,8 @@
 
   .book{
     position:relative;
-    /* 20% breathing room from every side of the screen */
-    width:60vw;
-    height:60vh;
-    transform-style: preserve-3d;
+    width:min(900px, calc(100vw - 120px));
+    height:min(650px, calc(100vh - 110px));
   }
 
   /* stacked page edges on the right — the "rest of the book" */
@@ -131,7 +136,9 @@
     background:
       linear-gradient(105deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 4%),
       linear-gradient(to bottom right, var(--paper), var(--paper-deep));
-    box-shadow: 0 14px 40px var(--page-shadow);
+    box-shadow:
+      inset 0 0 70px rgba(120,90,40,.09),   /* gentle age toward the edges */
+      0 14px 40px var(--page-shadow);
     overflow:hidden;
   }
   .page-face.back{ display:none; }
@@ -209,40 +216,62 @@
   }
 
   /* ============================================================
-     COVER PAGE
+     COVER PAGE — a classic letterpress title page, set in curry
+     (after the cover of "The Design of Books", Univ. of Chicago)
      ============================================================ */
+  .page.cover-pg .page-face.front{
+    background:
+      radial-gradient(130% 100% at 50% 0%, var(--curry-1) 0%, var(--curry-2) 52%, var(--curry-3) 100%);
+  }
+  .page.cover-pg .page-face.front::before{ opacity:.35; }  /* keep a hint of grain */
+
   .cover{
-    align-items:center; justify-content:center; text-align:center; gap:8px;
+    align-items:center; justify-content:center; text-align:center;
+    padding: clamp(16px, 3vh, 30px) clamp(16px, 3vw, 34px);
   }
-  .cover .monogram{
-    width:74px; height:74px; border:1.5px solid var(--gold); border-radius:50%;
-    display:grid; place-items:center;
-    font-size:1.6rem; font-style:italic; color:var(--gold);
-    margin-bottom:22px; position:relative;
+  .tp-frame{
+    position:relative; flex:1; align-self:stretch;
+    display:flex; flex-direction:column; align-items:center; justify-content:space-evenly;
+    border:1.5px solid var(--cov-ink);
+    padding: clamp(10px, 2.5vh, 26px) clamp(12px, 4vw, 40px);
+    color: var(--cov-ink);
   }
-  .cover .monogram::after{
-    content:""; position:absolute; inset:-7px; border:1px solid var(--card-border); border-radius:50%;
+  .tp-frame::before{
+    content:""; position:absolute; inset:4px;
+    border:1px solid rgba(58,37,8,.55); pointer-events:none;
   }
-  .cover h1{
-    font-size: clamp(2.4rem, 6vw, 4rem);
-    line-height:1.08; margin-bottom:10px;
+  .tp-sm{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: clamp(.55rem, 1.2vw, .68rem);
+    letter-spacing:.32em; text-transform:uppercase;
+    line-height:1.9;
   }
-  .cover h1 span{ font-style:italic; color:var(--accent); }
-  .cover .subtitle{
-    font-size: clamp(.95rem, 1.6vw, 1.1rem); color:var(--ink-soft);
-    max-width:46ch; line-height:1.7;
+  .tp-the{
+    font-style:italic;
+    font-size: clamp(1rem, 2.2vw, 1.35rem);
+    line-height:1;
   }
-  .cover .rule{
-    width:120px; height:1px; margin:26px 0;
-    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  .tp-big{
+    font-size: clamp(2.1rem, 6.2vw, 3.7rem);
+    font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+    line-height:1.02; color: var(--cov-cream);
+    text-shadow: 0 1px 0 rgba(58,37,8,.35);
   }
+  .tp-sub{
+    font-style:italic;
+    font-size: clamp(.82rem, 1.7vw, 1.02rem);
+    line-height:1.65; max-width:46ch;
+  }
+  .tp-rule{ width:62%; height:1px; background: var(--cov-ink); opacity:.8; }
+  .tp-rule.double{ height:5px; background:none; border-top:1px solid var(--cov-ink); border-bottom:1px solid var(--cov-ink); }
+  .tp-orn{ font-size: clamp(1rem, 2.4vw, 1.45rem); line-height:1; }
   .cover .hint{
     font-family: ui-sans-serif, system-ui, sans-serif;
-    font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ink-faint);
-    display:flex; align-items:center; gap:10px;
+    font-size: clamp(.55rem, 1.2vw, .66rem);
+    letter-spacing:.3em; text-transform:uppercase; color: var(--cov-ink);
     animation: breathe 2.6s ease-in-out infinite;
   }
-  @keyframes breathe{ 0%,100%{opacity:.55; transform:translateX(0)} 50%{opacity:1; transform:translateX(6px)} }
+  @keyframes breathe{ 0%,100%{opacity:.5; transform:translateX(0)} 50%{opacity:1; transform:translateX(6px)} }
 
   /* ============================================================
      ABOUT / STORY
@@ -454,15 +483,22 @@
   /* ============================================================
      RESPONSIVE
      ============================================================ */
-  @media (max-width: 860px){
-    .book{ width:74vw; height:64vh; }  /* relax the margins a little so text stays readable */
-    .side-nav{ right:10px; }
+  @media (max-width: 1024px){          /* iPad & small laptops */
+    .book{ width:calc(100vw - 84px); height:calc(100vh - 130px); }
+    .side-nav{ right:12px; }
     .side-nav .label{ display:none; }
-    .theme-toggle{ right:12px; top:12px; }
   }
-  @media (max-width: 560px){
+  @media (max-width: 700px){           /* phones */
+    .book{
+      width:calc(100vw - 40px);
+      height:calc(100vh - 150px);
+      height:calc(100dvh - 150px);     /* respect mobile browser chrome */
+    }
+    .side-nav{ right:6px; }
+    .theme-toggle{ right:12px; top:12px; }
     .repo-grid{ grid-template-columns:1fr 1fr; }
-    .book{ width:82vw; height:66vh; }
+    .facts{ grid-template-columns:1fr 1fr; }
+    .chrome{ bottom:12px; gap:14px; }
   }
 </style>
 </head>
@@ -475,16 +511,25 @@
   <main class="book" id="book" aria-live="polite">
 
     <!-- ── PAGE 1 · COVER ─────────────────────────────────── -->
-    <section class="page" data-title="Cover">
+    <section class="page cover-pg" data-title="Cover">
       <div class="page-face front">
         <div class="sheet cover">
-          <div class="monogram">N</div>
-          <h1>The Story<br>of <span>Nitesh</span></h1>
-          <p class="subtitle">Builder of things, breaker of assumptions.
-            A living CV — turn the pages to read my journey,
-            wander through the repositories I've built, and get to know me.</p>
-          <div class="rule"></div>
-          <div class="hint">Turn the page &nbsp;⟶</div>
+          <div class="tp-frame">
+            <div class="tp-sm">A Living Curriculum Vitae</div>
+            <div class="tp-rule double"></div>
+            <div class="tp-the">the</div>
+            <div class="tp-big">Story</div>
+            <div class="tp-the">of</div>
+            <div class="tp-big">Nitesh</div>
+            <div class="tp-sub">being a true &amp; faithful account of his journey,
+              the repositories he has built, the tools of his trade,
+              &amp; other curiosities</div>
+            <div class="tp-rule"></div>
+            <div class="tp-sm">for recruiters, collaborators,<br>&amp; other curious readers</div>
+            <div class="tp-orn">❦</div>
+            <div class="tp-rule double"></div>
+            <div class="hint">Slide left to open</div>
+          </div>
         </div>
         <div class="tap-zone next" data-dir="1"><i>›</i></div>
       </div>
