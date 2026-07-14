@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Contributions — The Story of Nitesh</title>
+<meta name="description" content="A CV you can read like a book — my story, my journey, and the things I've built.">
+<style>
+  /* ============================================================
+     MY CONTRIBUTIONS — a CV you read like a Kindle book
+     Edit the content inside <main class="book"> to tell YOUR story.
+     ============================================================ */
+
+  :root{
+    --paper:        #f7f2e7;
+    --paper-deep:   #efe7d6;
+    --paper-edge:   #e3d9c3;
+    --ink:          #2b2620;
+    --ink-soft:     #5c544a;
+    --ink-faint:    #8d8272;
+    --accent:       #b3592c;
+    --accent-soft:  #d98f5f;
+    --gold:         #c19a4b;
+    --shadow:       rgba(43, 32, 18, .35);
+    --bg1:          #1b1712;
+    --bg2:          #3a2f24;
+    --card:         rgba(255,255,255,.45);
+    --card-border:  rgba(43,38,32,.12);
+    --nav-ink:      #e9ddc8;
+    --nav-faint:    rgba(233,221,200,.45);
+  }
+
+  html[data-theme="night"]{
+    --paper:        #1e2126;
+    --paper-deep:   #191c20;
+    --paper-edge:   #2b3038;
+    --ink:          #e8e3d8;
+    --ink-soft:     #b5ad9e;
+    --ink-faint:    #7d766a;
+    --accent:       #e08a54;
+    --accent-soft:  #b3592c;
+    --gold:         #d4b26a;
+    --shadow:       rgba(0,0,0,.6);
+    --bg1:          #0b0d10;
+    --bg2:          #16191f;
+    --card:         rgba(255,255,255,.04);
+    --card-border:  rgba(232,227,216,.12);
+    --nav-ink:      #e8e3d8;
+    --nav-faint:    rgba(232,227,216,.4);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ height:100%; }
+
+  body{
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    background: radial-gradient(1200px 800px at 70% 20%, var(--bg2), var(--bg1) 70%);
+    color: var(--ink);
+    overflow: hidden;
+  }
+
+  ::selection{ background: var(--accent); color:#fff; }
+
+  /* ------- ambient dust / light ------- */
+  .ambience{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(600px 400px at 15% 85%, rgba(212,178,106,.07), transparent 70%),
+      radial-gradient(500px 350px at 85% 10%, rgba(224,138,84,.06), transparent 70%);
+  }
+
+  /* ============================================================
+     THE BOOK
+     ============================================================ */
+  .stage{
+    position:fixed; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    perspective: 2400px;
+    z-index:1;
+  }
+
+  .book{
+    position:relative;
+    width:min(880px, calc(100vw - 150px));
+    height:min(640px, calc(100vh - 90px));
+    transform-style: preserve-3d;
+  }
+
+  /* stacked page edges on the right — the "rest of the book" */
+  .book::after{
+    content:"";
+    position:absolute; top:6px; bottom:6px; right:-14px; width:14px;
+    background:
+      repeating-linear-gradient(to right,
+        var(--paper-edge) 0px, var(--paper) 1px, var(--paper-edge) 2.5px);
+    border-radius: 0 4px 4px 0;
+    box-shadow: 8px 10px 30px var(--shadow);
+    transform: translateZ(-8px);
+  }
+  .book::before{
+    content:"";
+    position:absolute; top:10px; bottom:10px; left:-10px; width:10px;
+    background: linear-gradient(to right, #4a3c2a, #6b5a42);
+    border-radius: 4px 0 0 4px;
+    box-shadow: -6px 10px 30px var(--shadow);
+    transform: translateZ(-10px);
+  }
+  html[data-theme="night"] .book::before{
+    background: linear-gradient(to right, #23272e, #33383f);
+  }
+
+  /* ------- pages ------- */
+  .page{
+    position:absolute; inset:0;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition: transform 1.05s cubic-bezier(.42,.05,.28,1), visibility 0s linear 0s;
+    will-change: transform;
+  }
+  /* once fully turned, the page tucks away (it would otherwise hang
+     off the left edge of the screen like a loose leaf) */
+  .page.flipped{
+    transform: rotateY(-180deg);
+    visibility: hidden;
+    transition: transform 1.05s cubic-bezier(.42,.05,.28,1), visibility 0s linear 1.05s;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .page{ transition: transform .01s linear; }
+  }
+
+  .page-face{
+    position:absolute; inset:0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 3px 6px 6px 3px;
+    background:
+      linear-gradient(105deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 4%),
+      linear-gradient(to bottom right, var(--paper), var(--paper-deep));
+    box-shadow: 0 18px 55px var(--shadow);
+    overflow:hidden;
+  }
+  .page-face.back{
+    transform: rotateY(180deg);
+    border-radius: 6px 3px 3px 6px;
+    background:
+      linear-gradient(-105deg, rgba(0,0,0,.10) 0%, rgba(0,0,0,0) 4%),
+      linear-gradient(to bottom left, var(--paper), var(--paper-deep));
+  }
+
+  /* subtle paper grain */
+  .page-face::before{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background-image: radial-gradient(rgba(0,0,0,.028) 1px, transparent 1.4px);
+    background-size: 5px 5px;
+  }
+
+  /* the kindle "curl" light that sweeps across a turning page */
+  .page .curl{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    backface-visibility:hidden;
+    background: linear-gradient(100deg,
+      transparent 30%, rgba(255,255,255,.0) 44%,
+      rgba(255,255,255,.35) 50%,
+      rgba(0,0,0,.18) 56%, transparent 70%);
+    opacity:0;
+    transition: opacity .3s ease;
+  }
+  .page.turning .curl{ opacity:1; animation: curlSweep 1.05s cubic-bezier(.42,.05,.28,1); }
+  @keyframes curlSweep{
+    0%   { background-position: 120% 0; opacity:0; }
+    25%  { opacity:1; }
+    100% { background-position:-40% 0; opacity:0; }
+  }
+
+  /* ------- page inner layout ------- */
+  .sheet{
+    position:relative; height:100%;
+    padding: clamp(26px, 5vh, 52px) clamp(28px, 5vw, 62px);
+    display:flex; flex-direction:column;
+    overflow-y:auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ink-faint) transparent;
+  }
+  .sheet::-webkit-scrollbar{ width:5px; }
+  .sheet::-webkit-scrollbar-thumb{ background:var(--ink-faint); border-radius:3px; }
+
+  .chapter-eyebrow{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.68rem; letter-spacing:.28em; text-transform:uppercase;
+    color: var(--accent);
+    display:flex; align-items:center; gap:12px;
+    margin-bottom: 14px;
+  }
+  .chapter-eyebrow::after{ content:""; flex:1; height:1px; background: linear-gradient(to right, var(--card-border), transparent); }
+
+  h1,h2{ font-weight:600; letter-spacing:-.01em; }
+  h2{ font-size: clamp(1.6rem, 3.4vw, 2.3rem); margin-bottom: 18px; color:var(--ink); }
+  h2 em{ font-style:italic; color:var(--accent); }
+
+  p.lede{ font-size: clamp(1rem, 1.6vw, 1.12rem); line-height:1.75; color:var(--ink-soft); margin-bottom:14px; }
+  p.lede:first-letter{ }
+  .drop:first-letter{
+    float:left; font-size:3.4em; line-height:.82; padding:6px 10px 0 0;
+    color:var(--accent); font-weight:600;
+  }
+
+  .folio{
+    margin-top:auto; padding-top:18px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint);
+  }
+
+  /* ============================================================
+     COVER PAGE
+     ============================================================ */
+  .cover{
+    align-items:center; justify-content:center; text-align:center; gap:8px;
+  }
+  .cover .monogram{
+    width:74px; height:74px; border:1.5px solid var(--gold); border-radius:50%;
+    display:grid; place-items:center;
+    font-size:1.6rem; font-style:italic; color:var(--gold);
+    margin-bottom:22px; position:relative;
+  }
+  .cover .monogram::after{
+    content:""; position:absolute; inset:-7px; border:1px solid var(--card-border); border-radius:50%;
+  }
+  .cover h1{
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height:1.08; margin-bottom:10px;
+  }
+  .cover h1 span{ font-style:italic; color:var(--accent); }
+  .cover .subtitle{
+    font-size: clamp(.95rem, 1.6vw, 1.1rem); color:var(--ink-soft);
+    max-width:46ch; line-height:1.7;
+  }
+  .cover .rule{
+    width:120px; height:1px; margin:26px 0;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .cover .hint{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ink-faint);
+    display:flex; align-items:center; gap:10px;
+    animation: breathe 2.6s ease-in-out infinite;
+  }
+  @keyframes breathe{ 0%,100%{opacity:.55; transform:translateX(0)} 50%{opacity:1; transform:translateX(6px)} }
+
+  /* ============================================================
+     ABOUT / STORY
+     ============================================================ */
+  .facts{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px;
+    margin-top:20px;
+  }
+  .fact{
+    background:var(--card); border:1px solid var(--card-border); border-radius:10px;
+    padding:14px 16px;
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  .fact:hover{ transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.12); }
+  .fact b{ display:block; font-size:1.15rem; color:var(--accent); margin-bottom:2px; }
+  .fact span{ font-family: ui-sans-serif, system-ui, sans-serif; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); }
+
+  /* ------- timeline ------- */
+  .timeline{ position:relative; margin-top:8px; padding-left:26px; }
+  .timeline::before{
+    content:""; position:absolute; left:7px; top:6px; bottom:6px; width:1.5px;
+    background: linear-gradient(to bottom, var(--gold), var(--accent), transparent);
+  }
+  .milestone{ position:relative; padding: 0 0 22px 12px; }
+  .milestone::before{
+    content:""; position:absolute; left:-25px; top:7px;
+    width:11px; height:11px; border-radius:50%;
+    background:var(--paper); border:2.5px solid var(--accent);
+    box-shadow: 0 0 0 4px var(--paper);
+  }
+  .milestone .when{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--accent);
+  }
+  .milestone h3{ font-size:1.06rem; margin:4px 0 4px; }
+  .milestone p{ font-size:.92rem; line-height:1.65; color:var(--ink-soft); }
+
+  /* ============================================================
+     REPOSITORIES
+     ============================================================ */
+  .repo-status{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.72rem; letter-spacing:.1em; color:var(--ink-faint); margin-bottom:14px;
+  }
+  .repo-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:14px;
+  }
+  .repo-card{
+    position:relative; display:block; text-decoration:none; color:inherit;
+    background:var(--card); border:1px solid var(--card-border); border-radius:12px;
+    padding:16px 16px 14px;
+    transition: transform .4s cubic-bezier(.2,.8,.25,1), box-shadow .4s ease, border-color .4s ease;
+    overflow:hidden;
+  }
+  .repo-card::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:2px;
+    background: linear-gradient(to right, var(--accent), var(--gold));
+    transform: scaleX(0); transform-origin:left;
+    transition: transform .45s cubic-bezier(.2,.8,.25,1);
+  }
+  .repo-card:hover{ transform: translateY(-5px); box-shadow: 0 16px 34px rgba(0,0,0,.16); border-color: var(--accent-soft); }
+  .repo-card:hover::before{ transform: scaleX(1); }
+  .repo-card h3{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.95rem; font-weight:650; margin-bottom:6px; color:var(--ink);
+    display:flex; align-items:center; gap:8px;
+  }
+  .repo-card h3 svg{ flex-shrink:0; opacity:.55; }
+  .repo-card p{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.8rem; line-height:1.55; color:var(--ink-soft);
+    min-height:2.4em;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .repo-meta{
+    display:flex; gap:14px; margin-top:12px; align-items:center;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.72rem; color:var(--ink-faint);
+  }
+  .lang-dot{ width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:5px; vertical-align:-1px; }
+
+  /* ============================================================
+     SKILLS
+     ============================================================ */
+  .skill-groups{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px; margin-top:6px; }
+  .skill-group h3{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--accent);
+    margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--card-border);
+  }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size:.78rem; padding:6px 12px; border-radius:999px;
+    background:var(--card); border:1px solid var(--card-border); color:var(--ink-soft);
+    transition: all .3s ease; cursor:default;
+  }
+  .chip:hover{ background:var(--accent); border-color:var(--accent); color:#fff; transform:translateY(-2px); }
+
+  /* ============================================================
+     EPILOGUE
+     ============================================================ */
+  .epilogue{ align-items:center; justify-content:center; text-align:center; }
+  .epilogue blockquote{
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem); font-style:italic; line-height:1.65;
+    max-width:42ch; color:var(--ink); margin-bottom:8px;
+  }
+  .epilogue blockquote span{ color:var(--accent); }
+  .contact-row{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:26px; }
+  .contact-btn{
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    display:inline-flex; align-items:center; gap:9px;
+    padding:11px 22px; border-radius:999px; text-decoration:none;
+    font-size:.85rem; font-weight:600; letter-spacing:.02em;
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .contact-btn.primary{ background:var(--accent); color:#fff; box-shadow:0 8px 22px rgba(179,89,44,.35); }
+  .contact-btn.ghost{ border:1px solid var(--card-border); color:var(--ink-soft); background:var(--card); }
+  .contact-btn:hover{ transform:translateY(-3px) scale(1.02); }
+
+  /* ============================================================
+     RIGHT-SIDE NAVIGATION  (where am I in the book?)
+     ============================================================ */
+  .side-nav{
+    position:fixed; right:26px; top:50%; transform:translateY(-50%);
+    z-index:10; display:flex; flex-direction:column; align-items:flex-end; gap:4px;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  .side-nav .rail{
+    position:absolute; right:5px; top:10px; bottom:10px; width:1.5px;
+    background: var(--nav-faint); opacity:.35; border-radius:2px;
+  }
+  .side-nav .rail-fill{
+    position:absolute; right:5px; top:10px; width:1.5px; border-radius:2px;
+    background: linear-gradient(to bottom, var(--gold), var(--accent));
+    transition: height .8s cubic-bezier(.2,.8,.25,1);
+  }
+  .nav-item{
+    position:relative; display:flex; align-items:center; gap:12px;
+    background:none; border:none; cursor:pointer; padding:9px 0;
+    color: var(--nav-faint);
+  }
+  .nav-item .label{
+    font-size:.7rem; letter-spacing:.18em; text-transform:uppercase;
+    opacity:0; transform:translateX(8px);
+    transition: opacity .35s ease, transform .35s ease, color .3s ease;
+    white-space:nowrap;
+  }
+  .nav-item .dot{
+    width:8px; height:8px; border-radius:50%;
+    background: var(--nav-faint);
+    transition: transform .35s cubic-bezier(.2,.8,.25,1), background .3s ease, box-shadow .3s ease;
+    flex-shrink:0; margin-right:1.5px;
+  }
+  .side-nav:hover .label{ opacity:.75; transform:translateX(0); }
+  .nav-item:hover .label{ opacity:1; color:var(--nav-ink); }
+  .nav-item:hover .dot{ transform:scale(1.5); background:var(--nav-ink); }
+  .nav-item.active .label{ opacity:1; transform:translateX(0); color:var(--nav-ink); font-weight:700; }
+  .nav-item.active .dot{
+    transform:scale(1.7); background:var(--accent);
+    box-shadow:0 0 0 5px rgba(224,138,84,.18), 0 0 14px rgba(224,138,84,.5);
+  }
+
+  /* ------- bottom chrome: pager + arrows ------- */
+  .chrome{
+    position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
+    z-index:10; display:flex; align-items:center; gap:20px;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    color:var(--nav-faint);
+  }
+  .chrome .pageno{ font-size:.72rem; letter-spacing:.28em; min-width:70px; text-align:center; }
+  .arrow{
+    width:40px; height:40px; border-radius:50%;
+    border:1px solid var(--nav-faint); background:rgba(0,0,0,.15);
+    color:var(--nav-ink); cursor:pointer; font-size:1rem;
+    display:grid; place-items:center;
+    transition: all .3s ease; backdrop-filter: blur(4px);
+  }
+  .arrow:hover{ background:var(--accent); border-color:var(--accent); transform:scale(1.1); }
+  .arrow:disabled{ opacity:.25; cursor:default; transform:none; }
+  .arrow:disabled:hover{ background:rgba(0,0,0,.15); border-color:var(--nav-faint); }
+
+  .theme-toggle{
+    position:fixed; top:20px; right:26px; z-index:10;
+    width:40px; height:40px; border-radius:50%;
+    border:1px solid var(--nav-faint); background:rgba(0,0,0,.15);
+    color:var(--nav-ink); cursor:pointer; font-size:1.05rem;
+    display:grid; place-items:center; transition:all .3s ease;
+    backdrop-filter: blur(4px);
+  }
+  .theme-toggle:hover{ transform:rotate(20deg) scale(1.08); border-color:var(--gold); }
+
+  /* tap zones on the page edges, like a kindle */
+  .tap-zone{
+    position:absolute; top:0; bottom:0; width:16%; z-index:5; cursor:pointer;
+    opacity:0; transition:opacity .25s ease;
+    display:flex; align-items:center;
+  }
+  .tap-zone.next{ right:0; justify-content:flex-end;
+    background:linear-gradient(to left, rgba(0,0,0,.06), transparent); }
+  .tap-zone.prev{ left:0;
+    background:linear-gradient(to right, rgba(0,0,0,.06), transparent); }
+  .tap-zone:hover{ opacity:1; }
+  .tap-zone i{
+    font-style:normal; font-size:1.3rem; color:var(--ink-faint); padding:0 10px;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 860px){
+    .book{ width:calc(100vw - 64px); height:calc(100vh - 76px); }
+    .side-nav{ right:10px; }
+    .side-nav .label{ display:none; }
+    .theme-toggle{ right:12px; top:12px; }
+  }
+  @media (max-width: 560px){
+    .repo-grid{ grid-template-columns:1fr 1fr; }
+    .book{ width:calc(100vw - 44px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambience"></div>
+
+<!-- ═══════════ THE BOOK ═══════════ -->
+<div class="stage">
+  <main class="book" id="book" aria-live="polite">
+
+    <!-- ── PAGE 1 · COVER ─────────────────────────────────── -->
+    <section class="page" data-title="Cover">
+      <div class="page-face front">
+        <div class="sheet cover">
+          <div class="monogram">N</div>
+          <h1>The Story<br>of <span>Nitesh</span></h1>
+          <p class="subtitle">Builder of things, breaker of assumptions.
+            A living CV — turn the pages to read my journey,
+            wander through the repositories I've built, and get to know me.</p>
+          <div class="rule"></div>
+          <div class="hint">Turn the page &nbsp;⟶</div>
+        </div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+      <div class="page-face back"><div class="sheet"></div></div>
+      <div class="curl"></div>
+    </section>
+
+    <!-- ── PAGE 2 · ABOUT ME ──────────────────────────────── -->
+    <section class="page" data-title="About Me">
+      <div class="page-face front">
+        <div class="sheet">
+          <div class="chapter-eyebrow">Chapter One</div>
+          <h2>Hello, I'm <em>Nitesh.</em></h2>
+          <!-- ✏️ EDIT ME: replace this with your real story -->
+          <p class="lede drop">Every engineer has an origin story. Mine began with
+            curiosity — the itch to open things up and see how they work, then the
+            slightly more dangerous itch to put them back together <em>better</em>.
+            Somewhere between the first "Hello, World" and the first production
+            incident at 2 a.m., that curiosity became a craft.</p>
+          <p class="lede">I care about software that lasts: code that reads like prose,
+            systems that fail loudly and recover quietly, and documentation that
+            respects the next person's time. When I'm not building, I'm usually
+            reading, tinkering with side projects, or contributing back to the
+            open-source tools I rely on every day.</p>
+          <div class="facts">
+            <div class="fact"><b>Engineer</b><span>What I am</span></div>
+            <div class="fact"><b>Open Source</b><span>What I love</span></div>
+            <div class="fact"><b>@nit-saw</b><span>Where to find me</span></div>
+            <div class="fact"><b>Always Learning</b><span>Current status</span></div>
+          </div>
+          <div class="folio"><span>My Story</span><span>· 2 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+      <div class="page-face back"><div class="sheet"></div></div>
+      <div class="curl"></div>
+    </section>
+
+    <!-- ── PAGE 3 · THE JOURNEY ───────────────────────────── -->
+    <section class="page" data-title="The Journey">
+      <div class="page-face front">
+        <div class="sheet">
+          <div class="chapter-eyebrow">Chapter Two</div>
+          <h2>The <em>Journey</em> so far</h2>
+          <!-- ✏️ EDIT ME: replace these milestones with your real ones -->
+          <div class="timeline">
+            <div class="milestone">
+              <div class="when">The Beginning</div>
+              <h3>First lines of code</h3>
+              <p>Discovered programming and fell down the rabbit hole. Built small
+                 scripts, broke them, fixed them, and got hooked on the feedback loop.</p>
+            </div>
+            <div class="milestone">
+              <div class="when">Learning the Craft</div>
+              <h3>From scripts to systems</h3>
+              <p>Went deep into how software really works — languages, tooling,
+                 architecture. Started shipping projects people actually used.</p>
+            </div>
+            <div class="milestone">
+              <div class="when">Giving Back</div>
+              <h3>Open source contributions</h3>
+              <p>Started contributing to the ecosystem — docs, fixes, and projects of
+                 my own. Learned that great software is a team sport played in public.</p>
+            </div>
+            <div class="milestone">
+              <div class="when">Today</div>
+              <h3>Building what's next</h3>
+              <p>Focused on crafting quality software and sharing what I learn along
+                 the way. The best chapter is always the one being written.</p>
+            </div>
+          </div>
+          <div class="folio"><span>My Story</span><span>· 3 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+      <div class="page-face back"><div class="sheet"></div></div>
+      <div class="curl"></div>
+    </section>
+
+    <!-- ── PAGE 4 · MY CONTRIBUTIONS ──────────────────────── -->
+    <section class="page" data-title="Contributions">
+      <div class="page-face front">
+        <div class="sheet">
+          <div class="chapter-eyebrow">Chapter Three</div>
+          <h2>Things I've <em>Built</em></h2>
+          <p class="repo-status" id="repoStatus">Fetching repositories from GitHub…</p>
+          <div class="repo-grid" id="repoGrid"><!-- populated by JS --></div>
+          <div class="folio"><span>My Story</span><span>· 4 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+      <div class="page-face back"><div class="sheet"></div></div>
+      <div class="curl"></div>
+    </section>
+
+    <!-- ── PAGE 5 · TOOLBOX ───────────────────────────────── -->
+    <section class="page" data-title="Toolbox">
+      <div class="page-face front">
+        <div class="sheet">
+          <div class="chapter-eyebrow">Chapter Four</div>
+          <h2>My <em>Toolbox</em></h2>
+          <p class="lede">The instruments I reach for. Every tool tells a story about
+            the problems it helped solve.</p>
+          <!-- ✏️ EDIT ME: swap in your actual skills -->
+          <div class="skill-groups">
+            <div class="skill-group">
+              <h3>Languages</h3>
+              <div class="chips">
+                <span class="chip">JavaScript</span><span class="chip">TypeScript</span>
+                <span class="chip">Python</span><span class="chip">HTML / CSS</span>
+                <span class="chip">SQL</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <h3>Frameworks &amp; Tools</h3>
+              <div class="chips">
+                <span class="chip">Node.js</span><span class="chip">React</span>
+                <span class="chip">Git &amp; GitHub</span><span class="chip">VS Code</span>
+                <span class="chip">Docker</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <h3>Practices</h3>
+              <div class="chips">
+                <span class="chip">Open Source</span><span class="chip">Documentation</span>
+                <span class="chip">Code Review</span><span class="chip">CI / CD</span>
+                <span class="chip">Testing</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <h3>Beyond Code</h3>
+              <div class="chips">
+                <span class="chip">Writing</span><span class="chip">Mentoring</span>
+                <span class="chip">Problem Solving</span><span class="chip">Curiosity</span>
+              </div>
+            </div>
+          </div>
+          <div class="folio"><span>My Story</span><span>· 5 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+        <div class="tap-zone next" data-dir="1"><i>›</i></div>
+      </div>
+      <div class="page-face back"><div class="sheet"></div></div>
+      <div class="curl"></div>
+    </section>
+
+    <!-- ── PAGE 6 · EPILOGUE ──────────────────────────────── -->
+    <section class="page" data-title="Epilogue">
+      <div class="page-face front">
+        <div class="sheet epilogue">
+          <div class="chapter-eyebrow" style="align-self:stretch">Epilogue</div>
+          <blockquote>"The best stories are the ones we <span>build together</span>.
+            If mine resonated with you — let's write the next chapter."</blockquote>
+          <div class="contact-row">
+            <a class="contact-btn primary" href="mailto:nitesh9392@gmail.com">
+              ✉ &nbsp;Say hello
+            </a>
+            <a class="contact-btn ghost" href="https://github.com/nit-saw" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+              github.com/nit-saw
+            </a>
+          </div>
+          <div class="rule" style="width:120px;height:1px;margin:34px 0 18px;background:linear-gradient(to right,transparent,var(--gold),transparent)"></div>
+          <div class="hint" style="font-family:ui-sans-serif,system-ui,sans-serif;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-faint)">The End — for now</div>
+          <div class="folio" style="align-self:stretch"><span>My Story</span><span>· 6 ·</span></div>
+        </div>
+        <div class="tap-zone prev" data-dir="-1"><i>‹</i></div>
+      </div>
+      <div class="page-face back"><div class="sheet"></div></div>
+      <div class="curl"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ═══════════ RIGHT-SIDE NAVIGATION ═══════════ -->
+<nav class="side-nav" id="sideNav" aria-label="Book chapters">
+  <div class="rail"></div>
+  <div class="rail-fill" id="railFill"></div>
+  <!-- items injected by JS from page data-titles -->
+</nav>
+
+<!-- ═══════════ BOTTOM CHROME ═══════════ -->
+<div class="chrome">
+  <button class="arrow" id="prevBtn" aria-label="Previous page">‹</button>
+  <div class="pageno" id="pageNo">1 / 6</div>
+  <button class="arrow" id="nextBtn" aria-label="Next page">›</button>
+</div>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle day / night reading mode">☾</button>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ══════════ CONFIG ══════════ */
+  var GITHUB_USER = "nit-saw";          // ✏️ your GitHub username
+  var MAX_REPOS   = 6;                  // how many repo cards to show
+
+  // Fallback shelf — shown if the GitHub API can't be reached
+  // (offline, rate-limited, or viewed in a sandboxed preview).
+  var FALLBACK_REPOS = [
+    { name:"vscode-docs", description:"Public documentation for Visual Studio Code — my playground for docs contributions.", language:"Markdown", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw/vscode-docs" },
+    { name:"my-portfolio", description:"This very book you're reading — a CV that turns pages like a Kindle.", language:"HTML", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw" },
+    { name:"experiments", description:"A drawer of prototypes, ideas and half-finished magic tricks.", language:"JavaScript", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw?tab=repositories" },
+    { name:"learning-notes", description:"Notes-to-self from the endless journey of learning to build software.", language:"Markdown", stargazers_count:0, forks_count:0, html_url:"https://github.com/nit-saw?tab=repositories" }
+  ];
+
+  var LANG_COLORS = {
+    JavaScript:"#f1e05a", TypeScript:"#3178c6", Python:"#3572A5", HTML:"#e34c26",
+    CSS:"#563d7c", Markdown:"#083fa1", Java:"#b07219", Go:"#00ADD8", Rust:"#dea584",
+    C:"#555555", "C++":"#f34b7d", "C#":"#178600", Shell:"#89e051", Ruby:"#701516",
+    PHP:"#4F5D95", Swift:"#F05138", Kotlin:"#A97BFF", Vue:"#41b883", Dart:"#00B4AB"
+  };
+
+  /* ══════════ BOOK ENGINE ══════════ */
+  var pages   = Array.prototype.slice.call(document.querySelectorAll(".page"));
+  var total   = pages.length;
+  var current = 0;
+  var busy    = false;
+
+  // z-index bookkeeping: unturned pages stack front-to-back;
+  // turned pages stack so the most recently turned is on top of the left pile.
+  function restack(){
+    pages.forEach(function(p, i){
+      p.style.zIndex = (i < current) ? (i + 1) : (total - i + total);
+    });
+  }
+
+  function go(target){
+    target = Math.max(0, Math.min(total - 1, target));
+    if (target === current || busy) return;
+    busy = true;
+
+    var forward = target > current;
+    var step = forward ? 1 : -1;
+
+    // turn intermediate pages quickly, one after another, like riffling
+    var idx = current;
+    (function turnNext(){
+      if (idx === target){ finish(); return; }
+      var pg = forward ? pages[idx] : pages[idx - 1];
+      pg.classList.add("turning");
+      // raise the actively turning page above everything
+      pg.style.zIndex = 2 * total + 5;
+      if (forward) pg.classList.add("flipped");
+      else         pg.classList.remove("flipped");
+      idx += step;
+      var delay = (Math.abs(target - current) > 1) ? 190 : 1060;
+      setTimeout(function(){
+        pg.classList.remove("turning");
+        turnNext();
+      }, delay);
+    })();
+
+    function finish(){
+      current = target;
+      restack();
+      updateChrome();
+      busy = false;
+    }
+
+    // update UI immediately so nav feels responsive
+    current = target;
+    updateChrome();
+  }
+
+  /* ══════════ SIDE NAV ══════════ */
+  var sideNav  = document.getElementById("sideNav");
+  var railFill = document.getElementById("railFill");
+  var navItems = [];
+
+  pages.forEach(function(p, i){
+    var btn = document.createElement("button");
+    btn.className = "nav-item";
+    btn.setAttribute("aria-label", "Go to " + p.dataset.title);
+    btn.innerHTML = '<span class="label">' + p.dataset.title + '</span><span class="dot"></span>';
+    btn.addEventListener("click", function(){ go(i); });
+    sideNav.appendChild(btn);
+    navItems.push(btn);
+  });
+
+  var pageNo  = document.getElementById("pageNo");
+  var prevBtn = document.getElementById("prevBtn");
+  var nextBtn = document.getElementById("nextBtn");
+
+  function updateChrome(){
+    navItems.forEach(function(b, i){ b.classList.toggle("active", i === current); });
+    pageNo.textContent = (current + 1) + " / " + total;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+    // progress rail: fill down to the active dot
+    requestAnimationFrame(function(){
+      var active = navItems[current];
+      var navRect = sideNav.getBoundingClientRect();
+      var dotRect = active.getBoundingClientRect();
+      railFill.style.height = Math.max(0, dotRect.top + dotRect.height/2 - navRect.top - 10) + "px";
+    });
+  }
+
+  /* ══════════ INPUT: arrows, keys, wheel, swipe, tap-zones ══════════ */
+  prevBtn.addEventListener("click", function(){ go(current - 1); });
+  nextBtn.addEventListener("click", function(){ go(current + 1); });
+
+  document.querySelectorAll(".tap-zone").forEach(function(z){
+    z.addEventListener("click", function(){ go(current + parseInt(z.dataset.dir, 10)); });
+  });
+
+  document.addEventListener("keydown", function(e){
+    if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { e.preventDefault(); go(current + 1); }
+    if (e.key === "ArrowLeft"  || e.key === "PageUp")                    { e.preventDefault(); go(current - 1); }
+    if (e.key === "Home") go(0);
+    if (e.key === "End")  go(total - 1);
+  });
+
+  var wheelLock = 0;
+  document.addEventListener("wheel", function(e){
+    // let inner page content scroll first
+    var sheet = e.target.closest && e.target.closest(".sheet");
+    if (sheet && sheet.scrollHeight > sheet.clientHeight){
+      var atTop    = sheet.scrollTop <= 0;
+      var atBottom = sheet.scrollTop + sheet.clientHeight >= sheet.scrollHeight - 2;
+      if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
+    }
+    var now = Date.now();
+    if (now - wheelLock < 1200) return;
+    if (Math.abs(e.deltaY) < 24) return;
+    wheelLock = now;
+    go(current + (e.deltaY > 0 ? 1 : -1));
+  }, { passive:true });
+
+  var touchX = null;
+  document.addEventListener("touchstart", function(e){ touchX = e.touches[0].clientX; }, { passive:true });
+  document.addEventListener("touchend", function(e){
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 55) go(current + (dx < 0 ? 1 : -1));
+    touchX = null;
+  }, { passive:true });
+
+  /* ══════════ DAY / NIGHT (like a kindle's reading light) ══════════ */
+  var toggle = document.getElementById("themeToggle");
+  var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var saved = null;
+  try { saved = localStorage.getItem("book-theme"); } catch(e){}
+  setTheme(saved || (prefersDark ? "night" : "day"));
+
+  function setTheme(t){
+    document.documentElement.setAttribute("data-theme", t === "night" ? "night" : "");
+    if (t !== "night") document.documentElement.removeAttribute("data-theme");
+    toggle.textContent = t === "night" ? "☀" : "☾";
+    try { localStorage.setItem("book-theme", t); } catch(e){}
+  }
+  toggle.addEventListener("click", function(){
+    var night = document.documentElement.getAttribute("data-theme") === "night";
+    setTheme(night ? "day" : "night");
+  });
+
+  /* ══════════ GITHUB REPOSITORIES ══════════ */
+  var grid   = document.getElementById("repoGrid");
+  var status = document.getElementById("repoStatus");
+
+  function repoCard(r){
+    var a = document.createElement("a");
+    a.className = "repo-card";
+    a.href = r.html_url;
+    a.target = "_blank";
+    a.rel = "noopener";
+    var lang = r.language || "—";
+    var color = LANG_COLORS[lang] || "#9a9186";
+    a.innerHTML =
+      '<h3><svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25v3.25a.25.25 0 0 0 .4.2l1.45-1.087a.25.25 0 0 1 .3 0L8.6 15.7a.25.25 0 0 0 .4-.2v-3.25a.25.25 0 0 0-.25-.25h-3.5a.25.25 0 0 0-.25.25Z"/></svg>' +
+      escapeHtml(r.name) + '</h3>' +
+      '<p>' + escapeHtml(r.description || "No description — the mystery is part of the charm.") + '</p>' +
+      '<div class="repo-meta">' +
+        '<span><span class="lang-dot" style="background:' + color + '"></span>' + escapeHtml(lang) + '</span>' +
+        '<span>★ ' + (r.stargazers_count || 0) + '</span>' +
+        '<span>⑂ ' + (r.forks_count || 0) + '</span>' +
+      '</div>';
+    return a;
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+
+  function render(repos, live){
+    grid.innerHTML = "";
+    repos.slice(0, MAX_REPOS).forEach(function(r, i){
+      var card = repoCard(r);
+      card.style.opacity = "0";
+      card.style.transform = "translateY(14px)";
+      grid.appendChild(card);
+      setTimeout(function(){
+        card.style.transition = "opacity .6s ease, transform .6s cubic-bezier(.2,.8,.25,1)";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, 80 * i + 60);
+    });
+    status.textContent = live
+      ? "Live from github.com/" + GITHUB_USER + " · " + repos.length + " public repositories"
+      : "A selection from my shelf · full list at github.com/" + GITHUB_USER;
+  }
+
+  function loadRepos(){
+    if (!window.fetch){ render(FALLBACK_REPOS, false); return; }
+    fetch("https://api.github.com/users/" + GITHUB_USER + "/repos?sort=updated&per_page=100")
+      .then(function(res){ if (!res.ok) throw new Error(res.status); return res.json(); })
+      .then(function(repos){
+        if (!Array.isArray(repos) || repos.length === 0) throw new Error("empty");
+        // most interesting first: stars, then recency
+        repos.sort(function(a, b){
+          return (b.stargazers_count - a.stargazers_count) ||
+                 (new Date(b.pushed_at) - new Date(a.pushed_at));
+        });
+        render(repos, true);
+      })
+      .catch(function(){ render(FALLBACK_REPOS, false); });
+  }
+
+  /* ══════════ INIT ══════════ */
+  restack();
+  updateChrome();
+  loadRepos();
+  window.addEventListener("resize", updateChrome);
+})();
+</script>
+</body>
+</html>
