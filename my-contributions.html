@@ -814,6 +814,47 @@
   }
   .lib-foot a{ color:inherit; text-decoration:none; border-bottom:1px solid var(--hair); }
 
+  /* peeking between the covers of an unfinished volume */
+  .lib-preview{
+    position:fixed; inset:0; z-index:30;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(36,26,6,.45); backdrop-filter:blur(5px);
+    padding:5vh 5vw;
+  }
+  .lib-preview[hidden]{ display:none; }
+  .lp-card{
+    position:relative; max-width:560px; width:100%; max-height:82vh; overflow-y:auto;
+    background:var(--paper); color:var(--ink);
+    border:1px solid var(--rule); border-radius:3px 8px 8px 3px;
+    box-shadow:0 30px 70px rgba(0,0,0,.4);
+    padding:clamp(24px,5vh,44px) clamp(22px,5vw,48px);
+    animation: lpIn .5s cubic-bezier(.32,.72,0,1);
+  }
+  @keyframes lpIn{ from{ opacity:0; transform:translateY(26px) scale(.97);} to{ opacity:1; transform:none; } }
+  .lp-close{
+    position:absolute; top:10px; right:12px;
+    border:none; background:none; color:var(--ink-faint);
+    font-size:1.5rem; line-height:1; cursor:pointer; padding:6px;
+  }
+  .lp-close:hover{ color:var(--ink); }
+  .lp-kicker{
+    font-family:var(--sans); font-size:.6rem; letter-spacing:.3em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:10px;
+  }
+  .lp-card h2{ font-size:clamp(1.4rem,3.4vw,1.9rem); font-weight:700; margin-bottom:14px; }
+  .lp-body p{
+    font-size:.94rem; line-height:1.75; color:var(--ink-soft); margin-bottom:12px;
+  }
+  .lp-body p:first-child::first-letter{
+    float:left; font-size:3em; line-height:.82; padding:4px 8px 0 0;
+    color:var(--accent); font-weight:700;
+  }
+  .lp-foot{
+    font-family:var(--sans); font-size:.6rem; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--ink-faint); text-align:center;
+    margin-top:18px; padding-top:14px; border-top:1px solid var(--hair);
+  }
+
   .home-btn{
     position:fixed; top:20px; left:26px; z-index:14;
     font-family:var(--sans); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase;
@@ -889,37 +930,49 @@
         <span class="tome-cta">Read →</span>
       </span>
     </button>
-    <!-- ✏️ future posts: duplicate a tome, give it a volume number & title -->
-    <button class="tome soon t-b" disabled>
+    <!-- ✏️ future posts: duplicate a tome, give it a volume number & title,
+         and add its excerpt to the EXCERPTS object in the script below -->
+    <button class="tome soon t-b" data-vol="v2">
       <span class="tome-cover">
         <span><em>Vol. II</em><strong>Field Notes from Production</strong></span>
         <small>Incidents, honestly told</small>
-        <span class="tome-cta">Coming soon</span>
+        <span class="tome-cta">Peek inside</span>
       </span>
     </button>
-    <button class="tome soon t-d" disabled>
+    <button class="tome soon t-d" data-vol="v3">
       <span class="tome-cover">
         <span><em>Vol. III</em><strong>Travel, by Timetable</strong></span>
         <small>Trains, trails &amp; layovers</small>
-        <span class="tome-cta">Coming soon</span>
+        <span class="tome-cta">Peek inside</span>
       </span>
     </button>
-    <button class="tome soon t-c" disabled>
+    <button class="tome soon t-c" data-vol="v4">
       <span class="tome-cover">
         <span><em>Vol. IV</em><strong>The Repository Diaries</strong></span>
         <small>Commits &amp; confessions</small>
-        <span class="tome-cta">Coming soon</span>
+        <span class="tome-cta">Peek inside</span>
       </span>
     </button>
-    <button class="tome soon t-e" disabled>
+    <button class="tome soon t-e" data-vol="v5">
       <span class="tome-cover">
         <span><em>Vol. V</em><strong>Letters to a Junior Engineer</strong></span>
         <small>Advice, lightly used</small>
-        <span class="tome-cta">Coming soon</span>
+        <span class="tome-cta">Peek inside</span>
       </span>
     </button>
   </div>
   <footer class="lib-foot"><a href="https://github.com/nit-saw" target="_blank" rel="noopener">github.com/nit-saw</a> &nbsp;·&nbsp; <a href="mailto:nitesh9392@gmail.com">nitesh9392@gmail.com</a></footer>
+</div>
+
+<!-- a peek between the covers of an unfinished volume -->
+<div class="lib-preview" id="libPreview" role="dialog" aria-modal="true" hidden>
+  <div class="lp-card">
+    <button class="lp-close" id="lpClose" aria-label="Close preview">×</button>
+    <div class="lp-kicker" id="lpKicker"></div>
+    <h2 id="lpTitle"></h2>
+    <div class="lp-body" id="lpBody"></div>
+    <div class="lp-foot">— the rest of this volume is still at the press —</div>
+  </div>
 </div>
 
 <!-- ═══════════ THE BOOK ═══════════ -->
@@ -1765,6 +1818,72 @@
   if (homeBtn) homeBtn.addEventListener("click", function(){
     document.body.classList.add("at-library");
     window.scrollTo(0, 0);
+  });
+
+  // ✏️ DUMMY EXCERPTS — starter content for the unwritten volumes.
+  // Replace these with real opening pages as each book is published.
+  var EXCERPTS = {
+    v2: {
+      kicker: "Vol. II · In preparation",
+      title: "Field Notes from Production",
+      body: [
+        "Entry one. The pager went off at 2:14 a.m., which is the hour all pagers prefer. The dashboard was a wall of green, which proved only that the dashboard was asleep too.",
+        "The incident, when finally located, was one line long and three weeks old. It had waited, politely, for the exact night the on-call engineer had gone to bed early.",
+        "This volume collects such evenings: what broke, what it cost, what it taught, and the one graph that would have said everything, had anyone thought to draw it beforehand."
+      ]
+    },
+    v3: {
+      kicker: "Vol. III · In preparation",
+      title: "Travel, by Timetable",
+      body: [
+        "The itinerary said the bus left at nine. The bus, which had not read the itinerary, left at nine-forty, from a different street, in a better mood than anyone aboard.",
+        "This is a book about getting places the slow way — trains that stop for reasons nobody explains, trails that fork without asking, and cafés positioned exactly where a plan goes to fall apart.",
+        "It is also, quietly, a book about systems. Everything the author knows about resilience he learned from public transport."
+      ]
+    },
+    v4: {
+      kicker: "Vol. IV · In preparation",
+      title: "The Repository Diaries",
+      body: [
+        "commit 1: initial commit. commit 2: fix. commit 3: actually fix. commit 4: revert 'actually fix'. Every repository is a diary written by someone who swears they'll be more organised tomorrow.",
+        "This volume walks through the shelf, one repository at a time — why each was started, what it was supposed to be, what it became instead, and the commit messages history should probably forgive.",
+        "Contains an honest chapter on the branch named final-final-2, and what was found there."
+      ]
+    },
+    v5: {
+      kicker: "Vol. V · In preparation",
+      title: "Letters to a Junior Engineer",
+      body: [
+        "Dear N — You asked how to know when the code is good enough. Nobody knows. The senior engineers you admire are simply people who have been wrong more times, in more interesting ways.",
+        "Read more code than you write. Ask the question everyone else is pretending they don't have. Deploy on Friday exactly once, so you never do it again.",
+        "And keep the curiosity. It is the only part of this job that cannot be automated, deprecated, or migrated to a newer framework."
+      ]
+    }
+  };
+
+  var libPreview = document.getElementById("libPreview");
+  var lpKicker = document.getElementById("lpKicker");
+  var lpTitle  = document.getElementById("lpTitle");
+  var lpBody   = document.getElementById("lpBody");
+  document.querySelectorAll(".tome.soon").forEach(function(t){
+    t.addEventListener("click", function(){
+      var ex = EXCERPTS[t.dataset.vol];
+      if (!ex || !libPreview) return;
+      lpKicker.textContent = ex.kicker;
+      lpTitle.textContent = ex.title;
+      lpBody.innerHTML = ex.body.map(function(p){ return "<p>" + p + "</p>"; }).join("");
+      libPreview.hidden = false;
+      playPageSound();
+    });
+  });
+  function closePreview(){ if (libPreview) libPreview.hidden = true; }
+  var lpClose = document.getElementById("lpClose");
+  if (lpClose) lpClose.addEventListener("click", closePreview);
+  if (libPreview) libPreview.addEventListener("click", function(e){
+    if (e.target === libPreview) closePreview();
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape") closePreview();
   });
 
   /* ══════════ SIDE NAV ══════════ */
