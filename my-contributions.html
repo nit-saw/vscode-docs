@@ -16,42 +16,52 @@
      ============================================================ */
 
   :root{
-    --paper:      #f3f0e9;
-    --paper-deep: #eae6dc;
-    --paper-edge: #dcd7ca;
-    --ink:        #171512;
-    --ink-soft:   #4c4842;
-    --ink-faint:  #8d887d;
-    --rule:       rgba(23,21,18,.8);
-    --hair:       rgba(23,21,18,.16);
-    --plate:      rgba(243,240,233,.94);
-    --shadow:     rgba(30,28,24,.14);
-    --page-shadow:rgba(30,28,24,.07);
-    --bg1:        #d3d0c8;
-    --bg2:        #e9e6df;
-    --chrome-btn: rgba(255,255,255,.55);
-    --nav-ink:    #35322c;
-    --nav-faint:  rgba(53,50,44,.42);
+    /* the golden press — palette:
+       #E8940F #F9CE00 #F5E88A / #FBB000 #F5F500 #F7C900 / #F5E98A #F7EFC7 #F6BA00 */
+    --paper:      #f7efc7;
+    --paper-deep: #f5e98a;
+    --paper-edge: #e6d178;
+    --ink:        #3a2b08;
+    --ink-soft:   #6b571f;
+    --ink-faint:  #a08c4d;
+    --accent:     #e8940f;
+    --gold:       #f7c900;
+    --amber:      #f6ba00;
+    --cocoa:      #241a06;
+    --rule:       rgba(58,43,8,.85);
+    --hair:       rgba(58,43,8,.18);
+    --plate:      rgba(247,239,199,.94);
+    --shadow:     rgba(110,80,10,.18);
+    --page-shadow:rgba(110,80,10,.09);
+    --bg1:        #e0ca7a;
+    --bg2:        #f6edc4;
+    --chrome-btn: rgba(255,252,235,.55);
+    --nav-ink:    #4a3810;
+    --nav-faint:  rgba(74,56,16,.45);
     --serif: "Newsreader","Iowan Old Style",Georgia,"Times New Roman",serif;
     --sans:  "Archivo",ui-sans-serif,system-ui,sans-serif;
   }
   html[data-theme="night"]{
-    --paper:      #191816;
-    --paper-deep: #141311;
-    --paper-edge: #24221f;
-    --ink:        #e8e4da;
-    --ink-soft:   #b3ada0;
-    --ink-faint:  #746f64;
-    --rule:       rgba(232,228,218,.8);
-    --hair:       rgba(232,228,218,.18);
-    --plate:      rgba(25,24,22,.93);
+    --paper:      #221a08;
+    --paper-deep: #1a1404;
+    --paper-edge: #35290d;
+    --ink:        #f5e88a;
+    --ink-soft:   #cdb968;
+    --ink-faint:  #8a7a42;
+    --accent:     #fbb000;
+    --gold:       #f9ce00;
+    --amber:      #f6ba00;
+    --cocoa:      #120d02;
+    --rule:       rgba(245,232,138,.8);
+    --hair:       rgba(245,232,138,.18);
+    --plate:      rgba(30,23,7,.93);
     --shadow:     rgba(0,0,0,.5);
     --page-shadow:rgba(0,0,0,.3);
-    --bg1:        #0c0b0a;
-    --bg2:        #171614;
+    --bg1:        #0d0a03;
+    --bg2:        #1c1606;
     --chrome-btn: rgba(0,0,0,.3);
-    --nav-ink:    #d8d3c8;
-    --nav-faint:  rgba(216,211,200,.4);
+    --nav-ink:    #ecd984;
+    --nav-faint:  rgba(236,217,132,.4);
   }
 
   *{ margin:0; padding:0; box-sizing:border-box; }
@@ -65,8 +75,10 @@
   ::selection{ background:var(--ink); color:var(--paper); }
   img{ max-width:100%; }
 
-  /* every photograph in the paper is printed in black & white */
-  .book img{ filter:grayscale(1) contrast(1.06); }
+  /* photographs are printed as golden duotone — except the 1992 front
+     page, which stays true black & white newsprint */
+  .book img{ filter:grayscale(1) sepia(.55) saturate(2.4) hue-rotate(-10deg) contrast(1.03); }
+  .era-1992 img{ filter:grayscale(1) contrast(1.06); }
 
   /* the living background: monochrome liquid-ink silk, drawn in WebGL.
      The CSS body gradient stays underneath as the no-WebGL fallback. */
@@ -104,12 +116,12 @@
   }
   .book::before{
     content:""; position:absolute; top:10px; bottom:10px; left:-10px; width:10px;
-    background: linear-gradient(to right, #b9b5aa, #d5d1c6);
+    background: linear-gradient(to right, #c2a238, #e0c86a);
     border-radius:4px 0 0 4px;
     box-shadow:-3px 5px 12px var(--shadow);
     transform:translateZ(-10px);
   }
-  html[data-theme="night"] .book::before{ background:linear-gradient(to right,#23221f,#33312d); }
+  html[data-theme="night"] .book::before{ background:linear-gradient(to right,#2b2108,#4a3a10); }
 
   /* ------- pages (fold model: the sheet folds over a moving diagonal
      crease, like grabbing the top-right corner of a real page) ------- */
@@ -214,9 +226,10 @@
   /* ============================================================
      PHOTOGRAPHS — printed grey, and they move (slow ken burns)
      ============================================================ */
-  .kb{ overflow:hidden; position:relative; background:#222; }
+  .kb{ overflow:hidden; position:relative; background:var(--paper-deep); }
   .kb img{
     width:100%; height:100%; object-fit:cover; display:block;
+    position:relative; z-index:1;
     animation: kb-a 24s ease-in-out infinite alternate;
     will-change: transform;
   }
@@ -225,7 +238,38 @@
   @keyframes kb-a{ from{ transform:scale(1.03);} to{ transform:scale(1.14) translate(-2.2%,1.8%);} }
   @keyframes kb-b{ from{ transform:scale(1.06) translate(1.8%,0);} to{ transform:scale(1.15) translate(-1.2%,-2%);} }
   @keyframes kb-c{ from{ transform:scale(1.04) translate(-1.5%,1%);} to{ transform:scale(1.13) translate(1.8%,-1.4%);} }
-  @media (prefers-reduced-motion: reduce){ .kb img{ animation:none; } }
+
+  /* the wizarding-paper trick: pictures in FRAMED cuttings live their
+     own lives — they wander around the frame, then step right out of
+     the window and leave it empty for a moment before strolling back */
+  .art-fig .kb img, .np-photo .kb img{
+    animation: hp-live 19s ease-in-out infinite;
+  }
+  .np-photo .kb img{ animation-delay: 4s; animation-duration:22s; }
+  .art-fig.left .kb img{ animation-delay: 9s; }
+  @keyframes hp-live{
+    0%   { transform:scale(1.08) translate(0,0); }
+    16%  { transform:scale(1.13) translate(-3%,2%); }
+    32%  { transform:scale(1.09) translate(2.5%,-1.5%); }
+    44%  { transform:scale(1.06) translate(0,0); }
+    52%  { transform:scale(1.06) translateX(110%); }   /* steps out of the frame */
+    60%  { transform:scale(1.06) translateX(110%); }   /* the frame stands empty */
+    68%  { transform:scale(1.06) translateX(0); }      /* strolls back in */
+    84%  { transform:scale(1.10) translate(-1.5%,1%); }
+    100% { transform:scale(1.08) translate(0,0); }
+  }
+  /* what you see while the subject is away */
+  .art-fig .kb::before, .np-photo .kb::before{
+    content:"— stepped out, back shortly —";
+    position:absolute; inset:0; z-index:0;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    font-family:var(--sans); font-size:.58rem; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--ink-faint); padding:10px;
+    background:
+      radial-gradient(rgba(58,43,8,.05) 1px, transparent 1.4px);
+    background-size:5px 5px;
+  }
+  @media (prefers-reduced-motion: reduce){ .kb img{ animation:none !important; } }
 
   /* a photograph dropped onto the article, over the text */
   .art-fig{
@@ -283,42 +327,43 @@
      ============================================================ */
   .page.cover-pg .page-face.front{
     background:
-      radial-gradient(130% 100% at 50% 0%, #21201d 0%, #161412 60%, #0e0d0b 100%);
+      radial-gradient(130% 100% at 50% 0%, #3d2c0a 0%, #241a06 60%, #150e02 100%);
   }
   .page.cover-pg .page-face.front::before{ opacity:.35; }
-  .cover{ align-items:center; justify-content:center; text-align:center; color:#efe9db; }
+  .cover{ align-items:center; justify-content:center; text-align:center; color:#f5e88a; }
   .tp-frame{
     position:relative; flex:1; align-self:stretch;
     display:flex; flex-direction:column; align-items:center; justify-content:space-evenly;
-    border:1.5px solid rgba(239,233,219,.9);
+    border:1.5px solid rgba(247,201,0,.85);
     padding:clamp(10px,2.5vh,26px) clamp(12px,4vw,40px);
   }
   .tp-frame::before{
     content:""; position:absolute; inset:4px;
-    border:1px solid rgba(239,233,219,.4); pointer-events:none;
+    border:1px solid rgba(247,201,0,.35); pointer-events:none;
   }
   .tp-sm{
     font-family:var(--sans);
     font-size:clamp(.55rem,1.2vw,.66rem); letter-spacing:.34em; text-transform:uppercase;
-    line-height:2; color:rgba(239,233,219,.85);
+    line-height:2; color:rgba(245,232,138,.9);
   }
-  .tp-the{ font-style:italic; font-size:clamp(1rem,2.2vw,1.35rem); line-height:1; color:rgba(239,233,219,.75); }
+  .tp-the{ font-style:italic; font-size:clamp(1rem,2.2vw,1.35rem); line-height:1; color:rgba(245,232,138,.75); }
   .tp-big{
     font-size:clamp(2.1rem,6.2vw,3.8rem); font-weight:800;
     text-transform:uppercase; letter-spacing:.06em; line-height:1;
-    color:#f3f0e9;
+    color:#f9ce00;
+    text-shadow:0 0 34px rgba(249,206,0,.3);
   }
   .tp-sub{
     font-style:italic; font-size:clamp(.85rem,1.7vw,1.05rem); line-height:1.65;
-    max-width:46ch; color:rgba(239,233,219,.75);
+    max-width:46ch; color:rgba(245,232,138,.78);
   }
-  .tp-rule{ width:62%; height:1px; background:rgba(239,233,219,.8); }
-  .tp-rule.double{ height:5px; background:none; border-top:1px solid rgba(239,233,219,.8); border-bottom:1px solid rgba(239,233,219,.8); }
-  .tp-orn{ font-size:clamp(1rem,2.4vw,1.4rem); line-height:1; color:rgba(239,233,219,.8); }
+  .tp-rule{ width:62%; height:1px; background:rgba(247,201,0,.8); }
+  .tp-rule.double{ height:5px; background:none; border-top:1px solid rgba(247,201,0,.8); border-bottom:1px solid rgba(247,201,0,.8); }
+  .tp-orn{ font-size:clamp(1rem,2.4vw,1.4rem); line-height:1; color:rgba(247,201,0,.85); }
   .cover .hint{
     font-family:var(--sans);
     font-size:clamp(.55rem,1.2vw,.64rem); letter-spacing:.3em; text-transform:uppercase;
-    color:rgba(239,233,219,.6);
+    color:rgba(245,232,138,.6);
     animation:breathe 2.6s ease-in-out infinite;
   }
   @keyframes breathe{ 0%,100%{opacity:.5; transform:translateX(0)} 50%{opacity:1; transform:translateX(6px)} }
@@ -447,24 +492,25 @@
      EPILOGUE — black page, ivory type
      ============================================================ */
   .page.end-pg .page-face.front{
-    background: radial-gradient(130% 100% at 50% 100%, #21201d 0%, #131210 60%, #0d0c0a 100%);
+    background: radial-gradient(130% 100% at 50% 100%, #3d2c0a 0%, #1c1404 60%, #100b02 100%);
   }
   .page.end-pg .page-face.front::before{ opacity:.3; }
-  .epilogue{ align-items:center; justify-content:center; text-align:center; color:#efe9db; }
+  .epilogue{ align-items:center; justify-content:center; text-align:center; color:#f5e88a; }
   .epi-portrait{
     width:110px; height:110px; border-radius:50%; overflow:hidden;
-    border:1px solid rgba(239,233,219,.5);
-    box-shadow:0 0 0 7px rgba(239,233,219,.08);
+    border:1px solid rgba(249,206,0,.6);
+    box-shadow:0 0 0 7px rgba(249,206,0,.1), 0 0 44px rgba(249,206,0,.22);
     margin-bottom:24px;
   }
   .epi-portrait img{ width:100%; height:100%; object-fit:cover; object-position:50% 20%; }
   .epilogue blockquote{
     font-size:clamp(1.2rem,2.6vw,1.7rem); font-style:italic; line-height:1.55;
-    max-width:40ch; color:#efe9db;
+    max-width:40ch; color:#f7efc7;
   }
+  .epilogue blockquote b{ color:#f9ce00; font-weight:600; }
   .epilogue .sig{
     font-family:var(--sans); font-size:.62rem; letter-spacing:.34em; text-transform:uppercase;
-    color:rgba(239,233,219,.55); margin-top:18px;
+    color:rgba(245,232,138,.6); margin-top:18px;
   }
   .contact-row{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:30px; }
   .contact-btn{
@@ -474,15 +520,15 @@
     font-size:.8rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
     transition:transform .3s ease, box-shadow .3s ease, background .3s ease, color .3s ease;
   }
-  .contact-btn.primary{ background:#f3f0e9; color:#141210; }
-  .contact-btn.primary:hover{ transform:translateY(-3px); box-shadow:0 12px 26px rgba(0,0,0,.5); }
-  .contact-btn.ghost{ border:1px solid rgba(239,233,219,.45); color:#efe9db; }
-  .contact-btn.ghost:hover{ background:rgba(239,233,219,.12); transform:translateY(-3px); }
+  .contact-btn.primary{ background:#f9ce00; color:#241a06; box-shadow:0 8px 26px rgba(249,206,0,.3); }
+  .contact-btn.primary:hover{ transform:translateY(-3px); box-shadow:0 14px 34px rgba(249,206,0,.45); }
+  .contact-btn.ghost{ border:1px solid rgba(249,206,0,.5); color:#f5e88a; }
+  .contact-btn.ghost:hover{ background:rgba(249,206,0,.14); transform:translateY(-3px); }
   .end-hint{
     font-family:var(--sans); font-size:.62rem; letter-spacing:.3em; text-transform:uppercase;
-    color:rgba(239,233,219,.4); margin-top:30px;
+    color:rgba(245,232,138,.45); margin-top:30px;
   }
-  .epilogue .folio{ color:rgba(239,233,219,.4); border-color:rgba(239,233,219,.2); align-self:stretch; }
+  .epilogue .folio{ color:rgba(245,232,138,.45); border-color:rgba(245,232,138,.2); align-self:stretch; }
 
   /* ============================================================
      RIGHT-SIDE NAVIGATION
@@ -573,7 +619,7 @@
      VIEW MODES — book (default) · site · cards · slides
      ============================================================ */
   .view-switch{
-    position:fixed; top:20px; left:26px; z-index:14;
+    position:fixed; top:20px; left:118px; z-index:14;
     display:flex; gap:3px; padding:4px; border-radius:999px;
     background:var(--chrome-btn); border:1px solid var(--nav-faint);
     backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
@@ -620,39 +666,162 @@
     cursor:grab;
   }
 
-  /* ── SLIDES · the apple hand-off: zoom-through with staggered type ── */
-  body[data-view="slides"] .page{ visibility:hidden; }
-  body[data-view="slides"] .page.s-active{ visibility:visible; }
-  body[data-view="slides"] .page.s-in,
-  body[data-view="slides"] .page.s-out{ visibility:visible; will-change:transform,opacity,filter; }
-  body[data-view="slides"] .page.s-in   { animation:zoomThruIn   .95s cubic-bezier(.32,.72,0,1) both; z-index:5; }
-  body[data-view="slides"] .page.s-out  { animation:zoomThruOut  .95s cubic-bezier(.32,.72,0,1) both; z-index:4; }
-  body[data-view="slides"] .page.s-in-r { animation:zoomThruInR  .95s cubic-bezier(.32,.72,0,1) both; z-index:5; }
-  body[data-view="slides"] .page.s-out-r{ animation:zoomThruOutR .95s cubic-bezier(.32,.72,0,1) both; z-index:4; }
-  /* forward: the camera pushes through the old page into the new one */
-  @keyframes zoomThruIn  { from{ opacity:0; transform:scale(.94) translateY(10px); } 35%{ opacity:1; } to{ opacity:1; transform:none; } }
-  @keyframes zoomThruOut { from{ opacity:1; transform:none; } to{ opacity:0; transform:scale(1.08); filter:blur(14px); } }
-  /* backward: the camera pulls back out */
-  @keyframes zoomThruInR { from{ opacity:0; transform:scale(1.08); filter:blur(14px); } 35%{ opacity:1; filter:blur(0); } to{ opacity:1; transform:none; } }
-  @keyframes zoomThruOutR{ from{ opacity:1; transform:none; } to{ opacity:0; transform:scale(.94) translateY(10px); } }
-  /* the incoming page's type rises in, line after line */
-  body[data-view="slides"] .page.s-in .sheet > *:not(.kb),
-  body[data-view="slides"] .page.s-in-r .sheet > *:not(.kb){
-    opacity:0;
-    animation:riseUp .8s cubic-bezier(.32,.72,0,1) forwards;
+  /* ── ANIMATION · the apple product-page journey: everything loads
+        in as you scroll — type rises line by line, photographs settle ── */
+  body[data-view="anim"]{ overflow-y:auto; }
+  body[data-view="anim"] .stage{
+    position:static; inset:auto; height:auto; display:block;
+    padding:76px 0 60px;
   }
-  body[data-view="slides"] .s-in .sheet > *:nth-child(1), body[data-view="slides"] .s-in-r .sheet > *:nth-child(1){ animation-delay:.12s; }
-  body[data-view="slides"] .s-in .sheet > *:nth-child(2), body[data-view="slides"] .s-in-r .sheet > *:nth-child(2){ animation-delay:.19s; }
-  body[data-view="slides"] .s-in .sheet > *:nth-child(3), body[data-view="slides"] .s-in-r .sheet > *:nth-child(3){ animation-delay:.26s; }
-  body[data-view="slides"] .s-in .sheet > *:nth-child(4), body[data-view="slides"] .s-in-r .sheet > *:nth-child(4){ animation-delay:.33s; }
-  body[data-view="slides"] .s-in .sheet > *:nth-child(5), body[data-view="slides"] .s-in-r .sheet > *:nth-child(5){ animation-delay:.40s; }
-  body[data-view="slides"] .s-in .sheet > *:nth-child(n+6), body[data-view="slides"] .s-in-r .sheet > *:nth-child(n+6){ animation-delay:.47s; }
-  @keyframes riseUp{ from{ opacity:0; transform:translateY(26px); } to{ opacity:1; transform:none; } }
+  body[data-view="anim"] .book{ width:min(1000px,92vw); height:auto; margin:0 auto; }
+  body[data-view="anim"] .page{ position:static; margin-bottom:12vh; }
+  body[data-view="anim"] .page-face.front{ position:relative; inset:auto; min-height:78vh; display:flex; }
+  body[data-view="anim"] .sheet{ overflow:visible; height:auto; width:100%; }
+  body[data-view="anim"] .sheet.plate-page{ min-height:80vh; }
+  body[data-view="anim"] .arrow, body[data-view="anim"] .chrome{ display:none; }
+
+  body[data-view="anim"] .sheet > *:not(.kb){
+    opacity:0; transform:translateY(48px);
+    transition:opacity 1s cubic-bezier(.32,.72,0,1), transform 1s cubic-bezier(.32,.72,0,1);
+  }
+  body[data-view="anim"] .sheet > *:nth-child(1){ transition-delay:.05s; }
+  body[data-view="anim"] .sheet > *:nth-child(2){ transition-delay:.14s; }
+  body[data-view="anim"] .sheet > *:nth-child(3){ transition-delay:.23s; }
+  body[data-view="anim"] .sheet > *:nth-child(4){ transition-delay:.32s; }
+  body[data-view="anim"] .sheet > *:nth-child(n+5){ transition-delay:.41s; }
+  body[data-view="anim"] .page.inview .sheet > *:not(.kb){ opacity:1; transform:none; }
+
+  body[data-view="anim"] .sheet.plate-page > .kb{
+    opacity:0; transform:scale(1.07);
+    transition:opacity 1.3s ease, transform 1.6s cubic-bezier(.32,.72,0,1);
+  }
+  body[data-view="anim"] .page.inview .sheet.plate-page > .kb{ opacity:1; transform:none; }
+
   @media (prefers-reduced-motion: reduce){
-    body[data-view="slides"] .page.s-in, body[data-view="slides"] .page.s-out,
-    body[data-view="slides"] .page.s-in-r, body[data-view="slides"] .page.s-out-r,
-    body[data-view="slides"] .s-in .sheet > *, body[data-view="slides"] .s-in-r .sheet > *{ animation-duration:.01s !important; animation-delay:0s !important; }
+    body[data-view="anim"] .sheet > *, body[data-view="anim"] .sheet.plate-page > .kb{
+      transition-duration:.01s !important; transition-delay:0s !important;
+    }
   }
+
+  /* ============================================================
+     ERAS — the pages modernise as the years pass:
+     1992 newsprint → serif chapters → cleaner mid-years →
+     flat modern 2020s → the dark gold room of 2026
+     ============================================================ */
+  .era-mid .kicker{ color:var(--accent); }
+  .era-mid .headline{ font-family:var(--sans); font-weight:800; letter-spacing:-.03em; }
+  .era-mid .standfirst{ font-family:var(--sans); font-style:normal; font-size:.92rem; line-height:1.7; }
+  .era-mid .body-copy p{ font-family:var(--sans); font-size:.9rem; }
+  .era-mid .pull{ font-family:var(--sans); font-style:normal; font-weight:600; border-top-color:var(--accent); }
+  .era-mid .drop:first-letter{ color:var(--accent); }
+
+  .era-new .sheet{ font-family:var(--sans); }
+  .era-new .headline{
+    font-family:var(--sans); font-weight:900; letter-spacing:-.045em;
+    font-size:clamp(2.2rem,5vw,3.6rem);
+  }
+  .era-new .headline em{ font-style:normal; color:var(--accent); }
+  .era-new .kicker{ color:var(--accent); }
+  .era-new .kicker::after{ height:2px; background:linear-gradient(to right, var(--accent), transparent); }
+  .era-new .standfirst{ font-style:normal; border-bottom:2px solid var(--accent); color:var(--ink-soft); }
+  .era-new .body-copy p{ font-size:.95rem; line-height:1.85; }
+  .era-new .drop:first-letter{ color:var(--accent); font-family:var(--sans); }
+  .era-new .art-fig{
+    transform:none; border:none; padding:0;
+    border-radius:16px; overflow:hidden;
+    box-shadow:0 26px 52px var(--shadow);
+  }
+  .era-new .art-fig .kb{ border-radius:16px; }
+  .era-new .art-fig figcaption{ padding:10px 14px; }
+  .era-new .footnote{ border:none; }
+
+  /* ============================================================
+     THE LIBRARY — the home page: an architecture of books.
+     New volumes appear on the shelf as stories are published.
+     ============================================================ */
+  .library{
+    position:fixed; inset:0; z-index:20;
+    display:none;
+    flex-direction:column; align-items:center; justify-content:center;
+    gap:clamp(18px,4vh,44px); padding:6vh 6vw;
+    overflow-y:auto;
+    color:var(--ink);
+  }
+  body.at-library .library{ display:flex; }
+  body.at-library .stage, body.at-library .side-nav, body.at-library .arrow,
+  body.at-library .chrome, body.at-library .view-switch, body.at-library .home-btn{ display:none; }
+
+  .lib-head{ text-align:center; }
+  .lib-kicker{
+    font-family:var(--sans); font-size:.64rem; letter-spacing:.34em;
+    text-transform:uppercase; color:var(--ink-soft); margin-bottom:12px;
+  }
+  .lib-head h1{ font-size:clamp(2.3rem,5.5vw,4rem); font-weight:800; letter-spacing:-.02em; line-height:1; }
+  .lib-head h1 em{ font-style:italic; font-weight:500; color:var(--accent); }
+  .lib-head p{ font-style:italic; color:var(--ink-soft); margin-top:12px; font-size:clamp(.9rem,1.6vw,1.05rem); }
+
+  .shelf{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 180px));
+    gap:clamp(16px,3vw,34px); justify-content:center; align-items:end;
+    width:100%; max-width:1040px;
+  }
+  /* each tome sits on the shelf like a real book: cover, spine, weight */
+  .tome{
+    position:relative; border:none; background:none; padding:0; text-align:left;
+    aspect-ratio:3/4.3; border-radius:3px 8px 8px 3px;
+    cursor:pointer; font-family:var(--serif);
+    transform-origin:bottom center;
+    transition:transform .45s cubic-bezier(.2,.8,.25,1), box-shadow .45s ease;
+    box-shadow:0 16px 30px var(--shadow);
+  }
+  .tome::before{
+    content:""; position:absolute; top:0; bottom:0; left:0; width:9%;
+    border-radius:3px 0 0 3px; background:rgba(36,26,6,.25);
+  }
+  .tome-cover{
+    position:absolute; inset:0; border-radius:inherit;
+    display:flex; flex-direction:column; justify-content:space-between;
+    padding:14% 10% 11% 17%;
+    border:1px solid rgba(58,43,8,.28);
+  }
+  .tome em{ font-style:italic; font-size:.7rem; opacity:.8; }
+  .tome strong{ font-size:clamp(.9rem,1.5vw,1.15rem); line-height:1.22; font-weight:700; display:block; margin-top:6px; }
+  .tome small{ font-family:var(--sans); font-size:.54rem; letter-spacing:.16em; text-transform:uppercase; opacity:.75; display:block; margin-top:auto; margin-bottom:8px; }
+  .tome .tome-cta{ font-family:var(--sans); font-size:.58rem; letter-spacing:.24em; text-transform:uppercase; font-weight:700; }
+  .tome.live:hover, .tome.live:focus-visible{
+    transform:translateY(-14px) rotate(-1.6deg);
+    box-shadow:0 34px 58px var(--shadow);
+  }
+  .tome.soon{ cursor:default; filter:saturate(.5) brightness(.98); }
+  .tome.soon:hover{ transform:translateY(-4px); }
+  .tome .ribbon{
+    position:absolute; top:12px; right:-7px; z-index:2;
+    background:var(--cocoa); color:#f5e88a;
+    font-family:var(--sans); font-size:.5rem; letter-spacing:.22em; text-transform:uppercase;
+    padding:4px 10px; box-shadow:0 4px 10px rgba(0,0,0,.3);
+  }
+  /* cloth colours straight from the palette */
+  .t-a{ background:linear-gradient(160deg,#f6ba00,#e8940f); color:#241a06; }
+  .t-b{ background:linear-gradient(160deg,#f9ce00,#f7c900); color:#3a2b08; }
+  .t-c{ background:linear-gradient(160deg,#f5e88a,#efd75e); color:#3a2b08; }
+  .t-d{ background:linear-gradient(160deg,#fbb000,#f6ba00); color:#241a06; }
+  .t-e{ background:linear-gradient(160deg,#f7efc7,#f5e88a); color:#3a2b08; }
+  .t-f{ background:linear-gradient(160deg,#f5f500,#f9ce00); color:#3a2b08; }
+
+  .lib-foot{
+    font-family:var(--sans); font-size:.6rem; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
+  .lib-foot a{ color:inherit; text-decoration:none; border-bottom:1px solid var(--hair); }
+
+  .home-btn{
+    position:fixed; top:20px; left:26px; z-index:14;
+    font-family:var(--sans); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase;
+    padding:10px 15px; border-radius:999px;
+    border:1px solid var(--nav-faint); background:var(--chrome-btn); color:var(--nav-ink);
+    cursor:pointer; backdrop-filter:blur(6px); transition:all .25s ease;
+  }
+  .home-btn:hover{ background:var(--ink); color:var(--paper); }
 
   /* ============================================================
      RESPONSIVE
@@ -688,6 +857,9 @@
     .theme-toggle{ top:auto; bottom:12px; right:12px; width:36px; height:36px; }
     .view-switch{ top:auto; bottom:12px; left:12px; padding:3px; }
     .view-switch button{ font-size:.54rem; padding:5px 8px; }
+    .home-btn{ top:8px; left:56px; padding:8px 11px; font-size:.54rem; }
+    .shelf{ grid-template-columns:repeat(2, minmax(120px, 150px)); }
+    .lib-head h1{ font-size:2rem; }
 
     .repo-grid{ grid-template-columns:1fr 1fr; }
     .art-fig, .art-fig.left{ float:none; width:88%; margin:6px auto 16px; }
@@ -697,9 +869,58 @@
   }
 </style>
 </head>
-<body>
+<body class="at-library">
 
 <canvas class="shader-bg" id="shaderBg" aria-hidden="true"></canvas>
+
+<!-- ═══════════ THE LIBRARY — home: an architecture of books ═══════════ -->
+<div class="library" id="library">
+  <header class="lib-head">
+    <div class="lib-kicker">The private press of Nitesh · est. 1992</div>
+    <h1>The <em>Library</em></h1>
+    <p>Shelved writings, one volume at a time. New books appear as stories are ready.</p>
+  </header>
+  <div class="shelf">
+    <button class="tome live t-a" id="openStory">
+      <span class="ribbon">New</span>
+      <span class="tome-cover">
+        <span><em>Vol. I</em><strong>The Story of Nitesh</strong></span>
+        <small>1992 — 2026 · 15 pages · with photographs</small>
+        <span class="tome-cta">Read →</span>
+      </span>
+    </button>
+    <!-- ✏️ future posts: duplicate a tome, give it a volume number & title -->
+    <button class="tome soon t-b" disabled>
+      <span class="tome-cover">
+        <span><em>Vol. II</em><strong>Field Notes from Production</strong></span>
+        <small>Incidents, honestly told</small>
+        <span class="tome-cta">Coming soon</span>
+      </span>
+    </button>
+    <button class="tome soon t-d" disabled>
+      <span class="tome-cover">
+        <span><em>Vol. III</em><strong>Travel, by Timetable</strong></span>
+        <small>Trains, trails &amp; layovers</small>
+        <span class="tome-cta">Coming soon</span>
+      </span>
+    </button>
+    <button class="tome soon t-c" disabled>
+      <span class="tome-cover">
+        <span><em>Vol. IV</em><strong>The Repository Diaries</strong></span>
+        <small>Commits &amp; confessions</small>
+        <span class="tome-cta">Coming soon</span>
+      </span>
+    </button>
+    <button class="tome soon t-e" disabled>
+      <span class="tome-cover">
+        <span><em>Vol. V</em><strong>Letters to a Junior Engineer</strong></span>
+        <small>Advice, lightly used</small>
+        <span class="tome-cta">Coming soon</span>
+      </span>
+    </button>
+  </div>
+  <footer class="lib-foot"><a href="https://github.com/nit-saw" target="_blank" rel="noopener">github.com/nit-saw</a> &nbsp;·&nbsp; <a href="mailto:nitesh9392@gmail.com">nitesh9392@gmail.com</a></footer>
+</div>
 
 <!-- ═══════════ THE BOOK ═══════════ -->
 <div class="stage">
@@ -929,7 +1150,7 @@
     </section>
 
     <!-- ── 8 · THE CRAFT ──────────────────────────────────── -->
-    <section class="page" data-title="The Craft">
+    <section class="page era-mid" data-title="The Craft">
       <div class="page-face front">
         <div class="sheet">
           <div class="kicker">The Working Years · Chapter Five</div>
@@ -963,7 +1184,7 @@
     </section>
 
     <!-- ── 9 · THINGS I'VE BUILT ──────────────────────────── -->
-    <section class="page" data-title="Built">
+    <section class="page era-mid" data-title="Built">
       <div class="page-face front">
         <div class="sheet">
           <div class="kicker">The Public Record · Chapter Six</div>
@@ -978,7 +1199,7 @@
     </section>
 
     <!-- ── 10 · THE INSTRUMENTS ───────────────────────────── -->
-    <section class="page" data-title="Toolbox">
+    <section class="page era-mid" data-title="Toolbox">
       <div class="page-face front">
         <div class="sheet">
           <div class="kicker">The Workshop · Chapter Seven</div>
@@ -1027,7 +1248,7 @@
     </section>
 
     <!-- ── 11 · THE METHOD ────────────────────────────────── -->
-    <section class="page" data-title="Method">
+    <section class="page era-mid" data-title="Method">
       <div class="page-face front">
         <div class="sheet">
           <div class="kicker">Editorial · Chapter Eight</div>
@@ -1098,7 +1319,7 @@
     </section>
 
     <!-- ── 14 · THE SUBJECT, TODAY ────────────────────────── -->
-    <section class="page" data-title="Today">
+    <section class="page era-new" data-title="Today">
       <div class="page-face front">
         <div class="sheet">
           <div class="kicker">The Present Day · Chapter Nine</div>
@@ -1136,7 +1357,7 @@
       <div class="page-face front">
         <div class="sheet epilogue">
           <div class="epi-portrait"><img src="img/portrait.jpg" alt="Nitesh, present day"></div>
-          <blockquote>"The best stories are the ones we build together.
+          <blockquote>"The best stories are the ones we <b>build together</b>.
             If mine resonated with you — let's write the next chapter."</blockquote>
           <div class="sig">— Nitesh · est. 1992</div>
           <div class="contact-row">
@@ -1173,11 +1394,12 @@
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle day / night reading mode">☾</button>
 
 <!-- ═══════════ VIEW SWITCHER: read it your way ═══════════ -->
+<button class="home-btn" id="homeBtn" aria-label="Back to the library">⌂ Library</button>
 <div class="view-switch" id="viewSwitch" role="tablist" aria-label="View mode">
-  <button data-mode="book"   class="active" role="tab">Book</button>
-  <button data-mode="site"   role="tab">Site</button>
-  <button data-mode="cards"  role="tab">Cards</button>
-  <button data-mode="slides" role="tab">Slides</button>
+  <button data-mode="book"  class="active" role="tab">Book</button>
+  <button data-mode="site"  role="tab">Site</button>
+  <button data-mode="cards" role="tab">Cards</button>
+  <button data-mode="anim"  role="tab">Animation</button>
 </div>
 
 <script>
@@ -1452,32 +1674,13 @@
     });
   }
 
-  function applySlides(){
-    pages.forEach(function(pg, i){
-      pg.classList.remove("flipped", "s-in", "s-out", "s-in-r", "s-out-r");
-      pg.classList.toggle("s-active", i === current);
-      pg.style.zIndex = "";
-    });
-  }
-
-  function slideTo(target){
-    if (target === current || busy) return;
-    busy = true;
-    var back = target < current;
-    var out = pages[current], inn = pages[target];
-    out.classList.remove("s-active");
-    out.classList.add(back ? "s-out-r" : "s-out");
-    inn.classList.add(back ? "s-in-r" : "s-in");
-    playPageSound();
-    current = target; updateChrome();
-    setTimeout(function(){ applySlides(); busy = false; }, 960);
-  }
+  function isScroll(){ return mode === "site" || mode === "anim"; }
 
   function navTo(target){
     target = Math.max(0, Math.min(total - 1, target));
     if (mode === "book"){ go(target); return; }
     if (target === current) return;
-    if (mode === "site"){
+    if (isScroll()){
       current = target; updateChrome();
       pages[target].scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" });
     } else if (mode === "cards"){
@@ -1485,13 +1688,12 @@
       current = target; updateChrome();
       playPageSound();
       applyCards();
-    } else if (mode === "slides"){
-      slideTo(target);
     }
   }
 
   function setMode(m){
-    if (["book","site","cards","slides"].indexOf(m) < 0) m = "book";
+    if (m === "slides") m = "anim";                       // old saved preference
+    if (["book","site","cards","anim"].indexOf(m) < 0) m = "book";
     mode = m;
     document.body.setAttribute("data-view", m);
     try { localStorage.setItem("book-viewmode", m); } catch(e){}
@@ -1502,7 +1704,7 @@
     pages.forEach(function(pg){
       if (pg._anim){ cancelAnimationFrame(pg._anim); pg._anim = null; }
       setFold(pg, 0);
-      pg.classList.remove("flipped", "s-active", "s-in", "s-out", "s-in-r", "s-out-r");
+      pg.classList.remove("flipped");
       pg.style.transform = ""; pg.style.opacity = ""; pg.style.zIndex = ""; pg.style.transition = "";
     });
     if (m === "book"){
@@ -1512,9 +1714,13 @@
     } else if (m === "cards"){
       applyCards();
       window.scrollTo(0, 0);
-    } else if (m === "slides"){
-      applySlides();
-      window.scrollTo(0, 0);
+    } else if (m === "anim"){
+      // replay the journey from the top, revealing as the reader scrolls
+      pages.forEach(function(pg){
+        pg.classList.remove("inview");
+        if (revealIO){ revealIO.unobserve(pg); revealIO.observe(pg); }
+      });
+      current = 0; window.scrollTo(0, 0);
     } else if (m === "site"){
       var pg = pages[current];
       requestAnimationFrame(function(){ pg.scrollIntoView({ block:"start" }); });
@@ -1526,9 +1732,10 @@
     b.addEventListener("click", function(){ setMode(b.dataset.mode); });
   });
 
+  var revealIO = null;
   if (window.IntersectionObserver){
     var io = new IntersectionObserver(function(entries){
-      if (mode !== "site") return;
+      if (!isScroll()) return;
       entries.forEach(function(en){
         if (en.isIntersecting){
           var i = pages.indexOf(en.target);
@@ -1537,7 +1744,28 @@
       });
     }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
     pages.forEach(function(p){ io.observe(p); });
+
+    // the apple journey: a page reveals its content once it enters view
+    revealIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) en.target.classList.add("inview");
+      });
+    }, { rootMargin: "0px 0px -14% 0px", threshold: 0.08 });
+    pages.forEach(function(p){ revealIO.observe(p); });
   }
+
+  /* ══════════ THE LIBRARY (home) ══════════ */
+  var openStory = document.getElementById("openStory");
+  var homeBtn   = document.getElementById("homeBtn");
+  if (openStory) openStory.addEventListener("click", function(){
+    document.body.classList.remove("at-library");
+    playPageSound();
+    setMode(mode);                     // re-settle the current view mode
+  });
+  if (homeBtn) homeBtn.addEventListener("click", function(){
+    document.body.classList.add("at-library");
+    window.scrollTo(0, 0);
+  });
 
   /* ══════════ SIDE NAV ══════════ */
   var sideNav  = document.getElementById("sideNav");
@@ -1580,7 +1808,7 @@
   });
 
   document.addEventListener("keydown", function(e){
-    if (mode === "site"){
+    if (isScroll()){
       if (e.key === "ArrowRight"){ e.preventDefault(); navTo(current + 1); }
       if (e.key === "ArrowLeft") { e.preventDefault(); navTo(current - 1); }
       return;
@@ -1593,7 +1821,7 @@
 
   var wheelLock = 0;
   document.addEventListener("wheel", function(e){
-    if (mode === "site") return;
+    if (isScroll()) return;
     var now = Date.now();
 
     // trackpad: a two-finger horizontal swipe turns the page
@@ -1624,7 +1852,7 @@
 
   stage.addEventListener("pointerdown", function(e){
     if (busy || e.button > 0) return;
-    if (mode === "site" || mode === "slides") return;
+    if (isScroll()) return;
     if (e.target.closest("button")) return;
     drag.on = true; drag.dir = 0; drag.pg = null; drag.cards = false;
     drag.startX = e.clientX; drag.startY = e.clientY;
@@ -1867,14 +2095,14 @@
       "  float f = fbm(p + 1.8*r);",
       "  float silk = smoothstep(0.12, 0.95, f);",
       "  float vein = smoothstep(0.45, 0.92, fbm(p*2.1 + r));",
-      // the ivory room: warm paper-light silk with faint ink veins
-      "  vec3 day = mix(vec3(0.780,0.768,0.735), vec3(0.948,0.940,0.914), silk);",
-      "  day -= vein * 0.105;",
-      "  day += smoothstep(0.72, 0.98, f) * 0.05;",
-      // the dark room: near-black with slow smoke catching low light
-      "  vec3 night = mix(vec3(0.028), vec3(0.075), silk);",
-      "  night += vein * 0.05;",
-      "  night += smoothstep(0.78, 0.99, f) * 0.05;",
+      // the golden room: molten honey-silk with amber veins
+      "  vec3 day = mix(vec3(0.845,0.735,0.415), vec3(0.972,0.936,0.775), silk);",
+      "  day -= vein * vec3(0.105, 0.090, 0.050);",
+      "  day += smoothstep(0.72, 0.98, f) * vec3(0.05, 0.045, 0.02);",
+      // the dark room: near-black cocoa with gold smoke catching low light
+      "  vec3 night = mix(vec3(0.045,0.034,0.010), vec3(0.115,0.088,0.028), silk);",
+      "  night += vein * vec3(0.050, 0.040, 0.012);",
+      "  night += smoothstep(0.78, 0.99, f) * vec3(0.055, 0.045, 0.015);",
       "  vec3 col = mix(day, night, u_dark);",
       "  float vig = smoothstep(1.35, 0.3, length(uv));",
       "  col *= mix(0.82, 1.0, vig);",
