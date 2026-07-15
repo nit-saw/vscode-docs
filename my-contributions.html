@@ -855,6 +855,30 @@
     margin-top:18px; padding-top:14px; border-top:1px solid var(--hair);
   }
 
+  /* ============================================================
+     THE READER'S MARKER — select any passage and press the marker;
+     the highlight is remembered and waiting on your next visit
+     ============================================================ */
+  mark.hl{
+    background:linear-gradient(to top, rgba(249,206,0,.62) 82%, rgba(249,206,0,.25));
+    color:inherit; border-radius:2px; padding:.05em 0;
+    box-decoration-break:clone; -webkit-box-decoration-break:clone;
+    cursor:pointer;
+  }
+  mark.hl:hover{ background:rgba(232,148,15,.55); }
+  .cover-pg mark.hl, .end-pg mark.hl{ background:rgba(249,206,0,.3); }
+  .hl-btn{
+    position:fixed; z-index:40;
+    font-family:var(--sans); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase;
+    padding:9px 14px; border-radius:999px; border:1px solid var(--rule);
+    background:var(--gold); color:var(--cocoa); font-weight:700;
+    cursor:pointer; box-shadow:0 10px 24px rgba(0,0,0,.28);
+    transform:translate(-50%, -100%);
+    animation:hlIn .25s cubic-bezier(.2,.8,.25,1);
+    white-space:nowrap;
+  }
+  @keyframes hlIn{ from{ opacity:0; transform:translate(-50%,-80%);} to{ opacity:1; transform:translate(-50%,-100%);} }
+
   .home-btn{
     position:fixed; top:20px; left:26px; z-index:14;
     font-family:var(--sans); font-size:.6rem; letter-spacing:.16em; text-transform:uppercase;
@@ -1445,6 +1469,7 @@
 </div>
 
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle day / night reading mode">☾</button>
+<button class="hl-btn" id="hlBtn" hidden>🖍&nbsp;Highlight</button>
 
 <!-- ═══════════ VIEW SWITCHER: read it your way ═══════════ -->
 <button class="home-btn" id="homeBtn" aria-label="Back to the library">⌂ Library</button>
@@ -1977,6 +2002,10 @@
     drag.startX = e.clientX; drag.startY = e.clientY;
     drag.lastX = e.clientX; drag.lastT = performance.now(); drag.vx = 0;
     drag.id = e.pointerId;
+    // a mouse-drag that begins on running text is probably a selection —
+    // give it room before treating it as a page turn
+    drag.fromText = e.pointerType === "mouse" && !!(e.target.closest &&
+      e.target.closest("p, h2, h3, blockquote, li, figcaption, .standfirst, .pull, .np-cols, .creed"));
   });
 
   stage.addEventListener("pointermove", function(e){
@@ -1985,7 +2014,11 @@
     var dy = e.clientY - drag.startY;
 
     if (!drag.dir){
-      if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+      var need = drag.fromText ? 48 : 12;
+      if (Math.abs(dx) < need || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+      // the reader is selecting a passage, not turning the page
+      var selNow = window.getSelection();
+      if (selNow && !selNow.isCollapsed){ drag.on = false; return; }
       var dir = dx < 0 ? 1 : -1;
       var pg;
       if (mode === "cards"){
@@ -2171,6 +2204,164 @@
       })
       .catch(function(){ render(FALLBACK_REPOS, false); });
   }
+
+  /* ══════════ THE READER'S MARKER ══════════
+     Select a passage → press the marker → the highlight is stored in
+     the browser (localStorage). On the next visit each saved passage
+     is searched for in the page text — with a little surrounding
+     context to find the right occurrence — and marked again. */
+  var HL_KEY = "book-highlights-v1";
+  var hlBtn = document.getElementById("hlBtn");
+  var hlRange = null;
+
+  function hlLoad(){
+    try { return JSON.parse(localStorage.getItem(HL_KEY)) || []; } catch(e){ return []; }
+  }
+  function hlSave(list){
+    try { localStorage.setItem(HL_KEY, JSON.stringify(list)); } catch(e){}
+  }
+
+  // map a page's text nodes to one long string with global offsets
+  function collectText(root){
+    var str = "", map = [];
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(n){
+        var el = n.parentNode;
+        while (el && el !== root){
+          if (el.nodeName === "SCRIPT" || el.nodeName === "STYLE") return NodeFilter.FILTER_REJECT;
+          el = el.parentNode;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var n;
+    while ((n = walker.nextNode())){
+      map.push({ node: n, start: str.length });
+      str += n.nodeValue;
+    }
+    return { str: str, map: map };
+  }
+
+  // global text offset of a range boundary, measured with a probe range —
+  // handles boundaries that land on elements as well as text nodes
+  function boundaryOffset(root, node, offset){
+    var r = document.createRange();
+    r.selectNodeContents(root);
+    try { r.setEnd(node, offset); } catch(e){ return -1; }
+    return r.toString().length;
+  }
+
+  // wrap the [a, b) span of the collected text in <mark> elements,
+  // splitting text nodes as needed (a highlight may cross <b>, <em>…)
+  function wrapOffsets(map, a, b, id){
+    var made = false;
+    for (var i = 0; i < map.length; i++){
+      var e = map[i];
+      var len = e.node.nodeValue.length;
+      var s = Math.max(a - e.start, 0);
+      var t = Math.min(b - e.start, len);
+      if (s >= t) continue;
+      if (!e.node.nodeValue.slice(s, t).trim()) continue;   // skip pure whitespace
+      var target = e.node;
+      if (s > 0) target = target.splitText(s);
+      if (t - s < target.nodeValue.length) target.splitText(t - s);
+      var mk = document.createElement("mark");
+      mk.className = "hl";
+      mk.dataset.hid = id;
+      mk.title = "Tap to remove highlight";
+      target.parentNode.insertBefore(mk, target);
+      mk.appendChild(target);
+      made = true;
+    }
+    return made;
+  }
+
+  function applySaved(item){
+    var pg = pages[item.p];
+    if (!pg) return;
+    var root = pg.querySelector(".sheet");
+    if (!root) return;
+    var c = collectText(root);
+    var idx = -1;
+    if (item.pre || item.suf){
+      idx = c.str.indexOf((item.pre || "") + item.t + (item.suf || ""));
+      if (idx >= 0) idx += (item.pre || "").length;
+    }
+    if (idx < 0) idx = c.str.indexOf(item.t);
+    if (idx < 0) return;                       // the text has changed — let it go
+    wrapOffsets(c.map, idx, idx + item.t.length, item.id);
+  }
+
+  function positionHlBtn(){
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount){ hlBtn.hidden = true; hlRange = null; return; }
+    var range = sel.getRangeAt(0);
+    var node = range.commonAncestorContainer;
+    var el = node.nodeType === 1 ? node : node.parentNode;
+    var sheet = el && el.closest ? el.closest(".sheet") : null;
+    if (!sheet || (el.closest && el.closest("mark.hl"))){ hlBtn.hidden = true; hlRange = null; return; }
+    var text = range.toString();
+    if (!text || !text.trim() || text.length > 600){ hlBtn.hidden = true; hlRange = null; return; }
+    hlRange = range.cloneRange();
+    var r = range.getBoundingClientRect();
+    hlBtn.style.left = Math.max(70, Math.min(innerWidth - 70, r.left + r.width / 2)) + "px";
+    hlBtn.style.top = Math.max(52, r.top - 8) + "px";
+    hlBtn.hidden = false;
+  }
+  var hlTimer = null;
+  document.addEventListener("selectionchange", function(){
+    clearTimeout(hlTimer);
+    hlTimer = setTimeout(positionHlBtn, 220);
+  });
+
+  hlBtn.addEventListener("click", function(){
+    if (!hlRange) return;
+    var node = hlRange.commonAncestorContainer;
+    var el = node.nodeType === 1 ? node : node.parentNode;
+    var pg = el.closest(".page");
+    var root = el.closest(".sheet");
+    if (!pg || !root) return;
+    var c = collectText(root);
+    var a = boundaryOffset(root, hlRange.startContainer, hlRange.startOffset);
+    var b = boundaryOffset(root, hlRange.endContainer, hlRange.endOffset);
+    if (a < 0 || b < 0 || b <= a){ hlBtn.hidden = true; return; }
+    // trim ragged whitespace off the ends of the selection
+    var raw = c.str.slice(a, b);
+    a += raw.length - raw.replace(/^\s+/, "").length;
+    b -= raw.length - raw.replace(/\s+$/, "").length;
+    if (b <= a){ hlBtn.hidden = true; return; }
+    var id = "h" + Math.random().toString(36).slice(2, 9);
+    if (wrapOffsets(c.map, a, b, id)){
+      var list = hlLoad();
+      list.push({
+        id: id,
+        p: pages.indexOf(pg),
+        t: c.str.slice(a, b),
+        pre: c.str.slice(Math.max(0, a - 32), a),
+        suf: c.str.slice(b, b + 32)
+      });
+      hlSave(list);
+      playPageSound();
+    }
+    var sel = window.getSelection();
+    if (sel) sel.removeAllRanges();
+    hlBtn.hidden = true; hlRange = null;
+  });
+
+  // tapping a highlight removes it — from the page and from memory
+  document.addEventListener("click", function(e){
+    var mk = e.target.closest && e.target.closest("mark.hl");
+    if (!mk) return;
+    var id = mk.dataset.hid;
+    document.querySelectorAll('mark.hl[data-hid="' + id + '"]').forEach(function(m){
+      while (m.firstChild) m.parentNode.insertBefore(m.firstChild, m);
+      m.parentNode.removeChild(m);
+    });
+    hlSave(hlLoad().filter(function(it){ return it.id !== id; }));
+  });
+
+  // welcome back: repaint every remembered highlight
+  hlLoad().forEach(applySaved);
 
   /* ══════════ THE LIVING BACKGROUND ══════════
      A monochrome silk shader: domain-warped fractal noise, the classic
