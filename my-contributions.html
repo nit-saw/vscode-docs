@@ -77,8 +77,8 @@
 
   /* photographs are printed as golden duotone — except the 1992 front
      page, which stays true black & white newsprint */
-  .book img{ filter:grayscale(1) sepia(.55) saturate(2.4) hue-rotate(-10deg) contrast(1.03); }
-  .era-1992 img{ filter:grayscale(1) contrast(1.06); }
+  .book img, .book video{ filter:grayscale(1) sepia(.55) saturate(2.4) hue-rotate(-10deg) contrast(1.03); }
+  .era-1992 img, .era-1992 video{ filter:grayscale(1) contrast(1.06); }
 
   /* the living background: monochrome liquid-ink silk, drawn in WebGL.
      The CSS body gradient stays underneath as the no-WebGL fallback. */
@@ -233,6 +233,11 @@
     animation: kb-a 24s ease-in-out infinite alternate;
     will-change: transform;
   }
+  .kb video{
+    width:100%; height:100%; object-fit:cover; display:block;
+    position:relative; z-index:1;
+  }
+  .np-film .kb{ aspect-ratio:4/3; }
   .kb.kb-b img{ animation-name: kb-b; animation-duration:28s; }
   .kb.kb-c img{ animation-name: kb-c; animation-duration:32s; }
   @keyframes kb-a{ from{ transform:scale(1.03);} to{ transform:scale(1.14) translate(-2.2%,1.8%);} }
@@ -1054,6 +1059,16 @@
             <p>Witnesses describe the early months as deceptively calm. "He just sat
               there in that chair," one relative recalled, "watching everything. We
               thought it was cute. We did not know he was taking notes."</p>
+            <!-- a TRUE moving picture, wizarding-paper style: a looping newsreel
+                 plays inside the frame. ✏️ swap src for any clip of your own -->
+            <figure class="np-photo np-film">
+              <div class="kb">
+                <video src="img/newsreel.webm" autoplay muted loop playsinline
+                       aria-label="Newsreel footage: figures and a motorcar pass on a city street"></video>
+              </div>
+              <figcaption>MOTION PICTURE — the streets, that very year. Readers are
+                advised the figures move of their own accord. — Newsreel service</figcaption>
+            </figure>
             <p>The years that followed produced a documented trail of dismantled toys,
               rescued screws and suspiciously quiet afternoons. Every radio in the
               house has reportedly been opened at least twice. Some of them still work.</p>
